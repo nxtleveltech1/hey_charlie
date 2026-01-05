@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { packages } from "@/lib/packages";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MobileNav } from "@/components/mobile-nav";
 
 const experiences = [
   { name: "Sundowner Cruises", icon: "🌅", count: "Daily departures" },
@@ -60,8 +61,11 @@ export default function Home() {
         <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full blur-3xl animate-float-delayed" style={{ background: "var(--theme-glow-pink)" }} />
       </div>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl bg-[var(--theme-nav-bg)] z-50 transition-colors duration-300">
+      {/* Mobile Navigation */}
+      <MobileNav />
+
+      {/* Desktop Navigation */}
+      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl bg-[var(--theme-nav-bg)] z-50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center gap-4">
@@ -72,7 +76,7 @@ export default function Home() {
                 height={70}
                 className="rounded-xl"
               />
-              <div className="hidden sm:block">
+              <div>
                 <span 
                   className="text-2xl font-bold tracking-tight italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
                   style={{ fontFamily: "var(--font-display)" }}
@@ -87,7 +91,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="flex items-center gap-8">
               <Link href="#experiences" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
                 Experiences
               </Link>
@@ -108,7 +112,7 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <ThemeToggle />
               <SignedOut>
-                <Link href="/sign-in" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors hidden sm:block">
+                <Link href="/sign-in" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
                   Sign In
                 </Link>
                 <Link
@@ -133,36 +137,36 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 min-h-screen flex items-center">
+      <section className="relative pt-24 lg:pt-32 pb-12 lg:pb-20 px-4 lg:px-6 min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-orange-500/30 bg-orange-500/10 text-sm text-orange-600 dark:text-orange-300">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full border border-orange-500/30 bg-orange-500/10 text-xs lg:text-sm text-orange-600 dark:text-orange-300">
                 <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
                 Cape Town&apos;s Premier Charter Experience
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.1]" style={{ fontFamily: "var(--font-display)" }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-[1.15]" style={{ fontFamily: "var(--font-display)" }}>
                 Discover the{" "}
                 <span className="text-gradient-sunset">magic</span> of the{" "}
                 <span className="text-gradient-ocean">Cape Coast</span>
               </h1>
 
-              <p className="text-lg text-[var(--theme-text-muted)] max-w-xl leading-relaxed">
+              <p className="text-base lg:text-lg text-[var(--theme-text-muted)] max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 From breathtaking sundowner cruises to catching your own crayfish — experience Cape Town&apos;s 
                 coastline like never before. Unforgettable adventures await on the waters of the Mother City.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center lg:justify-start">
                 <Link
                   href="#packages"
-                  className="px-8 py-4 text-center font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:shadow-lg hover:shadow-orange-500/25 transition-all btn-primary"
+                  className="px-6 lg:px-8 py-3 lg:py-4 text-center font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:shadow-lg hover:shadow-orange-500/25 transition-all btn-primary"
                 >
                   View Experiences
                 </Link>
                 <Link
                   href="#about"
-                  className="px-8 py-4 text-center font-medium border border-[var(--theme-border)] rounded-full hover:bg-[var(--theme-surface)] transition-colors flex items-center justify-center gap-2"
+                  className="px-6 lg:px-8 py-3 lg:py-4 text-center font-medium border border-[var(--theme-border)] rounded-full hover:bg-[var(--theme-surface)] transition-colors flex items-center justify-center gap-2"
                 >
                   <span>Watch Video</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -172,18 +176,18 @@ export default function Home() {
               </div>
 
               {/* Trust badges */}
-              <div className="flex items-center gap-8 pt-8 border-t border-[var(--theme-border)]">
+              <div className="flex items-center justify-center lg:justify-start gap-6 lg:gap-8 pt-6 lg:pt-8 border-t border-[var(--theme-border)]">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-500">500+</div>
-                  <div className="text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Happy Guests</div>
+                  <div className="text-xl lg:text-2xl font-bold text-orange-500">500+</div>
+                  <div className="text-[10px] lg:text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Happy Guests</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-cyan-500">4.9★</div>
-                  <div className="text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Rating</div>
+                  <div className="text-xl lg:text-2xl font-bold text-cyan-500">4.9★</div>
+                  <div className="text-[10px] lg:text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Rating</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-pink-500">8+</div>
-                  <div className="text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Experiences</div>
+                  <div className="text-xl lg:text-2xl font-bold text-pink-500">8+</div>
+                  <div className="text-[10px] lg:text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">Experiences</div>
                 </div>
               </div>
             </div>
@@ -215,13 +219,13 @@ export default function Home() {
       </section>
 
       {/* Experience Categories */}
-      <section id="experiences" className="py-24 px-6">
+      <section id="experiences" className="py-16 lg:py-24 px-4 lg:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="text-center mb-10 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 lg:mb-4" style={{ fontFamily: "var(--font-display)" }}>
               Unforgettable <span className="text-gradient-sunset">Experiences</span>
             </h2>
-            <p className="text-[var(--theme-text-muted)] max-w-2xl mx-auto">
+            <p className="text-sm lg:text-base text-[var(--theme-text-muted)] max-w-2xl mx-auto px-4">
               From peaceful sunset cruises to adrenaline-pumping fishing adventures — 
               there&apos;s something for everyone on the waters of Cape Town.
             </p>
@@ -243,21 +247,21 @@ export default function Home() {
       </section>
 
       {/* Special Offers Banner */}
-      <section className="py-12 px-6 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-orange-500/10 border-y border-orange-500/20">
+      <section className="py-8 lg:py-12 px-4 lg:px-6 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-orange-500/10 border-y border-orange-500/20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-2xl">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-8 text-center lg:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-3 lg:gap-4">
+              <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-xl lg:text-2xl">
                 🎉
               </div>
               <div>
-                <h3 className="text-xl font-semibold">Summer Sizzler Special</h3>
-                <p className="text-[var(--theme-text-muted)]">Book any 2 experiences and save 15% — Use code SUMMER15</p>
+                <h3 className="text-lg lg:text-xl font-semibold">Summer Sizzler Special</h3>
+                <p className="text-sm lg:text-base text-[var(--theme-text-muted)]">Book any 2 experiences and save 15% — Use code SUMMER15</p>
               </div>
             </div>
             <Link
               href="#packages"
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-full hover:opacity-90 transition-opacity whitespace-nowrap text-sm lg:text-base"
             >
               View All Offers
             </Link>
@@ -266,19 +270,19 @@ export default function Home() {
       </section>
 
       {/* Packages Grid */}
-      <section id="packages" className="py-24 px-6">
+      <section id="packages" className="py-16 lg:py-24 px-4 lg:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="text-center mb-10 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 lg:mb-4" style={{ fontFamily: "var(--font-display)" }}>
               Charter <span className="text-gradient-ocean">Packages</span>
             </h2>
-            <p className="text-[var(--theme-text-muted)] max-w-2xl mx-auto">
+            <p className="text-sm lg:text-base text-[var(--theme-text-muted)] max-w-2xl mx-auto px-4">
               Curated experiences for every occasion. All packages include professional crew, 
               safety equipment, and the Hey Charlie hospitality guarantee.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             {packages.slice(0, 6).map((pkg) => (
               <div
                 key={pkg.id}
@@ -349,10 +353,10 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-8 lg:mt-12">
             <Link
               href="/packages"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors"
+              className="inline-flex items-center gap-2 px-6 lg:px-8 py-3 lg:py-4 rounded-full border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm lg:text-base"
             >
               View All Packages
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -364,29 +368,29 @@ export default function Home() {
       </section>
 
       {/* Destinations */}
-      <section id="destinations" className="py-24 px-6 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
+      <section id="destinations" className="py-16 lg:py-24 px-4 lg:px-6 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="text-center mb-10 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 lg:mb-4" style={{ fontFamily: "var(--font-display)" }}>
               Explore <span className="text-gradient-sunset">Cape Town</span>
             </h2>
-            <p className="text-[var(--theme-text-muted)] max-w-2xl mx-auto">
+            <p className="text-sm lg:text-base text-[var(--theme-text-muted)] max-w-2xl mx-auto px-4">
               The Cape Peninsula offers some of the world&apos;s most dramatic coastline. 
               Let us show you the beaches, bays, and hidden gems that only locals know.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
             {destinations.map((dest) => (
               <div
                 key={dest.name}
-                className="group p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-cyan-500/30 transition-all cursor-pointer light-card"
+                className="group p-4 lg:p-6 rounded-xl lg:rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-cyan-500/30 transition-all cursor-pointer light-card"
               >
-                <h3 className="text-xl font-semibold mb-1 group-hover:text-cyan-500 transition-colors">
+                <h3 className="text-base lg:text-xl font-semibold mb-1 group-hover:text-cyan-500 transition-colors">
                   {dest.name}
                 </h3>
-                <p className="text-[var(--theme-text-muted)] text-sm mb-3">{dest.description}</p>
-                <span className="inline-flex items-center gap-1 text-xs text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">
+                <p className="text-[var(--theme-text-muted)] text-xs lg:text-sm mb-2 lg:mb-3">{dest.description}</p>
+                <span className="inline-flex items-center gap-1 text-[10px] lg:text-xs text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">
                   📍 {dest.yachts}
                 </span>
               </div>
@@ -396,31 +400,31 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 px-6">
+      <section className="py-16 lg:py-24 px-4 lg:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="text-center mb-10 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 lg:mb-4" style={{ fontFamily: "var(--font-display)" }}>
               Guest <span className="text-gradient-ocean">Stories</span>
             </h2>
-            <p className="text-[var(--theme-text-muted)]">Real experiences from real adventurers</p>
+            <p className="text-sm lg:text-base text-[var(--theme-text-muted)]">Real experiences from real adventurers</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-4 lg:gap-8">
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="p-8 rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] relative light-card"
+                className="p-5 lg:p-8 rounded-2xl lg:rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] relative light-card"
               >
-                <div className="absolute -top-4 left-8 text-6xl text-orange-500/20">&ldquo;</div>
-                <div className="flex gap-1 mb-4">
+                <div className="absolute -top-3 lg:-top-4 left-6 lg:left-8 text-4xl lg:text-6xl text-orange-500/20">&ldquo;</div>
+                <div className="flex gap-1 mb-3 lg:mb-4">
                   {[...Array(t.rating)].map((_, i) => (
-                    <span key={i} className="text-orange-500">★</span>
+                    <span key={i} className="text-orange-500 text-sm lg:text-base">★</span>
                   ))}
                 </div>
-                <p className="text-[var(--theme-text-secondary)] mb-6 relative z-10">{t.quote}</p>
+                <p className="text-sm lg:text-base text-[var(--theme-text-secondary)] mb-4 lg:mb-6 relative z-10">{t.quote}</p>
                 <div>
-                  <p className="font-semibold">{t.author}</p>
-                  <p className="text-[var(--theme-text-muted)] text-sm">{t.location}</p>
+                  <p className="font-semibold text-sm lg:text-base">{t.author}</p>
+                  <p className="text-[var(--theme-text-muted)] text-xs lg:text-sm">{t.location}</p>
                 </div>
               </div>
             ))}
@@ -429,14 +433,14 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 px-6 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent">
+      <section id="about" className="py-16 lg:py-24 px-4 lg:px-6 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-4 lg:mb-6" style={{ fontFamily: "var(--font-display)" }}>
                 Meet <span className="text-gradient-sunset">Charlie</span>
               </h2>
-              <div className="space-y-4 text-[var(--theme-text-secondary)]">
+              <div className="space-y-3 lg:space-y-4 text-sm lg:text-base text-[var(--theme-text-secondary)]">
                 <p>
                   Hey Charlie Charters was born from a lifelong love of the ocean and a passion for 
                   sharing Cape Town&apos;s incredible coastline with visitors from around the world.
@@ -451,35 +455,35 @@ export default function Home() {
                   to witness a Cape Town sunset from the water — we&apos;ll make it unforgettable.
                 </p>
               </div>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-[var(--theme-text-muted)]">
-                  <svg className="w-5 h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+              <div className="mt-6 lg:mt-8 flex flex-wrap justify-center lg:justify-start gap-3 lg:gap-4">
+                <div className="flex items-center gap-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
+                  <svg className="w-4 h-4 lg:w-5 lg:h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   SAMSA Certified
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[var(--theme-text-muted)]">
-                  <svg className="w-5 h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center gap-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
+                  <svg className="w-4 h-4 lg:w-5 lg:h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   Fully Insured
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[var(--theme-text-muted)]">
-                  <svg className="w-5 h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center gap-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
+                  <svg className="w-4 h-4 lg:w-5 lg:h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Coast Guard Registered
+                  Coast Guard
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <div className="aspect-[4/3] rounded-3xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 border border-[var(--theme-border)] flex items-center justify-center">
+            <div className="relative order-1 lg:order-2">
+              <div className="aspect-square max-w-[200px] lg:max-w-none mx-auto lg:aspect-[4/3] rounded-2xl lg:rounded-3xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 border border-[var(--theme-border)] flex items-center justify-center p-4 lg:p-0">
                 <Image
                   src="/logo2.png"
                   alt="Hey Charlie Charters"
                   width={300}
                   height={300}
-                  className="object-contain"
+                  className="object-contain w-full h-full lg:w-[300px] lg:h-[300px]"
                 />
               </div>
             </div>
@@ -488,44 +492,44 @@ export default function Home() {
       </section>
 
       {/* Contact / CTA */}
-      <section id="contact" className="py-24 px-6">
+      <section id="contact" className="py-16 lg:py-24 px-4 lg:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-4 lg:mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Ready for your <span className="text-gradient-sunset">adventure</span>?
           </h2>
-          <p className="text-[var(--theme-text-muted)] text-lg mb-10 max-w-2xl mx-auto">
+          <p className="text-sm lg:text-lg text-[var(--theme-text-muted)] mb-8 lg:mb-10 max-w-2xl mx-auto px-4">
             Get in touch to book your experience or ask us anything. 
             We typically respond within 2 hours during business hours.
           </p>
 
-          <div className="grid sm:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-3 gap-3 lg:gap-6 mb-8 lg:mb-12">
             <a
               href="https://wa.me/27123456789"
-              className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-green-500/10 hover:border-green-500/20 transition-all group light-card"
+              className="p-3 lg:p-6 rounded-xl lg:rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-green-500/10 hover:border-green-500/20 transition-all group light-card"
             >
-              <div className="text-3xl mb-3">💬</div>
-              <p className="font-semibold group-hover:text-green-500 transition-colors">WhatsApp</p>
-              <p className="text-[var(--theme-text-muted)] text-sm">Quick response</p>
+              <div className="text-2xl lg:text-3xl mb-2 lg:mb-3">💬</div>
+              <p className="font-semibold text-xs lg:text-base group-hover:text-green-500 transition-colors">WhatsApp</p>
+              <p className="text-[var(--theme-text-muted)] text-[10px] lg:text-sm hidden sm:block">Quick response</p>
             </a>
             <a
               href="tel:+27123456789"
-              className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-cyan-500/10 hover:border-cyan-500/20 transition-all group light-card"
+              className="p-3 lg:p-6 rounded-xl lg:rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-cyan-500/10 hover:border-cyan-500/20 transition-all group light-card"
             >
-              <div className="text-3xl mb-3">📞</div>
-              <p className="font-semibold group-hover:text-cyan-500 transition-colors">Call Us</p>
-              <p className="text-[var(--theme-text-muted)] text-sm">+27 12 345 6789</p>
+              <div className="text-2xl lg:text-3xl mb-2 lg:mb-3">📞</div>
+              <p className="font-semibold text-xs lg:text-base group-hover:text-cyan-500 transition-colors">Call Us</p>
+              <p className="text-[var(--theme-text-muted)] text-[10px] lg:text-sm hidden sm:block">+27 12 345 6789</p>
             </a>
             <a
               href="mailto:ahoy@heycharlycharters.co.za"
-              className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-orange-500/10 hover:border-orange-500/20 transition-all group light-card"
+              className="p-3 lg:p-6 rounded-xl lg:rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-orange-500/10 hover:border-orange-500/20 transition-all group light-card"
             >
-              <div className="text-3xl mb-3">✉️</div>
-              <p className="font-semibold group-hover:text-orange-500 transition-colors">Email</p>
-              <p className="text-[var(--theme-text-muted)] text-sm">ahoy@heycharlycharters.co.za</p>
+              <div className="text-2xl lg:text-3xl mb-2 lg:mb-3">✉️</div>
+              <p className="font-semibold text-xs lg:text-base group-hover:text-orange-500 transition-colors">Email</p>
+              <p className="text-[var(--theme-text-muted)] text-[10px] lg:text-sm hidden sm:block">Get in touch</p>
             </a>
           </div>
 
-          <div className="inline-flex items-center gap-4 text-[var(--theme-text-muted)] text-sm">
+          <div className="inline-flex items-center gap-3 lg:gap-4 text-[var(--theme-text-muted)] text-xs lg:text-sm">
             <span>Follow us</span>
             <div className="flex gap-3">
               <a href="#" className="w-10 h-10 rounded-full border border-[var(--theme-border)] flex items-center justify-center hover:bg-[var(--theme-surface)] hover:border-[var(--theme-border-hover)] transition-all">
@@ -549,31 +553,31 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--theme-border)] py-12 px-6 bg-[var(--theme-bg-secondary)] transition-colors duration-300">
+      <footer className="border-t border-[var(--theme-border)] py-10 lg:py-12 px-4 lg:px-6 bg-[var(--theme-bg-secondary)] transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-8 lg:mb-12">
+            <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <Image src="/logo2.png" alt="Hey Charlie Charters" width={50} height={50} className="rounded-lg" />
+                <Image src="/logo2.png" alt="Hey Charlie Charters" width={40} height={40} className="rounded-lg" />
                 <div>
                   <span 
-                    className="text-lg font-bold italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
+                    className="text-base lg:text-lg font-bold italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     Hey Charlie
                   </span>
-                  <span className="block text-xs font-semibold italic tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
+                  <span className="block text-[10px] lg:text-xs font-semibold italic tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
                     CHARTERS
                   </span>
                 </div>
               </div>
-              <p className="text-[var(--theme-text-muted)] text-sm">
+              <p className="text-[var(--theme-text-muted)] text-xs lg:text-sm">
                 Cape Town&apos;s premier charter experience. Unforgettable adventures on the waters of the Mother City.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Experiences</h4>
-              <ul className="space-y-2 text-sm text-[var(--theme-text-muted)]">
+              <h4 className="font-semibold mb-3 lg:mb-4 text-sm lg:text-base">Experiences</h4>
+              <ul className="space-y-1.5 lg:space-y-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Sundowner Cruises</a></li>
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Whale Watching</a></li>
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Fishing Charters</a></li>
@@ -581,29 +585,29 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Destinations</h4>
-              <ul className="space-y-2 text-sm text-[var(--theme-text-muted)]">
+              <h4 className="font-semibold mb-3 lg:mb-4 text-sm lg:text-base">Destinations</h4>
+              <ul className="space-y-1.5 lg:space-y-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Clifton Beaches</a></li>
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Camps Bay</a></li>
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Cape Point</a></li>
                 <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Simon&apos;s Town</a></li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2 text-sm text-[var(--theme-text-muted)]">
+            <div className="col-span-2 md:col-span-1">
+              <h4 className="font-semibold mb-3 lg:mb-4 text-sm lg:text-base">Contact</h4>
+              <ul className="space-y-1.5 lg:space-y-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
                 <li>V&A Waterfront, Cape Town</li>
                 <li>+27 12 345 6789</li>
                 <li>ahoy@heycharliecharters.co.za</li>
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-[var(--theme-border)] flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-[var(--theme-text-muted)]">
-            <span>© 2026 Hey Charlie Charters. All rights reserved.</span>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Cancellation Policy</a>
+          <div className="pt-6 lg:pt-8 border-t border-[var(--theme-border)] flex flex-col sm:flex-row justify-between items-center gap-3 lg:gap-4 text-xs lg:text-sm text-[var(--theme-text-muted)]">
+            <span>© 2026 Hey Charlie Charters</span>
+            <div className="flex gap-4 lg:gap-6">
+              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Privacy</a>
+              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Terms</a>
+              <a href="#" className="hover:text-[var(--theme-text)] transition-colors">Cancellations</a>
             </div>
           </div>
         </div>
