@@ -98,7 +98,7 @@ export default function Home() {
               <Link href="#packages" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
                 Packages
               </Link>
-              <Link href="#destinations" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
+              <Link href="/destinations" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
                 Destinations
               </Link>
               <Link href="#about" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
@@ -300,15 +300,15 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Image placeholder */}
-                <div className="h-48 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+                {/* Package Image */}
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src={pkg.image}
+                    alt={pkg.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-30">
-                    {pkg.category === "adventure" && "⛵"}
-                    {pkg.category === "relaxation" && "🌅"}
-                    {pkg.category === "culinary" && "🦞"}
-                    {pkg.category === "wildlife" && "🐋"}
-                  </div>
                 </div>
 
                 <div className="p-6 space-y-4">
@@ -344,9 +344,12 @@ export default function Home() {
                       <span className="text-2xl font-bold">R{pkg.price.toLocaleString()}</span>
                       <span className="text-[var(--theme-text-muted)] text-sm ml-1">{pkg.priceUnit}</span>
                     </div>
-                    <button className="px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity">
+                    <Link 
+                      href={`/booking/${pkg.slug}`}
+                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                    >
                       Book Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -612,10 +615,10 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-3 lg:mb-4 text-sm lg:text-base">Experiences</h4>
               <ul className="space-y-1.5 lg:space-y-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Sundowner Cruises</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Whale Watching</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Fishing Charters</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Private Events</a></li>
+                <li><Link href="/booking/sundowner-cruise" className="hover:text-[var(--theme-text)] transition-colors">Sundowner Cruises</Link></li>
+                <li><Link href="/booking/whale-watching" className="hover:text-[var(--theme-text)] transition-colors">Whale Watching</Link></li>
+                <li><Link href="/booking/deep-sea-fishing" className="hover:text-[var(--theme-text)] transition-colors">Fishing Charters</Link></li>
+                <li><Link href="/booking/private-charter" className="hover:text-[var(--theme-text)] transition-colors">Private Events</Link></li>
               </ul>
             </div>
             <div>

@@ -1,5 +1,6 @@
 export interface Package {
   id: string;
+  slug: string;
   name: string;
   tagline: string;
   description: string;
@@ -16,6 +17,7 @@ export interface Package {
 export const packages: Package[] = [
   {
     id: "sundowner-cruise",
+    slug: "sundowner-cruise",
     name: "Sundowner Cruise",
     tagline: "Golden hour on the Atlantic",
     description:
@@ -29,12 +31,13 @@ export const packages: Package[] = [
       "Music & Bluetooth speakers",
       "Photo opportunities at iconic landmarks",
     ],
-    image: "/images/sundowner.jpg",
+    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop",
     category: "relaxation",
     popular: true,
   },
   {
     id: "crayfish-experience",
+    slug: "crayfish-experience",
     name: "Catch & Cook Crayfish",
     tagline: "Ocean to plate in hours",
     description:
@@ -49,12 +52,13 @@ export const packages: Package[] = [
       "All sides & drinks included",
       "Crayfish permit included",
     ],
-    image: "/images/crayfish.jpg",
+    image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&h=600&fit=crop",
     category: "culinary",
     bestValue: true,
   },
   {
     id: "whale-watching",
+    slug: "whale-watching",
     name: "Whale Watching Safari",
     tagline: "Giants of the deep",
     description:
@@ -68,12 +72,13 @@ export const packages: Package[] = [
       "Hot beverages & snacks",
       "Waterproof jackets provided",
     ],
-    image: "/images/whale.jpg",
+    image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=800&h=600&fit=crop",
     category: "wildlife",
     popular: true,
   },
   {
     id: "beach-hopper",
+    slug: "beach-hopper",
     name: "Beach Hopper",
     tagline: "Discover hidden coves",
     description:
@@ -87,11 +92,12 @@ export const packages: Package[] = [
       "Picnic lunch & refreshments",
       "Beach games & paddleboards",
     ],
-    image: "/images/beach.jpg",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop",
     category: "adventure",
   },
   {
     id: "seafood-feast",
+    slug: "seafood-feast",
     name: "Seafood Beach Feast",
     tagline: "Gourmet dining on the sand",
     description:
@@ -106,11 +112,12 @@ export const packages: Package[] = [
       "Bonfire & live music",
       "Sunset cruise included",
     ],
-    image: "/images/feast.jpg",
+    image: "https://images.unsplash.com/photo-1534190239940-9ba8944ea261?w=800&h=600&fit=crop",
     category: "culinary",
   },
   {
     id: "deep-sea-fishing",
+    slug: "deep-sea-fishing",
     name: "Deep Sea Fishing",
     tagline: "Battle the big ones",
     description:
@@ -124,11 +131,12 @@ export const packages: Package[] = [
       "Keep your catch",
       "Light lunch & drinks",
     ],
-    image: "/images/fishing.jpg",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
     category: "adventure",
   },
   {
     id: "coastline-explorer",
+    slug: "coastline-explorer",
     name: "Coastline Explorer",
     tagline: "The full Cape experience",
     description:
@@ -142,12 +150,13 @@ export const packages: Package[] = [
       "Gourmet lunch onboard",
       "Commentary & history",
     ],
-    image: "/images/coastline.jpg",
+    image: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=800&h=600&fit=crop",
     category: "adventure",
     popular: true,
   },
   {
     id: "private-charter",
+    slug: "private-charter",
     name: "Private Charter",
     tagline: "Your ocean, your rules",
     description:
@@ -162,7 +171,7 @@ export const packages: Package[] = [
       "Dedicated crew & service",
       "Special occasion packages",
     ],
-    image: "/images/private.jpg",
+    image: "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800&h=600&fit=crop",
     category: "relaxation",
   },
 ];

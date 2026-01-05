@@ -60,7 +60,7 @@ Each beach has its own personality. 1st Beach is popular with the LGBTQ+ communi
 
 The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current, but the turquoise clarity makes it irresistible. Arrive by boat and you'll skip the steep staircase descent — plus you'll have the best view of the iconic Atlantic Seaboard mansions dotting the cliffs above.`,
     heroImage: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=1920&h=1080&fit=crop",
-    heroVideo: "https://www.youtube.com/embed/3rXR1XZ8K8M",
+    heroVideo: "https://www.youtube.com/embed/UfEiKK-iX70",
     coordinates: { lat: -33.9340, lng: 18.3776 },
     gallery: [
       { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "Clifton 4th Beach aerial view", caption: "4th Beach from above — the most iconic view" },
@@ -71,8 +71,8 @@ The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current,
       { src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop", alt: "Clifton panorama", caption: "The full sweep of Clifton's beaches" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/3rXR1XZ8K8M", title: "Clifton Beach Drone Footage", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", title: "Sundowner Cruise at Clifton", thumbnail: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Clifton Beach Drone Footage", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Sundowner Cruise at Clifton", thumbnail: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Wind-Protected", description: "Granite boulders shelter the beaches from the Cape Doctor southeast wind", icon: "🛡️" },
@@ -109,7 +109,7 @@ The beachfront promenade is lined with trendy restaurants, cafés, and cocktail 
 
 From the water, you'll appreciate the full grandeur of the mountains rising 800 meters straight from the sea, with Lion's Head standing sentinel to the north. It's a view that simply can't be captured from land.`,
     heroImage: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=1920&h=1080&fit=crop",
-    heroVideo: "https://www.youtube.com/embed/xyz123",
+    heroVideo: "https://www.youtube.com/embed/UfEiKK-iX70",
     coordinates: { lat: -33.9505, lng: 18.3782 },
     gallery: [
       { src: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=800&h=600&fit=crop", alt: "Camps Bay beach view", caption: "The iconic Camps Bay beachfront" },
@@ -120,8 +120,8 @@ From the water, you'll appreciate the full grandeur of the mountains rising 800 
       { src: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=800&h=600&fit=crop", alt: "Mountain backdrop", caption: "Mountains meet sea" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/camps-bay-drone", title: "Camps Bay from the Air", thumbnail: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/twelve-apostles", title: "The Twelve Apostles Experience", thumbnail: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Camps Bay from the Air", thumbnail: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "The Twelve Apostles Experience", thumbnail: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Mountain Majesty", description: "The Twelve Apostles create a jaw-dropping backdrop", icon: "⛰️" },
@@ -168,8 +168,8 @@ The harbour is also the traditional starting point for the famous crayfish divin
       { src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop", alt: "Mountain backdrop", caption: "Surrounded by dramatic peaks" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/seal-island", title: "Seal Island Adventure", thumbnail: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/crayfish-dive", title: "Crayfish Diving Experience", thumbnail: "https://images.unsplash.com/photo-1534190239940-9ba8944ea261?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Seal Island Adventure", thumbnail: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Crayfish Diving Experience", thumbnail: "https://images.unsplash.com/photo-1534190239940-9ba8944ea261?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Seal Colony", description: "Visit Duiker Island's 5,000+ Cape fur seals", icon: "🦭" },
@@ -207,7 +207,7 @@ But the real stars of Simon's Town are the African penguins. The colony at nearb
 
 The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas Current. This makes for more comfortable swimming and attracts different marine life — including the great white sharks that patrol the bay (don't worry, they're only interested in seals).`,
     heroImage: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=1920&h=1080&fit=crop",
-    heroVideo: "https://www.youtube.com/embed/simons-town",
+    heroVideo: "https://www.youtube.com/embed/UfEiKK-iX70",
     coordinates: { lat: -34.1908, lng: 18.4325 },
     gallery: [
       { src: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=800&h=600&fit=crop", alt: "African penguins", caption: "The famous Boulders Beach penguins" },
@@ -218,8 +218,8 @@ The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas 
       { src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop", alt: "Coastline", caption: "The dramatic False Bay coastline" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/penguin-colony", title: "Boulders Beach Penguin Colony", thumbnail: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/simons-history", title: "Simon's Town Maritime Heritage", thumbnail: "https://images.unsplash.com/photo-1589995186011-a7b485edc4bf?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Boulders Beach Penguin Colony", thumbnail: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Simon's Town Maritime Heritage", thumbnail: "https://images.unsplash.com/photo-1589995186011-a7b485edc4bf?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Penguin Paradise", description: "One of the world's most accessible penguin colonies", icon: "🐧" },
@@ -256,7 +256,7 @@ The waters here are wild and beautiful. The warm Agulhas Current from the Indian
 
 Approaching Cape Point from the sea gives you a perspective that most visitors never see. The cliffs, the lighthouse, the waves crashing against rocks that have claimed countless ships — it's a humbling and exhilarating experience.`,
     heroImage: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1920&h=1080&fit=crop",
-    heroVideo: "https://www.youtube.com/embed/cape-point-drone",
+    heroVideo: "https://www.youtube.com/embed/UfEiKK-iX70",
     coordinates: { lat: -34.3568, lng: 18.4975 },
     gallery: [
       { src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop", alt: "Cape Point lighthouse", caption: "The historic Cape Point lighthouse" },
@@ -267,8 +267,8 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
       { src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop", alt: "Cape Point from sea", caption: "The view most people never see" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/cape-point-epic", title: "Cape Point — Edge of the World", thumbnail: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/two-oceans", title: "Where Two Oceans Meet", thumbnail: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Cape Point — Edge of the World", thumbnail: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Where Two Oceans Meet", thumbnail: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Two Oceans", description: "Witness the Atlantic and Indian Oceans meeting", icon: "🌊" },
@@ -305,7 +305,7 @@ The massive granite boulders that give the beach its name create sheltered pools
 
 Arriving by boat allows you to observe the colony from the water before the crowds arrive. You'll see penguins porpoising through the waves, surfing the swells, and diving for fish. It's a completely different perspective from the land-based boardwalks.`,
     heroImage: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=1920&h=1080&fit=crop",
-    heroVideo: "https://www.youtube.com/embed/boulders-beach",
+    heroVideo: "https://www.youtube.com/embed/UfEiKK-iX70",
     coordinates: { lat: -34.1976, lng: 18.4520 },
     gallery: [
       { src: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=800&h=600&fit=crop", alt: "Penguins on beach", caption: "African penguins in their natural habitat" },
@@ -316,8 +316,8 @@ Arriving by boat allows you to observe the colony from the water before the crow
       { src: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop", alt: "Beach panorama", caption: "The full sweep of Boulders Beach" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/penguin-swim", title: "Swimming with Penguins", thumbnail: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/boulders-from-sea", title: "Boulders Beach from the Water", thumbnail: "https://images.unsplash.com/photo-1551085254-e96b210db58a?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Swimming with Penguins", thumbnail: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/UfEiKK-iX70", title: "Boulders Beach from the Water", thumbnail: "https://images.unsplash.com/photo-1551085254-e96b210db58a?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Swim with Penguins", description: "A once-in-a-lifetime wildlife experience", icon: "🐧" },
