@@ -1,9 +1,9 @@
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+import { packages } from "@/lib/packages";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
-import { PackagesSection } from "@/components/packages-section";
 
 const experiences = [
   { name: "Sundowner Cruises", icon: "🌅", count: "Daily departures" },

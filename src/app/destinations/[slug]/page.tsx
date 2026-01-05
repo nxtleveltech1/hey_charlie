@@ -5,6 +5,9 @@ import { Metadata } from "next";
 import { locations, getLocationBySlug } from "@/lib/locations";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
+import { LocationGallery } from "@/components/location-gallery";
+import { LocationVideos } from "@/components/location-videos";
+import { HeroVideoButton } from "@/components/hero-video-button";
 
 export async function generateStaticParams() {
   return locations.map((location) => ({
@@ -167,14 +170,7 @@ export default async function LocationPage({
 
         {/* Play Video Button */}
         {location.heroVideo && (
-          <button 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center group hover:scale-110 transition-transform"
-            aria-label="Play video"
-          >
-            <svg className="w-8 h-8 lg:w-10 lg:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </button>
+          <HeroVideoButton videoUrl={location.heroVideo} title={`Discover ${location.name}`} />
         )}
       </section>
 
@@ -272,31 +268,7 @@ export default async function LocationPage({
           >
             <span className="text-gradient-sunset">Gallery</span>
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
-            {location.gallery.map((image, i) => (
-              <div
-                key={i}
-                className={`relative group overflow-hidden rounded-xl lg:rounded-2xl ${
-                  i === 0 ? "col-span-2 row-span-2" : ""
-                }`}
-              >
-                <div className={`relative ${i === 0 ? "aspect-[4/3]" : "aspect-square"}`}>
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {image.caption && (
-                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="text-white text-sm lg:text-base font-medium">{image.caption}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <LocationGallery images={location.gallery} />
         </section>
 
         {/* Video Section */}
@@ -308,33 +280,7 @@ export default async function LocationPage({
             >
               <span className="text-gradient-ocean">Videos</span>
             </h2>
-            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-              {location.videos.map((video, i) => (
-                <div key={i} className="group">
-                  <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-[var(--theme-border)]">
-                    {/* Video Thumbnail with Play Button */}
-                    <div className="relative w-full h-full">
-                      {video.thumbnail && (
-                        <Image
-                          src={video.thumbnail}
-                          alt={video.title}
-                          fill
-                          className="object-cover"
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center group-hover:scale-110 transition-transform cursor-pointer">
-                          <svg className="w-6 h-6 lg:w-8 lg:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <h3 className="mt-4 font-semibold text-center">{video.title}</h3>
-                </div>
-              ))}
-            </div>
+            <LocationVideos videos={location.videos} />
           </section>
         )}
 
