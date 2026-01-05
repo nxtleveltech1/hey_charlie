@@ -16,11 +16,11 @@ const experiences = [
 
 const destinations = [
   { name: "Clifton Beaches", description: "Cape Town's riviera", yachts: "4 beaches", slug: "clifton-beaches", image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=300&fit=crop" },
-  { name: "Camps Bay", description: "Iconic coastline views", yachts: "Lion's Head backdrop", slug: "camps-bay", image: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=300&fit=crop" },
-  { name: "Hout Bay", description: "Harbor town charm", yachts: "Seal Island nearby", slug: "hout-bay", image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=300&fit=crop" },
-  { name: "Simon's Town", description: "Naval heritage & penguins", yachts: "False Bay", slug: "simons-town", image: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=300&fit=crop" },
-  { name: "Cape Point", description: "Where oceans meet", yachts: "Dramatic cliffs", slug: "cape-point", image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=300&fit=crop" },
-  { name: "Boulders Beach", description: "Penguin colony", yachts: "Marine reserve", slug: "boulders-beach", image: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=300&fit=crop" },
+  { name: "Camps Bay", description: "Iconic coastline views", yachts: "Twelve Apostles", slug: "camps-bay", image: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=300&fit=crop" },
+  { name: "Hout Bay", description: "Harbor town charm", yachts: "Seal Island nearby", slug: "hout-bay", image: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=400&h=300&fit=crop" },
+  { name: "Simon's Town", description: "Naval heritage & penguins", yachts: "False Bay", slug: "simons-town", image: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=300&fit=crop" },
+  { name: "Cape Point", description: "Where oceans meet", yachts: "Dramatic cliffs", slug: "cape-point", image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=300&fit=crop" },
+  { name: "Boulders Beach", description: "Penguin colony", yachts: "Marine reserve", slug: "boulders-beach", image: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=300&fit=crop" },
 ];
 
 const testimonials = [
