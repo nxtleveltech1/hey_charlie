@@ -22,6 +22,7 @@
   --theme-text-secondary: rgba(255, 255, 255, 0.7);
   --theme-text-muted: rgba(255, 255, 255, 0.4);
   --theme-nav-bg: rgba(12, 18, 34, 0.8);
+  --theme-nav-bg-transparent: rgba(12, 18, 34, 0.25);
   --theme-card-bg: rgba(255, 255, 255, 0.02);
   --theme-card-hover: rgba(255, 255, 255, 0.04);
   --theme-gradient-start: #0c1222;
@@ -43,6 +44,7 @@
   --theme-text-secondary: rgba(15, 23, 42, 0.8);
   --theme-text-muted: rgba(15, 23, 42, 0.5);
   --theme-nav-bg: rgba(248, 250, 252, 0.9);
+  --theme-nav-bg-transparent: rgba(248, 250, 252, 0.4);
   --theme-card-bg: #ffffff;
   --theme-card-hover: #ffffff;
   --theme-gradient-start: #f8fafc;

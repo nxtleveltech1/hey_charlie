@@ -162,6 +162,26 @@ const packagesToSeed = [
     isActive: true,
     isFeatured: false,
   },
+  {
+    slug: "seal-island",
+    name: "Seal Island Tour",
+    tagline: "Get up close with thousands of seals",
+    description: "Visit Duiker Island (Seal Island) off Hout Bay, home to over 5,000 Cape fur seals. This short boat trip offers incredible wildlife viewing as seals swim alongside the boat and sunbathe on the rocks.",
+    duration: "1.5 hours",
+    pricePerPerson: "450",
+    minGuests: 2,
+    maxGuests: 12,
+    category: "wildlife",
+    highlights: [
+      "5,000+ Cape fur seals",
+      "Wildlife photography opportunities",
+      "Expert commentary",
+      "Close-up seal encounters",
+      "Perfect for families",
+    ],
+    isActive: true,
+    isFeatured: false,
+  },
 ];
 
 async function seed() {

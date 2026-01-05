@@ -32,18 +32,20 @@ export default function DestinationsPage() {
       <MobileNav />
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl bg-[var(--theme-nav-bg)] z-50 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl z-50 transition-colors duration-300" style={{ backgroundColor: 'var(--theme-nav-bg-transparent)' }}>
+        <div className="max-w-7xl mx-auto px-6 py-2 relative">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-4">
-              <Image
-                src="/logo2.png"
-                alt="Hey Charlie Charters"
-                width={50}
-                height={50}
-                className="rounded-xl"
-              />
-              <div>
+            <Link href="/" className="flex items-center gap-4 relative z-10">
+              <div className="relative -mt-12 -mb-12">
+                <Image
+                  src="/logo2.png"
+                  alt="Hey Charlie Charters"
+                  width={200}
+                  height={200}
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="pt-12 pb-12">
                 <span 
                   className="text-xl font-bold tracking-tight italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
                   style={{ fontFamily: "var(--font-display)" }}
