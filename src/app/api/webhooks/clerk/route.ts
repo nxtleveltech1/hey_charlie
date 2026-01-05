@@ -40,23 +40,30 @@ export async function POST(req: Request) {
 
   const eventType = evt.type;
 
+  // Admin emails list
+  const ADMIN_EMAILS = ["gambew@gmail.com"];
+
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name, image_url, phone_numbers } = evt.data;
     
     const primaryEmail = email_addresses.find(e => e.id === evt.data.primary_email_address_id);
     const primaryPhone = phone_numbers?.find(p => p.id === evt.data.primary_phone_number_id);
+    const email = primaryEmail?.email_address || "";
+    
+    // Auto-assign admin role for specific emails
+    const role = ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "user";
 
     await db.insert(users).values({
       clerkId: id,
-      email: primaryEmail?.email_address || "",
+      email,
       firstName: first_name || null,
       lastName: last_name || null,
       imageUrl: image_url || null,
       phone: primaryPhone?.phone_number || null,
-      role: "user",
+      role,
     });
 
-    console.log(`User created: ${id}`);
+    console.log(`User created: ${id} (role: ${role})`);
   }
 
   if (eventType === "user.updated") {
