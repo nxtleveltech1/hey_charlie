@@ -1,9 +1,9 @@
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
-import { packages } from "@/lib/packages";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
+import { PackagesSection } from "@/components/packages-section";
 
 const experiences = [
   { name: "Sundowner Cruises", icon: "🌅", count: "Daily departures" },
@@ -15,12 +15,12 @@ const experiences = [
 ];
 
 const destinations = [
-  { name: "Clifton Beaches", description: "Cape Town's riviera", yachts: "4 beaches" },
-  { name: "Camps Bay", description: "Iconic coastline views", yachts: "Lion's Head backdrop" },
-  { name: "Hout Bay", description: "Harbor town charm", yachts: "Seal Island nearby" },
-  { name: "Simon's Town", description: "Naval heritage & penguins", yachts: "False Bay" },
-  { name: "Cape Point", description: "Where oceans meet", yachts: "Dramatic cliffs" },
-  { name: "Boulders Beach", description: "Penguin colony", yachts: "Marine reserve" },
+  { name: "Clifton Beaches", description: "Cape Town's riviera", yachts: "4 beaches", slug: "clifton-beaches", image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=300&fit=crop" },
+  { name: "Camps Bay", description: "Iconic coastline views", yachts: "Lion's Head backdrop", slug: "camps-bay", image: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=300&fit=crop" },
+  { name: "Hout Bay", description: "Harbor town charm", yachts: "Seal Island nearby", slug: "hout-bay", image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=300&fit=crop" },
+  { name: "Simon's Town", description: "Naval heritage & penguins", yachts: "False Bay", slug: "simons-town", image: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=300&fit=crop" },
+  { name: "Cape Point", description: "Where oceans meet", yachts: "Dramatic cliffs", slug: "cape-point", image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&h=300&fit=crop" },
+  { name: "Boulders Beach", description: "Penguin colony", yachts: "Marine reserve", slug: "boulders-beach", image: "https://images.unsplash.com/photo-1534759846116-5799c33ce22a?w=400&h=300&fit=crop" },
 ];
 
 const testimonials = [
@@ -382,19 +382,53 @@ export default function Home() {
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
             {destinations.map((dest) => (
-              <div
+              <Link
                 key={dest.name}
-                className="group p-4 lg:p-6 rounded-xl lg:rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-cyan-500/30 transition-all cursor-pointer light-card"
+                href={`/destinations/${dest.slug}`}
+                className="group relative rounded-xl lg:rounded-2xl overflow-hidden border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-cyan-500/30 transition-all light-card card-hover"
               >
-                <h3 className="text-base lg:text-xl font-semibold mb-1 group-hover:text-cyan-500 transition-colors">
-                  {dest.name}
-                </h3>
-                <p className="text-[var(--theme-text-muted)] text-xs lg:text-sm mb-2 lg:mb-3">{dest.description}</p>
-                <span className="inline-flex items-center gap-1 text-[10px] lg:text-xs text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">
-                  📍 {dest.yachts}
-                </span>
-              </div>
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={dest.image}
+                    alt={dest.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] via-transparent to-transparent" />
+                </div>
+                {/* Content */}
+                <div className="p-4 lg:p-6 -mt-8 relative">
+                  <h3 className="text-base lg:text-xl font-semibold mb-1 group-hover:text-cyan-500 transition-colors">
+                    {dest.name}
+                  </h3>
+                  <p className="text-[var(--theme-text-muted)] text-xs lg:text-sm mb-2 lg:mb-3">{dest.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1 text-[10px] lg:text-xs text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">
+                      📍 {dest.yachts}
+                    </span>
+                    <span className="text-[10px] lg:text-xs text-[var(--theme-text-muted)] group-hover:text-cyan-500 transition-colors flex items-center gap-1">
+                      Explore
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </Link>
             ))}
+          </div>
+
+          <div className="text-center mt-8 lg:mt-12">
+            <Link
+              href="/destinations"
+              className="inline-flex items-center gap-2 px-6 lg:px-8 py-3 lg:py-4 rounded-full border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm lg:text-base"
+            >
+              View All Destinations
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -587,10 +621,10 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-3 lg:mb-4 text-sm lg:text-base">Destinations</h4>
               <ul className="space-y-1.5 lg:space-y-2 text-xs lg:text-sm text-[var(--theme-text-muted)]">
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Clifton Beaches</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Camps Bay</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Cape Point</a></li>
-                <li><a href="#" className="hover:text-[var(--theme-text)] transition-colors">Simon&apos;s Town</a></li>
+                <li><Link href="/destinations/clifton-beaches" className="hover:text-[var(--theme-text)] transition-colors">Clifton Beaches</Link></li>
+                <li><Link href="/destinations/camps-bay" className="hover:text-[var(--theme-text)] transition-colors">Camps Bay</Link></li>
+                <li><Link href="/destinations/cape-point" className="hover:text-[var(--theme-text)] transition-colors">Cape Point</Link></li>
+                <li><Link href="/destinations/simons-town" className="hover:text-[var(--theme-text)] transition-colors">Simon&apos;s Town</Link></li>
               </ul>
             </div>
             <div className="col-span-2 md:col-span-1">

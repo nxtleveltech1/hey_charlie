@@ -7,11 +7,11 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
-  { href: "#experiences", label: "Experiences" },
-  { href: "#packages", label: "Packages" },
-  { href: "#destinations", label: "Destinations" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#experiences", label: "Experiences" },
+  { href: "/#packages", label: "Packages" },
+  { href: "/destinations", label: "Destinations" },
+  { href: "/#about", label: "About" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function MobileNav() {

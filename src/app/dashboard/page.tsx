@@ -1,183 +1,195 @@
-import { UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { db } from "@/db";
+import { users, bookings } from "@/db/schema";
+import { eq, desc } from "drizzle-orm";
+import { formatPrice, formatDate, TIME_SLOTS, BOOKING_STATUS_COLORS, BOOKING_STATUS_LABELS } from "@/lib/booking-utils";
+import { CancelBookingButton } from "./cancel-booking-button";
 
 export default async function DashboardPage() {
-  const user = await currentUser();
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const user = await db.query.users.findFirst({
+    where: eq(users.clerkId, userId),
+  });
 
   if (!user) {
     redirect("/sign-in");
   }
 
+  const userBookings = await db.query.bookings.findMany({
+    where: eq(bookings.userId, user.id),
+    with: { package: true },
+    orderBy: [desc(bookings.createdAt)],
+  });
+
+  const upcomingBookings = userBookings.filter(
+    (b) => b.status !== "cancelled" && b.status !== "completed" && new Date(b.date) >= new Date()
+  );
+  const pastBookings = userBookings.filter(
+    (b) => b.status === "completed" || new Date(b.date) < new Date()
+  );
+
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-colors duration-300">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 border-r border-[var(--theme-border)] bg-[var(--theme-nav-bg)] backdrop-blur-xl p-6">
-        <Link href="/" className="flex items-center gap-3 mb-10">
-          <Image
-            src="/logo2.png"
-            alt="Hey Charlie Charters"
-            width={50}
-            height={50}
-            className="rounded-lg"
-          />
-          <div>
-            <span 
-              className="text-lg font-bold italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Hey Charlie
-            </span>
-            <span className="block text-xs font-semibold italic tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
-              CHARTERS
-            </span>
-          </div>
-        </Link>
-
-        <nav className="space-y-1">
-          {[
-            { label: "Dashboard", href: "/dashboard", active: true, icon: "📊" },
-            { label: "My Bookings", href: "/dashboard/bookings", active: false, icon: "📅" },
-            { label: "Experiences", href: "/#packages", active: false, icon: "⛵" },
-            { label: "Favorites", href: "/dashboard/favorites", active: false, icon: "❤️" },
-            { label: "Settings", href: "/dashboard/settings", active: false, icon: "⚙️" },
-          ].map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors ${
-                item.active
-                  ? "bg-gradient-to-r from-orange-500/20 to-pink-500/20 text-[var(--theme-text)] border border-orange-500/20"
-                  : "text-[var(--theme-text-muted)] hover:text-[var(--theme-text)] hover:bg-[var(--theme-surface)]"
-              }`}
-            >
-              <span>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="absolute bottom-6 left-6 right-6">
-          <Link
-            href="/#packages"
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            Book Experience
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24 px-4">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-8">
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/logo2.png"
+              alt="Hey Charlie Charters"
+              width={50}
+              height={50}
+              className="rounded-xl"
+            />
+            <div>
+              <span className="text-xl font-bold italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+                Hey Charlie
+              </span>
+              <span className="block text-xs font-semibold italic tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
+                CHARTERS
+              </span>
+            </div>
           </Link>
         </div>
-      </aside>
 
-      {/* Main content */}
-      <main className="ml-64 p-8">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-semibold mb-1" style={{ fontFamily: "var(--font-display)" }}>
-              Welcome back, {user.firstName || "Adventurer"}! 👋
+            <h1 className="text-3xl font-bold" style={{ fontFamily: "var(--font-display)" }}>
+              My Bookings
             </h1>
-            <p className="text-[var(--theme-text-muted)] text-sm">
-              Ready for your next Cape Town adventure?
+            <p className="text-[var(--theme-text-muted)]">
+              Welcome back, {user.firstName || "Guest"}!
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "w-10 h-10 ring-2 ring-orange-500/30",
-                },
-              }}
-            />
-          </div>
-        </header>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-6 mb-10">
-          {[
-            { label: "Book a Cruise", icon: "🌅", href: "/#packages", color: "from-orange-500 to-pink-500" },
-            { label: "View Offers", icon: "🎉", href: "/#packages", color: "from-cyan-500 to-blue-500" },
-            { label: "Contact Us", icon: "💬", href: "/#contact", color: "from-emerald-500 to-teal-500" },
-          ].map((action) => (
+          <div className="flex gap-3">
             <Link
-              key={action.label}
-              href={action.href}
-              className={`p-6 rounded-2xl bg-gradient-to-br ${action.color} text-white hover:opacity-90 transition-opacity`}
+              href="/#packages"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
             >
-              <div className="text-3xl mb-3">{action.icon}</div>
-              <p className="font-medium">{action.label}</p>
+              Book New Experience
             </Link>
-          ))}
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-6 mb-10">
-          {[
-            { label: "Upcoming Trips", value: "0", icon: "📅" },
-            { label: "Past Adventures", value: "0", icon: "🏆" },
-            { label: "Loyalty Points", value: "0", icon: "⭐" },
-            { label: "Saved Favorites", value: "0", icon: "❤️" },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-[var(--theme-text-muted)] text-sm">{stat.label}</p>
-                <span className="text-xl">{stat.icon}</span>
-              </div>
-              <span className="text-3xl font-semibold">{stat.value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty state */}
-        <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] p-12 text-center">
-          <div className="text-6xl mb-4">⛵</div>
-          <h2 className="text-xl font-semibold mb-2">No bookings yet</h2>
-          <p className="text-[var(--theme-text-muted)] mb-6 max-w-md mx-auto">
-            Your adventure awaits! Browse our experiences and book your first unforgettable trip on the Cape Town waters.
-          </p>
-          <Link
-            href="/#packages"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
-          >
-            Explore Experiences
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
-
-        {/* Recommended */}
-        <div className="mt-10">
-          <h2 className="text-xl font-semibold mb-6" style={{ fontFamily: "var(--font-display)" }}>
-            Recommended for you
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { name: "Sundowner Cruise", price: "R850", icon: "🌅", tag: "Popular" },
-              { name: "Whale Watching", price: "R1,200", icon: "🐋", tag: "Season" },
-              { name: "Crayfish Experience", price: "R2,800", icon: "🦞", tag: "Best Value" },
-            ].map((exp) => (
-              <div
-                key={exp.name}
-                className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-orange-500/30 transition-all cursor-pointer group"
+            {user.role === "admin" && (
+              <Link
+                href="/admin"
+                className="px-6 py-3 rounded-xl border border-orange-500/20 text-orange-500 hover:bg-orange-500/10 transition-colors"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-4xl">{exp.icon}</span>
-                  <span className="px-2 py-1 rounded-full bg-orange-500/10 text-orange-500 text-xs font-medium">
-                    {exp.tag}
-                  </span>
-                </div>
-                <h3 className="font-semibold mb-1 group-hover:text-orange-500 transition-colors">{exp.name}</h3>
-                <p className="text-[var(--theme-text-muted)] text-sm">From {exp.price}/person</p>
-              </div>
-            ))}
+                Admin Dashboard
+              </Link>
+            )}
           </div>
         </div>
-      </main>
+
+        {/* Upcoming Bookings */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold mb-4">Upcoming Experiences</h2>
+          {upcomingBookings.length === 0 ? (
+            <div className="p-8 text-center rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
+              <div className="text-4xl mb-4">⛵</div>
+              <h3 className="text-lg font-semibold mb-2">No upcoming bookings</h3>
+              <p className="text-[var(--theme-text-muted)] mb-4">
+                Ready for your next adventure? Browse our experiences!
+              </p>
+              <Link
+                href="/#packages"
+                className="inline-flex px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
+              >
+                Explore Packages
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {upcomingBookings.map((booking) => {
+                const timeSlot = TIME_SLOTS.find((s) => s.id === booking.timeSlot);
+                return (
+                  <div
+                    key={booking.id}
+                    className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]"
+                  >
+                    <div className="flex flex-col lg:flex-row justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium border ${BOOKING_STATUS_COLORS[booking.status]}`}>
+                            {BOOKING_STATUS_LABELS[booking.status]}
+                          </span>
+                          <span className="text-sm font-mono text-[var(--theme-text-muted)]">
+                            {booking.bookingNumber}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-semibold mb-1">{booking.package.name}</h3>
+                        <p className="text-[var(--theme-text-muted)] text-sm mb-3">
+                          {booking.package.tagline}
+                        </p>
+                        <div className="flex flex-wrap gap-4 text-sm">
+                          <span className="flex items-center gap-1">
+                            📅 {formatDate(booking.date)}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            ⏰ {timeSlot?.name} ({timeSlot?.startTime})
+                          </span>
+                          <span className="flex items-center gap-1">
+                            👥 {booking.guestCount} guests
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end justify-between">
+                        <span className="text-2xl font-bold text-orange-500">
+                          {formatPrice(booking.totalPrice)}
+                        </span>
+                        <div className="flex gap-2 mt-4">
+                          <Link
+                            href={`/booking/confirmation/${booking.id}`}
+                            className="px-4 py-2 rounded-lg border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm"
+                          >
+                            View Details
+                          </Link>
+                          {booking.status === "pending" && (
+                            <CancelBookingButton bookingId={booking.id} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* Past Bookings */}
+        {pastBookings.length > 0 && (
+          <section>
+            <h2 className="text-xl font-semibold mb-4">Past Experiences</h2>
+            <div className="space-y-4">
+              {pastBookings.map((booking) => (
+                <div
+                  key={booking.id}
+                  className="p-4 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] opacity-75"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="font-semibold">{booking.package.name}</h3>
+                      <p className="text-sm text-[var(--theme-text-muted)]">
+                        {formatDate(booking.date)} • {booking.guestCount} guests
+                      </p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${BOOKING_STATUS_COLORS[booking.status]}`}>
+                      {BOOKING_STATUS_LABELS[booking.status]}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }
