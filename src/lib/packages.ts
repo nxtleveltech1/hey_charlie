@@ -52,7 +52,7 @@ export const packages: Package[] = [
       "All sides & drinks included",
       "Crayfish permit included",
     ],
-    image: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?w=800&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&h=600&fit=crop",
     category: "culinary",
     bestValue: true,
   },
@@ -112,7 +112,7 @@ export const packages: Package[] = [
       "Bonfire & live music",
       "Sunset cruise included",
     ],
-    image: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?w=800&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1534190239940-9ba8944ea261?w=800&h=600&fit=crop",
     category: "culinary",
   },
   {
