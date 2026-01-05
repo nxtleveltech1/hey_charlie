@@ -71,8 +71,8 @@ The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current,
       { src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop", alt: "Cape Town beach panorama", caption: "The full sweep of Clifton's beaches" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Cape Town Beaches 4K Tour", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Travel Experience", thumbnail: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Clifton Beaches & Atlantic Seaboard 4K", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Town Beaches Tour", thumbnail: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Wind-Protected", description: "Granite boulders shelter the beaches from the Cape Doctor southeast wind", icon: "🛡️" },
@@ -120,8 +120,8 @@ From the water, you'll appreciate the full grandeur of the mountains rising 800 
       { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Lions Head view", caption: "Mountains meet sea" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Camps Bay & Table Mountain 4K", thumbnail: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Town Top Attractions", thumbnail: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Camps Bay & Twelve Apostles 4K", thumbnail: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Beach Experience", thumbnail: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Mountain Majesty", description: "The Twelve Apostles create a jaw-dropping backdrop", icon: "⛰️" },
@@ -168,8 +168,8 @@ The harbour is also the traditional starting point for the famous crayfish divin
       { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Mountain backdrop", caption: "Surrounded by dramatic peaks" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Hout Bay & Seal Island Tour", thumbnail: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Coastal Experience", thumbnail: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Hout Bay Harbor & Seal Island", thumbnail: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Fishing Harbor Tour", thumbnail: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Seal Colony", description: "Visit Duiker Island's 5,000+ Cape fur seals", icon: "🦭" },
@@ -218,8 +218,8 @@ The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas 
       { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "False Bay coastline", caption: "The dramatic False Bay coastline" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Simon's Town & Penguins Tour", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "False Bay Coastal Experience", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Simon's Town & Boulders Beach Penguins", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "False Bay Naval Heritage Tour", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Penguin Paradise", description: "One of the world's most accessible penguin colonies", icon: "🐧" },
@@ -267,8 +267,8 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
       { src: "https://images.unsplash.com/photo-1591778472199-f81c7d01c7c8?w=800&h=600&fit=crop", alt: "Cape Point from sea", caption: "The view most people never see" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Point & Cape of Good Hope", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Cape Peninsula Scenic Tour", thumbnail: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Point Lighthouse & Two Oceans", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Peninsula Dramatic Coastline", thumbnail: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Two Oceans", description: "Witness the Atlantic and Indian Oceans meeting", icon: "🌊" },
@@ -316,8 +316,8 @@ Arriving by boat allows you to observe the colony from the water before the crow
       { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Beach panorama", caption: "The full sweep of Boulders Beach" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Boulders Beach Penguin Colony", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Wildlife Experience", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Boulders Beach African Penguins", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Swimming with Penguins Experience", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
     ],
     highlights: [
       { title: "Swim with Penguins", description: "A once-in-a-lifetime wildlife experience", icon: "🐧" },
