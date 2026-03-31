@@ -6,6 +6,46 @@ import "dotenv/config";
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
 
+/** Synced from Cape Marine Charters crew; Myles Seymor replaced by Justin Profer for Hey Charlie. */
+const crewMembersToSeed = [
+  {
+    name: "Gareth Bew",
+    role: "Captain, Founder & Owner",
+    bio: "Gareth is the driving force behind Hey Charlie Charters. As Captain, Founder and Owner, he brings unmatched passion and expertise to every expedition. His deep knowledge of Cape waters and dedication to exceptional on-water experiences has built Hey Charlie Charters into the premier charter operation it is today.",
+    yearsExperience: 15,
+    certifications: ["SAMSA Skipper License", "Sea Safety Certificate", "Advanced First Aid", "VHF Radio Operator"],
+    email: "gareth@heycharliecharters.co.za",
+    phone: "+27 82 555 0001",
+    imageUrl: "/images/gareth.png",
+    isActive: true,
+    displayOrder: 1,
+  },
+  {
+    name: "Justin Profer",
+    role: "Owner",
+    bio: "Justin is a co-owner of Hey Charlie Charters, bringing business acumen and a shared passion for the ocean to the operation. His commitment to customer satisfaction and operational excellence ensures every charter runs smoothly from booking to disembarkation.",
+    yearsExperience: 10,
+    certifications: ["Sea Safety Certificate", "First Aid Level 2"],
+    email: "justin@heycharliecharters.co.za",
+    phone: "+27 82 555 0002",
+    imageUrl: "/images/justin-profer.png",
+    isActive: true,
+    displayOrder: 2,
+  },
+  {
+    name: "Wayne Laufs",
+    role: "First Hand",
+    bio: "Wayne is our skilled First Hand, essential to every successful charter. His expertise in rigging, safety, and guest experience ensures you get the most out of your time on the water — whether you are cruising, fishing, or exploring the coast.",
+    yearsExperience: 8,
+    certifications: ["SAMSA Deckhand Certificate", "Sea Safety Certificate", "First Aid Level 2"],
+    email: "wayne@heycharliecharters.co.za",
+    phone: "+27 82 555 0003",
+    imageUrl: "/images/wayne.png",
+    isActive: true,
+    displayOrder: 3,
+  },
+];
+
 const packagesToSeed = [
   {
     slug: "sundowner-cruise",
@@ -204,6 +244,14 @@ async function seed() {
     for (const slot of timeSlots) {
       await db.insert(schema.timeSlots).values(slot).onConflictDoNothing();
       console.log(`  ✓ Time slot: ${slot.name}`);
+    }
+
+    console.log("\n  Updating crew members...");
+    await db.delete(schema.crewMembers);
+    console.log("  ✓ Cleared existing crew");
+    for (const member of crewMembersToSeed) {
+      await db.insert(schema.crewMembers).values(member);
+      console.log(`  ✓ Crew: ${member.name}`);
     }
 
     console.log("\n✅ Seeding complete!");

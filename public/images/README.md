@@ -1,5 +1,17 @@
 # Image Assets
 
+## Crew (headshots)
+
+Add portrait images (square or 4:5 works well):
+
+- `gareth.png`
+- `justin-profer.png` (replaces former Cape Marine asset `Myles.png`)
+- `wayne.png`
+
+These paths match `crew_members.image_url` after `bun run db:seed`.
+
+---
+
 Place the following images here for the full experience:
 
 - `sundowner.jpg` - Sunset cruise photo
