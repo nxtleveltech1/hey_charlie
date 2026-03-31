@@ -7,9 +7,11 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
-  { href: "/#experiences", label: "Experiences" },
   { href: "/#packages", label: "Packages" },
   { href: "/destinations", label: "Destinations" },
+  { href: "/crew", label: "Crew" },
+  { href: "/news", label: "News" },
+  { href: "/weather", label: "Weather" },
   { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];

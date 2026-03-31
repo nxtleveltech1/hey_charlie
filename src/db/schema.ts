@@ -20,6 +20,34 @@ export const bookingStatusEnum = pgEnum("booking_status", [
 
 export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
 
+export const articleStatusEnum = pgEnum("article_status", [
+  "draft",
+  "published",
+  "archived",
+]);
+
+export const articleCategoryEnum = pgEnum("article_category", [
+  "fishing-reports",
+  "species-spotlight",
+  "charter-updates",
+  "gear-tackle",
+  "weather-updates",
+  "tips-techniques",
+]);
+
+export const alertSeverityEnum = pgEnum("alert_severity", [
+  "info",
+  "warning",
+  "critical",
+]);
+
+export const alertTypeEnum = pgEnum("alert_type", [
+  "weather",
+  "news",
+  "trip-reminder",
+  "fishing-conditions",
+]);
+
 // Users table - synced from Clerk
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -110,9 +138,74 @@ export const timeSlots = pgTable("time_slots", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
+// Crew members table
+export const crewMembers = pgTable("crew_members", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  role: text("role").notNull(), // e.g., "Captain", "First Mate", "Deckhand"
+  bio: text("bio"),
+  yearsExperience: integer("years_experience"),
+  certifications: text("certifications").array(),
+  email: text("email"),
+  phone: text("phone"),
+  imageUrl: text("image_url"),
+  isActive: boolean("is_active").default(true).notNull(),
+  displayOrder: integer("display_order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// News articles table
+export const articles = pgTable("articles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  coverImage: text("cover_image"),
+  category: articleCategoryEnum("category").notNull(),
+  tags: text("tags").array(),
+  authorId: uuid("author_id").references(() => users.id),
+  status: articleStatusEnum("status").default("draft").notNull(),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  viewCount: integer("view_count").default(0).notNull(),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Weather alerts table (admin-created marine warnings)
+export const weatherAlerts = pgTable("weather_alerts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  severity: alertSeverityEnum("severity").default("info").notNull(),
+  activeFrom: timestamp("active_from").notNull(),
+  activeTo: timestamp("active_to").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdBy: uuid("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// User alert preferences table
+export const userAlertPreferences = pgTable("user_alert_preferences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id).notNull().unique(),
+  emailAlerts: boolean("email_alerts").default(true).notNull(),
+  smsAlerts: boolean("sms_alerts").default(false).notNull(),
+  alertTypes: alertTypeEnum("alert_types").array(),
+  phone: text("phone"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   bookings: many(bookings),
+  articles: many(articles),
+  weatherAlerts: many(weatherAlerts),
+  alertPreferences: one(userAlertPreferences),
 }));
 
 export const packagesRelations = relations(packages, ({ many }) => ({
@@ -138,6 +231,27 @@ export const blockedDatesRelations = relations(blockedDates, ({ one }) => ({
   }),
 }));
 
+export const articlesRelations = relations(articles, ({ one }) => ({
+  author: one(users, {
+    fields: [articles.authorId],
+    references: [users.id],
+  }),
+}));
+
+export const weatherAlertsRelations = relations(weatherAlerts, ({ one }) => ({
+  createdByUser: one(users, {
+    fields: [weatherAlerts.createdBy],
+    references: [users.id],
+  }),
+}));
+
+export const userAlertPreferencesRelations = relations(userAlertPreferences, ({ one }) => ({
+  user: one(users, {
+    fields: [userAlertPreferences.userId],
+    references: [users.id],
+  }),
+}));
+
 // Types
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -153,3 +267,15 @@ export type NewBlockedDate = typeof blockedDates.$inferInsert;
 
 export type TimeSlot = typeof timeSlots.$inferSelect;
 export type NewTimeSlot = typeof timeSlots.$inferInsert;
+
+export type CrewMember = typeof crewMembers.$inferSelect;
+export type NewCrewMember = typeof crewMembers.$inferInsert;
+
+export type Article = typeof articles.$inferSelect;
+export type NewArticle = typeof articles.$inferInsert;
+
+export type WeatherAlert = typeof weatherAlerts.$inferSelect;
+export type NewWeatherAlert = typeof weatherAlerts.$inferInsert;
+
+export type UserAlertPreference = typeof userAlertPreferences.$inferSelect;
+export type NewUserAlertPreference = typeof userAlertPreferences.$inferInsert;

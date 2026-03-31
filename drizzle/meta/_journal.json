@@ -8,6 +8,20 @@
       "when": 1767645999585,
       "tag": "0000_classy_the_anarchist",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774990244775,
+      "tag": "0001_tough_moon_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775159999000,
+      "tag": "0002_add_crew_articles_weather_alerts",
+      "breakpoints": true
     }
   ]
 }
