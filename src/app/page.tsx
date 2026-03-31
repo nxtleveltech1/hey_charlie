@@ -4,6 +4,7 @@ import Image from "next/image";
 import { packages } from "@/lib/packages";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
+import { AdminLink } from "@/components/admin-link";
 
 const experiences = [
   { name: "Sundowner Cruises", icon: "🌅", count: "Daily departures" },
@@ -123,6 +124,7 @@ export default function Home() {
                 </Link>
               </SignedOut>
               <SignedIn>
+                <AdminLink />
                 <Link href="/dashboard" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
                   My Bookings
                 </Link>

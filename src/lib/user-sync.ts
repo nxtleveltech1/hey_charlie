@@ -4,7 +4,7 @@ import { users, type User } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // Admin emails list - keep in sync with webhook
-const ADMIN_EMAILS = ["admin@heycharliec.com"]; // Update with actual admin emails
+const ADMIN_EMAILS = ["gambew@gmail.com"];
 
 /**
  * Ensures a Clerk user exists in the local database.

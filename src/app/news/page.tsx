@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
+import { AdminLink } from "@/components/admin-link";
 
 export const metadata: Metadata = {
   title: "News & Fishing Reports | Hey Charlie Charters",
@@ -67,6 +68,7 @@ export default async function NewsPage() {
                 <Link href="/#packages" className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:opacity-90 transition-opacity">Book Now</Link>
               </SignedOut>
               <SignedIn>
+                <AdminLink />
                 <Link href="/dashboard" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">My Bookings</Link>
                 <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "w-9 h-9 ring-2 ring-orange-500/50" } }} />
               </SignedIn>

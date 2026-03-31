@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
+import { useIsAdmin } from "@/hooks/use-is-admin";
 
 const navLinks = [
   { href: "/#packages", label: "Packages" },
@@ -18,6 +19,7 @@ const navLinks = [
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAdmin } = useIsAdmin();
 
   return (
     <>
@@ -124,6 +126,15 @@ export function MobileNav() {
                 <span className="text-sm">My Account</span>
                 <UserButton afterSignOutUrl="/" />
               </div>
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium"
+                >
+                  ⚙️ Admin Dashboard
+                </Link>
+              )}
               <Link
                 href="/dashboard"
                 onClick={() => setIsOpen(false)}
