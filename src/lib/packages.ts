@@ -176,6 +176,15 @@ export const packages: Package[] = [
   },
 ];
 
+const DEFAULT_PACKAGE_IMAGE =
+  "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&h=600&fit=crop";
+
+/** When DB `image_url` is null, use static catalog image by slug, then a generic ocean shot. */
+export function getFallbackPackageImage(slug: string): string {
+  const p = packages.find((x) => x.slug === slug);
+  return p?.image ?? DEFAULT_PACKAGE_IMAGE;
+}
+
 export const specialOffers = [
   {
     id: "summer-special",

@@ -8,7 +8,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { useIsAdmin } from "@/hooks/use-is-admin";
 
 const navLinks = [
-  { href: "/#packages", label: "Packages" },
+  { href: "/packages", label: "Packages" },
   { href: "/destinations", label: "Destinations" },
   { href: "/crew", label: "Crew" },
   { href: "/news", label: "News" },

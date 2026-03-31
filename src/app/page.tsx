@@ -1,10 +1,11 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
-import { packages } from "@/lib/packages";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { db } from "@/db";
+import { packages as pkgTable } from "@/db/schema";
+import { eq, desc } from "drizzle-orm";
 import { MobileNav } from "@/components/mobile-nav";
-import { AdminLink } from "@/components/admin-link";
+import { PublicDesktopNav } from "@/components/public-desktop-nav";
+import { PackageCard } from "@/components/package-card";
 
 const experiences = [
   { name: "Sundowner Cruises", icon: "🌅", count: "Daily departures" },
@@ -45,7 +46,13 @@ const testimonials = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const dbPackages = await db.query.packages.findMany({
+    where: eq(pkgTable.isActive, true),
+    orderBy: [desc(pkgTable.isFeatured), desc(pkgTable.createdAt)],
+  });
+  const displayPackages = dbPackages.slice(0, 6);
+
   return (
     <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] overflow-x-hidden transition-colors duration-300">
       {/* Animated ocean background */}
@@ -65,78 +72,7 @@ export default function Home() {
       {/* Mobile Navigation */}
       <MobileNav />
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl z-50 transition-colors duration-300" style={{ backgroundColor: 'var(--theme-nav-bg-transparent)' }}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-4">
-              <Image
-                src="/logo2.png"
-                alt="Hey Charlie Charters"
-                width={140}
-                height={140}
-                className="rounded-xl"
-              />
-              <div>
-                <span 
-                  className="text-2xl font-bold tracking-tight italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  Hey Charlie
-                </span>
-                <span 
-                  className="block text-sm font-semibold tracking-wider italic bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent"
-                >
-                  CHARTERS
-                </span>
-              </div>
-            </Link>
-
-            <div className="flex items-center gap-8">
-              <Link href="#experiences" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Experiences
-              </Link>
-              <Link href="#packages" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Packages
-              </Link>
-              <Link href="/destinations" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Destinations
-              </Link>
-              <Link href="#about" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                About
-              </Link>
-              <Link href="#contact" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Contact
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <SignedOut>
-                <Link href="/sign-in" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                  Sign In
-                </Link>
-                <Link
-                  href="#packages"
-                  className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:opacity-90 transition-opacity btn-primary"
-                >
-                  Book Now
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <AdminLink />
-                <Link href="/dashboard" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                  My Bookings
-                </Link>
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{ elements: { avatarBox: "w-9 h-9 ring-2 ring-orange-500/50" } }}
-                />
-              </SignedIn>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <PublicDesktopNav active="home" logoVariant="home" />
 
       {/* Hero Section */}
       <section className="relative pt-24 lg:pt-32 pb-12 lg:pb-20 px-4 lg:px-6 min-h-screen flex items-center">
@@ -285,90 +221,45 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-            {packages.slice(0, 6).map((pkg) => (
-              <div
-                key={pkg.id}
-                className="group relative rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden card-hover light-card"
+            {displayPackages.length === 0 ? (
+              <p className="col-span-full text-center text-[var(--theme-text-muted)] py-8">
+                Packages coming soon — check back shortly.
+              </p>
+            ) : (
+              displayPackages.map((pkg) => (
+                <PackageCard
+                  key={pkg.id}
+                  pkg={{
+                    id: pkg.id,
+                    slug: pkg.slug,
+                    name: pkg.name,
+                    tagline: pkg.tagline,
+                    description: pkg.description,
+                    duration: pkg.duration,
+                    pricePerPerson: String(pkg.pricePerPerson),
+                    category: pkg.category,
+                    highlights: pkg.highlights ?? [],
+                    isFeatured: pkg.isFeatured,
+                    imageUrl: pkg.imageUrl,
+                  }}
+                />
+              ))
+            )}
+          </div>
+
+          {dbPackages.length > 0 && (
+            <div className="text-center mt-8 lg:mt-12">
+              <Link
+                href="/packages"
+                className="inline-flex items-center gap-2 px-6 lg:px-8 py-3 lg:py-4 rounded-full border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm lg:text-base"
               >
-                {/* Badge */}
-                {pkg.popular && (
-                  <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs font-medium">
-                    Popular
-                  </div>
-                )}
-                {pkg.bestValue && (
-                  <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-medium">
-                    Best Value
-                  </div>
-                )}
-
-                {/* Package Image */}
-                <div className="h-48 relative overflow-hidden">
-                  <Image
-                    src={pkg.image}
-                    alt={pkg.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
-                </div>
-
-                <div className="p-6 space-y-4">
-                  <div>
-                    <p className="text-orange-500 text-sm font-medium mb-1">{pkg.tagline}</p>
-                    <h3 className="text-xl font-semibold">{pkg.name}</h3>
-                  </div>
-
-                  <p className="text-[var(--theme-text-muted)] text-sm line-clamp-2">{pkg.description}</p>
-
-                  <div className="flex items-center gap-4 text-sm text-[var(--theme-text-muted)]">
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {pkg.duration}
-                    </span>
-                  </div>
-
-                  <ul className="space-y-2">
-                    {pkg.highlights.slice(0, 3).map((h) => (
-                      <li key={h} className="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)]">
-                        <svg className="w-4 h-4 text-cyan-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="pt-4 border-t border-[var(--theme-border)] flex items-center justify-between">
-                    <div>
-                      <span className="text-2xl font-bold">R{pkg.price.toLocaleString()}</span>
-                      <span className="text-[var(--theme-text-muted)] text-sm ml-1">{pkg.priceUnit}</span>
-                    </div>
-                    <Link 
-                      href={`/booking/${pkg.slug}`}
-                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity"
-                    >
-                      Book Now
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-8 lg:mt-12">
-            <Link
-              href="/packages"
-              className="inline-flex items-center gap-2 px-6 lg:px-8 py-3 lg:py-4 rounded-full border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm lg:text-base"
-            >
-              View All Packages
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
+                View All Packages
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

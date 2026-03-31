@@ -2,11 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { locations, getLocationBySlug } from "@/lib/locations";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
-import { AdminLink } from "@/components/admin-link";
+import { PublicDesktopNav } from "@/components/public-desktop-nav";
 import { LocationGallery } from "@/components/location-gallery";
 import { LocationVideos } from "@/components/location-videos";
 import { HeroVideoButton } from "@/components/hero-video-button";
@@ -52,73 +50,7 @@ export default async function LocationPage({
       {/* Mobile Navigation */}
       <MobileNav />
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl bg-[var(--theme-nav-bg)] z-50 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-4">
-              <Image
-                src="/logo2.png"
-                alt="Hey Charlie Charters"
-                width={50}
-                height={50}
-                className="rounded-xl"
-              />
-              <div>
-                <span 
-                  className="text-xl font-bold tracking-tight italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  Hey Charlie
-                </span>
-                <span className="block text-xs font-semibold tracking-wider italic bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">
-                  CHARTERS
-                </span>
-              </div>
-            </Link>
-
-            <div className="flex items-center gap-8">
-              <Link href="/#experiences" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Experiences
-              </Link>
-              <Link href="/#packages" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Packages
-              </Link>
-              <Link href="/destinations" className="text-sm text-[var(--theme-text)] font-medium">
-                Destinations
-              </Link>
-              <Link href="/#contact" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                Contact
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <SignedOut>
-                <Link href="/sign-in" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                  Sign In
-                </Link>
-                <Link
-                  href="/#packages"
-                  className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:opacity-90 transition-opacity btn-primary"
-                >
-                  Book Now
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <AdminLink />
-                <Link href="/dashboard" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">
-                  My Bookings
-                </Link>
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{ elements: { avatarBox: "w-9 h-9 ring-2 ring-orange-500/50" } }}
-                />
-              </SignedIn>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <PublicDesktopNav active="destinations" navSurface="solid" />
 
       {/* Hero Section with Video/Image */}
       <section className="relative h-[70vh] lg:h-[85vh] overflow-hidden">

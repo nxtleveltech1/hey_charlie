@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice } from "@/lib/booking-utils";
+import { getFallbackPackageImage } from "@/lib/packages";
 
 interface PackageCardProps {
   pkg: {
@@ -13,6 +15,7 @@ interface PackageCardProps {
     category: string;
     highlights: string[] | null;
     isFeatured: boolean;
+    imageUrl?: string | null;
   };
 }
 
@@ -26,6 +29,9 @@ export function PackageCard({ pkg }: PackageCardProps) {
     private: "🥂",
   };
 
+  const imageSrc =
+    pkg.imageUrl && pkg.imageUrl.length > 0 ? pkg.imageUrl : getFallbackPackageImage(pkg.slug);
+
   return (
     <div className="group relative rounded-2xl lg:rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden card-hover light-card">
       {/* Badge */}
@@ -35,10 +41,16 @@ export function PackageCard({ pkg }: PackageCardProps) {
         </div>
       )}
 
-      {/* Image placeholder */}
-      <div className="h-32 lg:h-48 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+      <div className="h-32 lg:h-48 relative overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-900">
+        <Image
+          src={imageSrc}
+          alt={pkg.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
-        <div className="absolute inset-0 flex items-center justify-center text-4xl lg:text-6xl opacity-30">
+        <div className="absolute inset-0 flex items-center justify-center text-4xl lg:text-6xl opacity-20 pointer-events-none">
           {categoryIcons[pkg.category] || "⛵"}
         </div>
       </div>
@@ -93,4 +105,3 @@ export function PackageCard({ pkg }: PackageCardProps) {
     </div>
   );
 }
-

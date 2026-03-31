@@ -5,10 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
-import { AdminLink } from "@/components/admin-link";
+import { PublicDesktopNav } from "@/components/public-desktop-nav";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -58,39 +56,7 @@ export default async function ArticlePage({ params }: Props) {
     <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]">
       <MobileNav />
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed top-0 w-full border-b border-[var(--theme-border)] backdrop-blur-2xl z-50 transition-colors duration-300" style={{ backgroundColor: 'var(--theme-nav-bg-transparent)' }}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-4">
-              <Image src="/logo2.png" alt="Hey Charlie Charters" width={50} height={50} className="rounded-xl" />
-              <div>
-                <span className="text-xl font-bold tracking-tight italic bg-gradient-to-r from-cyan-300 via-sky-400 to-cyan-300 bg-clip-text text-transparent" style={{ fontFamily: "var(--font-display)" }}>Hey Charlie</span>
-                <span className="block text-[10px] font-semibold italic tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent">CHARTERS</span>
-              </div>
-            </Link>
-            <div className="hidden lg:flex items-center gap-8">
-              <Link href="/#packages" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">Packages</Link>
-              <Link href="/destinations" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">Destinations</Link>
-              <Link href="/crew" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">Crew</Link>
-              <span className="text-sm text-orange-400 font-medium">News</span>
-              <Link href="/weather" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">Weather</Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <SignedOut>
-                <Link href="/sign-in" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">Sign In</Link>
-                <Link href="/#packages" className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-full hover:opacity-90 transition-opacity">Book Now</Link>
-              </SignedOut>
-              <SignedIn>
-                <AdminLink />
-                <Link href="/dashboard" className="text-sm text-[var(--theme-text-secondary)] hover:text-[var(--theme-text)] transition-colors">My Bookings</Link>
-                <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "w-9 h-9 ring-2 ring-orange-500/50" } }} />
-              </SignedIn>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <PublicDesktopNav active="news" />
 
       {/* Hero */}
       <div className="relative h-[50vh] min-h-[400px] pt-20">
