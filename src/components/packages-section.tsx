@@ -43,7 +43,22 @@ export async function PackagesSection() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
           {allPackages.map((pkg) => (
-            <PackageCard key={pkg.id} pkg={pkg} />
+            <PackageCard
+              key={pkg.id}
+              pkg={{
+                id: pkg.id,
+                slug: pkg.slug,
+                name: pkg.name,
+                tagline: pkg.tagline,
+                description: pkg.description,
+                duration: pkg.duration,
+                pricePerPerson: String(pkg.pricePerPerson),
+                category: pkg.category,
+                highlights: pkg.highlights ?? [],
+                isFeatured: pkg.isFeatured,
+                imageUrl: pkg.imageUrl,
+              }}
+            />
           ))}
         </div>
 
