@@ -3,10 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-// List of emails that are allowed to be promoted to admin
-// This is a one-time setup endpoint - should be secured or removed after use
-const ADMIN_EMAILS = ["gambew@gmail.com"];
+import { ADMIN_EMAILS } from "@/lib/admin-emails";
 
 export async function POST(req: NextRequest) {
   try {

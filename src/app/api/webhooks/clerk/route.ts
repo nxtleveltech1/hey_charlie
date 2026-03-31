@@ -4,6 +4,7 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { isAdminEmail } from "@/lib/admin-emails";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -40,9 +41,6 @@ export async function POST(req: Request) {
 
   const eventType = evt.type;
 
-  // Admin emails list
-  const ADMIN_EMAILS = ["gambew@gmail.com"];
-
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name, image_url, phone_numbers } = evt.data;
     
@@ -50,8 +48,7 @@ export async function POST(req: Request) {
     const primaryPhone = phone_numbers?.find(p => p.id === evt.data.primary_phone_number_id);
     const email = primaryEmail?.email_address || "";
     
-    // Auto-assign admin role for specific emails
-    const role = ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "user";
+    const role = isAdminEmail(email) ? "admin" : "user";
 
     await db.insert(users).values({
       clerkId: id,
@@ -71,16 +68,19 @@ export async function POST(req: Request) {
     
     const primaryEmail = email_addresses.find(e => e.id === evt.data.primary_email_address_id);
     const primaryPhone = phone_numbers?.find(p => p.id === evt.data.primary_phone_number_id);
+    const email = primaryEmail?.email_address || "";
+
+    const base = {
+      email,
+      firstName: first_name || null,
+      lastName: last_name || null,
+      imageUrl: image_url || null,
+      phone: primaryPhone?.phone_number || null,
+      updatedAt: new Date(),
+    };
 
     await db.update(users)
-      .set({
-        email: primaryEmail?.email_address || "",
-        firstName: first_name || null,
-        lastName: last_name || null,
-        imageUrl: image_url || null,
-        phone: primaryPhone?.phone_number || null,
-        updatedAt: new Date(),
-      })
+      .set(isAdminEmail(email) ? { ...base, role: "admin" as const } : base)
       .where(eq(users.clerkId, id));
 
     console.log(`User updated: ${id}`);

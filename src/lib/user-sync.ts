@@ -2,24 +2,30 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { users, type User } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-// Admin emails list - keep in sync with webhook
-const ADMIN_EMAILS = ["gambew@gmail.com"];
+import { isAdminEmail } from "@/lib/admin-emails";
 
 /**
  * Ensures a Clerk user exists in the local database.
  * This is a fallback mechanism for when the Clerk webhook fails or hasn't fired yet.
- * 
+ * Promotes allowlisted emails to admin when the row already exists as "user".
+ *
  * @param clerkUserId - The Clerk user ID (from auth())
  * @returns The user record from the database, or null if sync fails
  */
 export async function ensureUserInDatabase(clerkUserId: string): Promise<User | null> {
-  // First, check if user already exists in database
   const existingUser = await db.query.users.findFirst({
     where: eq(users.clerkId, clerkUserId),
   });
 
   if (existingUser) {
+    if (existingUser.role !== "admin" && isAdminEmail(existingUser.email)) {
+      const [updated] = await db
+        .update(users)
+        .set({ role: "admin", updatedAt: new Date() })
+        .where(eq(users.clerkId, clerkUserId))
+        .returning();
+      return updated ?? existingUser;
+    }
     return existingUser;
   }
 
@@ -44,8 +50,7 @@ export async function ensureUserInDatabase(clerkUserId: string): Promise<User | 
       (p) => p.id === clerkUser.primaryPhoneNumberId
     );
 
-    // Determine role based on admin emails list
-    const role = ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "user";
+    const role = isAdminEmail(email) ? "admin" : "user";
 
     // Insert user into database
     const [newUser] = await db

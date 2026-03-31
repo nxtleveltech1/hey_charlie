@@ -3,9 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { ensureUserInDatabase } from "@/lib/user-sync";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: "📊" },
@@ -29,9 +27,7 @@ export default async function AdminLayout({
     redirect("/sign-in");
   }
 
-  const user = await db.query.users.findFirst({
-    where: eq(users.clerkId, userId),
-  });
+  const user = await ensureUserInDatabase(userId);
 
   if (!user || user.role !== "admin") {
     redirect("/dashboard");
