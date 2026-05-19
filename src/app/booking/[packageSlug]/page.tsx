@@ -28,8 +28,8 @@ export default async function BookingPage({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24">
+      <div className="wide-shell">
         {/* Breadcrumb */}
         <div className="mb-8">
           <Link
@@ -40,10 +40,10 @@ export default async function BookingPage({
           </Link>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid gap-5 lg:grid-cols-[minmax(20rem,0.8fr)_minmax(0,1.2fr)] 2xl:grid-cols-[minmax(24rem,0.7fr)_minmax(0,1.3fr)]">
           {/* Package Summary */}
-          <div className="lg:col-span-2">
-            <div className="sticky top-24 p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
+          <div>
+            <div className="lg:sticky lg:top-24 p-5 lg:p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
               <h2 className="text-xl font-semibold mb-4" style={{ fontFamily: "var(--font-display)" }}>
                 {pkg.name}
               </h2>
@@ -90,9 +90,9 @@ export default async function BookingPage({
           </div>
 
           {/* Booking Form */}
-          <div className="lg:col-span-3">
-            <div className="p-6 lg:p-8 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
-              <h1 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <div>
+            <div className="p-5 lg:p-8 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
+              <h1 className="text-3xl lg:text-4xl font-bold mb-6" style={{ fontFamily: "var(--font-display)" }}>
                 Book Your Experience
               </h1>
               <BookingForm packageData={pkg} />

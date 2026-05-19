@@ -37,8 +37,8 @@ export default async function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24 px-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24">
+      <div className="wide-shell">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/" className="flex items-center gap-3">
@@ -69,17 +69,17 @@ export default async function DashboardPage() {
               Welcome back, {user.firstName || "Guest"}!
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="grid w-full gap-3 sm:w-auto sm:grid-flow-col">
             <Link
               href="/#packages"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
+              className="px-6 py-3 text-center rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity"
             >
               Book New Experience
             </Link>
             {user.role === "admin" && (
               <Link
                 href="/admin"
-                className="px-6 py-3 rounded-xl border border-orange-500/20 text-orange-500 hover:bg-orange-500/10 transition-colors"
+                className="px-6 py-3 text-center rounded-2xl border border-orange-500/20 text-orange-500 hover:bg-orange-500/10 transition-colors"
               >
                 Admin Dashboard
               </Link>
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
                     key={booking.id}
                     className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]"
                   >
-                    <div className="flex flex-col lg:flex-row justify-between gap-4">
+                    <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <span className={`px-3 py-1 rounded-full text-xs font-medium border ${BOOKING_STATUS_COLORS[booking.status]}`}>
@@ -139,14 +139,14 @@ export default async function DashboardPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end justify-between">
+                      <div className="flex flex-col items-stretch gap-4 lg:items-end lg:justify-between">
                         <span className="text-2xl font-bold text-orange-500">
                           {formatPrice(booking.totalPrice)}
                         </span>
-                        <div className="flex gap-2 mt-4">
+                        <div className="grid gap-2 sm:grid-flow-col lg:mt-4">
                           <Link
                             href={`/booking/confirmation/${booking.id}`}
-                            className="px-4 py-2 rounded-lg border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm"
+                            className="px-4 py-2 text-center rounded-xl border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm"
                           >
                             View Details
                           </Link>
@@ -173,7 +173,7 @@ export default async function DashboardPage() {
                   key={booking.id}
                   className="p-4 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] opacity-75"
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
                     <div>
                       <h3 className="font-semibold">{booking.package.name}</h3>
                       <p className="text-sm text-[var(--theme-text-muted)]">

@@ -107,13 +107,13 @@ export function BookingForm({ packageData }: BookingFormProps) {
         <label className="block text-sm font-medium mb-2">
           Time Slot <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           {TIME_SLOTS.map((slot) => (
             <button
               key={slot.id}
               type="button"
               onClick={() => setFormData({ ...formData, timeSlot: slot.id })}
-              className={`p-3 rounded-xl border text-center transition-all ${
+              className={`min-h-16 p-3 rounded-xl border text-center transition-all ${
                 formData.timeSlot === slot.id
                   ? "border-orange-500 bg-orange-500/10 text-orange-500"
                   : "border-[var(--theme-border)] hover:border-orange-500/50"
@@ -261,13 +261,15 @@ export function BookingForm({ packageData }: BookingFormProps) {
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isLoading || !formData.date || !formData.timeSlot}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isLoading ? "Processing..." : "Confirm Booking"}
-      </button>
+      <div className="sticky bottom-3 z-30 rounded-2xl bg-[var(--theme-bg)]/85 p-2 backdrop-blur-xl lg:static lg:bg-transparent lg:p-0 lg:backdrop-blur-0">
+        <button
+          type="submit"
+          disabled={isLoading || !formData.date || !formData.timeSlot}
+          className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "Processing..." : "Confirm Booking"}
+        </button>
+      </div>
 
       <p className="text-xs text-center text-[var(--theme-text-muted)]">
         By booking, you agree to our terms and conditions. 

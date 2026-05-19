@@ -47,8 +47,8 @@ export default async function BookingConfirmationPage({
   const statusLabel = BOOKING_STATUS_LABELS[booking.status];
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] py-24">
+      <div className="narrow-shell">
         {/* Success Icon */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 flex items-center justify-center">
@@ -65,8 +65,8 @@ export default async function BookingConfirmationPage({
         </div>
 
         {/* Booking Details Card */}
-        <div className="p-6 lg:p-8 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] mb-6">
-          <div className="flex justify-between items-start mb-6">
+        <div className="p-5 lg:p-8 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] mb-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start mb-6">
             <div>
               <p className="text-sm text-[var(--theme-text-muted)]">Booking Number</p>
               <p className="text-xl font-mono font-bold">{booking.bookingNumber}</p>
@@ -82,7 +82,7 @@ export default async function BookingConfirmationPage({
               <p className="text-sm text-[var(--theme-text-muted)]">{booking.package.tagline}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <p className="text-sm text-[var(--theme-text-muted)]">Date</p>
                 <p className="font-medium">{formatDate(booking.date)}</p>
@@ -118,15 +118,15 @@ export default async function BookingConfirmationPage({
         <div className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] mb-6">
           <h3 className="font-semibold mb-4">Contact Details</h3>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-1 sm:flex-row sm:justify-between">
               <span className="text-[var(--theme-text-muted)]">Name</span>
               <span>{booking.contactName}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-1 sm:flex-row sm:justify-between">
               <span className="text-[var(--theme-text-muted)]">Email</span>
               <span>{booking.contactEmail}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-1 sm:flex-row sm:justify-between">
               <span className="text-[var(--theme-text-muted)]">Phone</span>
               <span>{booking.contactPhone}</span>
             </div>

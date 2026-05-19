@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { MobileNav } from "@/components/mobile-nav";
 import { PublicDesktopNav } from "@/components/public-desktop-nav";
+import { MobileStickyActions } from "@/components/mobile-sticky-actions";
 
 export const metadata: Metadata = {
   title: "News & Fishing Reports | Hey Charlie Charters",
@@ -32,15 +33,16 @@ export default async function NewsPage() {
   const regularArticles = publishedArticles.filter((a) => a.id !== featuredArticle?.id);
 
   return (
-    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]">
+    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] mobile-bottom-safe lg:pb-0">
       <MobileNav />
 
       <PublicDesktopNav active="news" />
+      <MobileStickyActions primaryHref="/packages" secondaryHref="/#contact" />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 bg-gradient-to-b from-[var(--theme-surface)] to-[var(--theme-bg)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="wide-shell text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4">
             News & <span className="text-orange-500">Reports</span>
           </h1>
           <p className="text-xl text-[var(--theme-text-muted)] max-w-2xl mx-auto">
@@ -49,7 +51,7 @@ export default async function NewsPage() {
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="wide-shell py-16">
         {publishedArticles.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-[var(--theme-text-muted)]">No articles yet. Check back soon!</p>
@@ -59,7 +61,7 @@ export default async function NewsPage() {
             {/* Featured Article */}
             {featuredArticle && (
               <Link href={`/news/${featuredArticle.slug}`} className="block group">
-                <div className="relative h-[400px] rounded-2xl overflow-hidden bg-[var(--theme-surface)]">
+                <div className="relative min-h-[28rem] rounded-2xl overflow-hidden bg-[var(--theme-surface)] sm:h-[400px]">
                   {featuredArticle.coverImage ? (
                     <Image src={featuredArticle.coverImage} alt={featuredArticle.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
@@ -80,7 +82,7 @@ export default async function NewsPage() {
             )}
 
             {/* Article Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
               {regularArticles.map((article) => (
                 <Link key={article.id} href={`/news/${article.slug}`} className="group">
                   <div className="bg-[var(--theme-surface)] rounded-xl border border-[var(--theme-border)] overflow-hidden hover:border-orange-500/50 transition-all">
@@ -110,4 +112,3 @@ export default async function NewsPage() {
     </main>
   );
 }
-

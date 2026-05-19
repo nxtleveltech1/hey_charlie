@@ -1,0 +1,13 @@
+---
+description: The agent fixes problems by running commands and edits; never push work back to the user unless human-only steps are unavoidable.
+alwaysApply: true
+---
+
+# Execute fixes — do not delegate
+
+When something is broken (dev server, build, installs, corrupted `node_modules`, stale caches):
+
+1. **Use tools**: run installs, deletes, edits, builds, and short verification commands yourself. Do not reply with “you should run …” unless the blocker cannot be automated.
+2. **Human-only exceptions**: credential entry, SSO in a browser, secrets the repo does not have, production approvals, or actions that legally must be performed by the account owner. In those cases, state the single blocking reason plainly.
+3. **Recovery habits for this repo**: if Next.js errors look like Turbopack cache corruption or weird `SyntaxError` inside `node_modules/next`, reinstall the `next` package (or full `node_modules`) and remove `.next` before retrying — **do those steps yourself**; use `bun run dev:fresh` when a clean cache is needed. On Windows, if deleting `node_modules` fails with “access denied” on `next-swc.*.node`, stop **this project’s** `node`/`bun` processes first (SWC locks the file), then delete and `bun install` again.
+4. **No empty “follow-up” disclaimers**: if you verified the fix, say what ran and the outcome; if not verified, run verification before claiming success.

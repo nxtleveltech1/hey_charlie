@@ -8,6 +8,7 @@ import { PublicDesktopNav } from "@/components/public-desktop-nav";
 import { LocationGallery } from "@/components/location-gallery";
 import { LocationVideos } from "@/components/location-videos";
 import { HeroVideoButton } from "@/components/hero-video-button";
+import { MobileStickyActions } from "@/components/mobile-sticky-actions";
 
 export async function generateStaticParams() {
   return locations.map((location) => ({
@@ -46,11 +47,12 @@ export default async function LocationPage({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-colors duration-300 mobile-bottom-safe lg:pb-0">
       {/* Mobile Navigation */}
       <MobileNav />
 
       <PublicDesktopNav active="destinations" navSurface="solid" />
+      <MobileStickyActions primaryHref="/packages" secondaryHref="/#contact" />
 
       {/* Hero Section with Video/Image */}
       <section className="relative h-[70vh] lg:h-[85vh] overflow-hidden">
@@ -67,8 +69,8 @@ export default async function LocationPage({
         </div>
 
         {/* Hero Content */}
-        <div className="relative h-full flex items-end pb-12 lg:pb-20 px-4 lg:px-6">
-          <div className="max-w-7xl mx-auto w-full">
+        <div className="relative h-full flex items-end pb-12 lg:pb-20">
+          <div className="wide-shell w-full">
             {/* Breadcrumb */}
             <div className="mb-4">
               <Link
@@ -94,7 +96,7 @@ export default async function LocationPage({
             </div>
 
             <h1 
-              className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 max-w-4xl"
+              className="text-4xl sm:text-5xl lg:text-7xl 2xl:text-8xl font-bold text-white mb-4 max-w-5xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {location.name}
@@ -124,12 +126,12 @@ export default async function LocationPage({
       </section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+      <div className="wide-shell">
         
         {/* Description Section */}
         <section className="py-12 lg:py-20">
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_24rem] 2xl:grid-cols-[minmax(0,1fr)_28rem] gap-8 2xl:gap-12">
+            <div>
               <h2 
                 className="text-2xl lg:text-4xl font-bold mb-6"
                 style={{ fontFamily: "var(--font-display)" }}
@@ -195,7 +197,7 @@ export default async function LocationPage({
           >
             Why Visit <span className="text-gradient-ocean">{location.name}</span>
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6">
             {location.highlights.map((highlight, i) => (
               <div
                 key={i}
@@ -247,7 +249,7 @@ export default async function LocationPage({
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {location.experiences.map((exp, i) => (
               <div
                 key={i}
@@ -302,7 +304,7 @@ export default async function LocationPage({
 
         {/* CTA Section */}
         <section className="py-12 lg:py-20 border-t border-[var(--theme-border)]">
-          <div className="relative p-8 lg:p-16 rounded-3xl overflow-hidden">
+              <div className="relative p-8 lg:p-16 rounded-2xl overflow-hidden">
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-cyan-500/20" />
             <div className="absolute inset-0 backdrop-blur-xl" />
@@ -315,7 +317,7 @@ export default async function LocationPage({
                 Ready to explore <span className="text-gradient-sunset">{location.name}</span>?
               </h2>
               <p className="text-[var(--theme-text-muted)] max-w-xl mx-auto mb-8">
-                Book your adventure today and discover why this is one of Cape Town's most spectacular destinations.
+                Book your adventure today and discover why this is one of Cape Town&apos;s most spectacular destinations.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -343,7 +345,7 @@ export default async function LocationPage({
           >
             Explore More <span className="text-gradient-ocean">Destinations</span>
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6">
             {locations
               .filter((loc) => loc.slug !== location.slug)
               .slice(0, 5)
@@ -371,8 +373,8 @@ export default async function LocationPage({
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--theme-border)] py-10 lg:py-12 px-4 lg:px-6 bg-[var(--theme-bg-secondary)] transition-colors duration-300 mt-12">
-        <div className="max-w-7xl mx-auto">
+      <footer className="border-t border-[var(--theme-border)] py-10 lg:py-12 bg-[var(--theme-bg-secondary)] transition-colors duration-300 mt-12">
+        <div className="wide-shell">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-[var(--theme-text-muted)]">
             <div className="flex items-center gap-3">
               <Image src="/logo2.png" alt="Hey Charlie Charters" width={32} height={32} className="rounded-lg" />

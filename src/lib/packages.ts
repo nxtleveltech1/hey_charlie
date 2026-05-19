@@ -14,6 +14,37 @@ export interface Package {
   bestValue?: boolean;
 }
 
+const PACKAGE_IMAGES = {
+  sundowner: "/images/sundown-cruise-hero.png",
+  crayfish: "/images/catch-cook-crayfish.jpg",
+  whale: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=800&h=600&fit=crop",
+  beachHopper: "/images/clifton-beaches.jpg",
+  seafoodFeast: "/images/seafood-feast.jpg",
+  deepSeaFishing: "/images/Yellowfin Tuna Hunt.jpg",
+  coastlineExplorer: "/images/cape point drop off.png",
+  privateCharter: "/images/private-charter-guests.jpeg",
+  sealIsland: "/images/seal-island.jpg",
+};
+
+const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
+  "sundowner-cruise": PACKAGE_IMAGES.sundowner,
+  "crayfish-experience": PACKAGE_IMAGES.crayfish,
+  "crayfish-catch-cook": PACKAGE_IMAGES.crayfish,
+  "whale-watching": PACKAGE_IMAGES.whale,
+  "whale-watching-expedition": PACKAGE_IMAGES.whale,
+  "beach-hopper": PACKAGE_IMAGES.beachHopper,
+  "beach-hopping-adventure": PACKAGE_IMAGES.beachHopper,
+  "seafood-feast": PACKAGE_IMAGES.seafoodFeast,
+  "seafood-beach-feast": PACKAGE_IMAGES.seafoodFeast,
+  "deep-sea-fishing": PACKAGE_IMAGES.deepSeaFishing,
+  "fishing-charter": PACKAGE_IMAGES.deepSeaFishing,
+  "coastline-explorer": PACKAGE_IMAGES.coastlineExplorer,
+  "coastline-crawler": PACKAGE_IMAGES.coastlineExplorer,
+  "private-charter": PACKAGE_IMAGES.privateCharter,
+  "private-celebration": PACKAGE_IMAGES.privateCharter,
+  "seal-island": PACKAGE_IMAGES.sealIsland,
+};
+
 export const packages: Package[] = [
   {
     id: "sundowner-cruise",
@@ -31,7 +62,7 @@ export const packages: Package[] = [
       "Music & Bluetooth speakers",
       "Photo opportunities at iconic landmarks",
     ],
-    image: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.sundowner,
     category: "relaxation",
     popular: true,
   },
@@ -52,7 +83,7 @@ export const packages: Package[] = [
       "All sides & drinks included",
       "Crayfish permit included",
     ],
-    image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.crayfish,
     category: "culinary",
     bestValue: true,
   },
@@ -72,7 +103,7 @@ export const packages: Package[] = [
       "Hot beverages & snacks",
       "Waterproof jackets provided",
     ],
-    image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.whale,
     category: "wildlife",
     popular: true,
   },
@@ -92,7 +123,7 @@ export const packages: Package[] = [
       "Picnic lunch & refreshments",
       "Beach games & paddleboards",
     ],
-    image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.beachHopper,
     category: "adventure",
   },
   {
@@ -112,7 +143,7 @@ export const packages: Package[] = [
       "Bonfire & live music",
       "Sunset cruise included",
     ],
-    image: "https://images.unsplash.com/photo-1534190239940-9ba8944ea261?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.seafoodFeast,
     category: "culinary",
   },
   {
@@ -131,7 +162,7 @@ export const packages: Package[] = [
       "Keep your catch",
       "Light lunch & drinks",
     ],
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.deepSeaFishing,
     category: "adventure",
   },
   {
@@ -150,7 +181,7 @@ export const packages: Package[] = [
       "Gourmet lunch onboard",
       "Commentary & history",
     ],
-    image: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.coastlineExplorer,
     category: "adventure",
     popular: true,
   },
@@ -171,18 +202,36 @@ export const packages: Package[] = [
       "Dedicated crew & service",
       "Special occasion packages",
     ],
-    image: "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800&h=600&fit=crop",
+    image: PACKAGE_IMAGES.privateCharter,
     category: "relaxation",
+  },
+  {
+    id: "seal-island",
+    slug: "seal-island",
+    name: "Seal Island Tour",
+    tagline: "Cape fur seals off Hout Bay",
+    description:
+      "Visit Duiker Island off Hout Bay, home to thousands of Cape fur seals sunning on the rocks and swimming around the boat.",
+    duration: "1.5 hours",
+    price: 450,
+    priceUnit: "per person",
+    highlights: [
+      "Cape fur seal colony",
+      "Wildlife photography",
+      "Short Hout Bay trip",
+      "Family-friendly route",
+    ],
+    image: PACKAGE_IMAGES.sealIsland,
+    category: "wildlife",
   },
 ];
 
-const DEFAULT_PACKAGE_IMAGE =
-  "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&h=600&fit=crop";
+const DEFAULT_PACKAGE_IMAGE = PACKAGE_IMAGES.sundowner;
 
 /** When DB `image_url` is null, use static catalog image by slug, then a generic ocean shot. */
 export function getFallbackPackageImage(slug: string): string {
   const p = packages.find((x) => x.slug === slug);
-  return p?.image ?? DEFAULT_PACKAGE_IMAGE;
+  return p?.image ?? PACKAGE_IMAGE_BY_SLUG[slug] ?? DEFAULT_PACKAGE_IMAGE;
 }
 
 export const specialOffers = [
@@ -208,4 +257,3 @@ export const specialOffers = [
     code: "EARLY10",
   },
 ];
-

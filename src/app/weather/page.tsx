@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
 import { PublicDesktopNav } from "@/components/public-desktop-nav";
+import { MobileStickyActions } from "@/components/mobile-sticky-actions";
 import { getWindDirectionLabel, formatTemperature, formatWindSpeed, formatHeight, formatTime, type MarineConditions, type FishingRating, type TideData, type SunTimes, type WeatherAlert } from "@/lib/weather-service";
 
 interface WeatherData {
@@ -57,22 +58,23 @@ export default function WeatherPage() {
   const ratingStars = "★".repeat(Math.floor(fishingRating.score)) + "☆".repeat(5 - Math.floor(fishingRating.score));
 
   return (
-    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]">
+    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] mobile-bottom-safe lg:pb-0">
       <MobileNav />
 
       <PublicDesktopNav active="weather" />
+      <MobileStickyActions primaryHref="/packages" secondaryHref="/#contact" />
 
       {/* Hero */}
       <section className="relative pt-32 pb-8 bg-gradient-to-b from-[var(--theme-surface)] to-[var(--theme-bg)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">Marine <span className="text-orange-500">Weather</span></h1>
+        <div className="wide-shell">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center mb-2">Marine <span className="text-orange-500">Weather</span></h1>
           <p className="text-center text-[var(--theme-text-muted)]">Current conditions and fishing forecast</p>
         </div>
       </section>
 
       {/* Alerts */}
       {alerts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 mb-8">
+        <section className="wide-shell -mt-4 mb-8">
           {alerts.map((alert) => (
             <div key={alert.id} className={`p-4 rounded-xl mb-2 ${alert.severity === "critical" ? "bg-red-500/20 border border-red-500/50" : alert.severity === "warning" ? "bg-yellow-500/20 border border-yellow-500/50" : "bg-blue-500/20 border border-blue-500/50"}`}>
               <div className="flex items-start gap-3">
@@ -87,8 +89,8 @@ export default function WeatherPage() {
         </section>
       )}
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="wide-shell pb-16">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* Fishing Rating */}
           <div className="lg:col-span-1 bg-gradient-to-br from-orange-500/20 to-[var(--theme-surface)] rounded-2xl border border-orange-500/30 p-6">
             <h2 className="text-lg font-semibold mb-4">🎣 Fishing Rating</h2>
@@ -102,9 +104,9 @@ export default function WeatherPage() {
           </div>
 
           {/* Current Conditions */}
-          <div className="lg:col-span-2 bg-[var(--theme-surface)] rounded-2xl border border-[var(--theme-border)] p-6">
+          <div className="lg:col-span-2 2xl:col-span-3 bg-[var(--theme-surface)] rounded-2xl border border-[var(--theme-border)] p-6">
             <h2 className="text-lg font-semibold mb-4">🌊 Current Conditions</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-4">
               <div className="text-center p-4 bg-[var(--theme-bg)] rounded-xl">
                 <div className="text-3xl mb-1">🌡️</div>
                 <div className="text-xl font-bold">{formatTemperature(conditions.airTemperature)}</div>
@@ -170,4 +172,3 @@ export default function WeatherPage() {
     </main>
   );
 }
-

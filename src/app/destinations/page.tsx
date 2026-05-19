@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { locations } from "@/lib/locations";
 import { MobileNav } from "@/components/mobile-nav";
 import { PublicDesktopNav } from "@/components/public-desktop-nav";
+import { MobileStickyActions } from "@/components/mobile-sticky-actions";
 
 export const metadata: Metadata = {
   title: "Destinations | Hey Charlie Charters",
@@ -17,7 +18,7 @@ export default function DestinationsPage() {
   const landmarkLocations = locations.filter((loc) => loc.category === "landmark");
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-colors duration-300 mobile-bottom-safe lg:pb-0">
       {/* Animated background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div 
@@ -32,17 +33,18 @@ export default function DestinationsPage() {
       <MobileNav />
 
       <PublicDesktopNav active="destinations" />
+      <MobileStickyActions primaryHref="/packages" secondaryHref="/#contact" />
 
       {/* Hero Section */}
-      <section className="pt-28 lg:pt-40 pb-16 lg:pb-24 px-4 lg:px-6">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="pt-28 lg:pt-40 pb-16 lg:pb-24">
+        <div className="wide-shell text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-sm text-cyan-600 dark:text-cyan-300 mb-6">
             <span>🗺️</span>
             <span>6 Stunning Locations</span>
           </div>
 
           <h1 
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6"
+            className="text-4xl sm:text-5xl lg:text-7xl 2xl:text-8xl font-bold mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Explore <span className="text-gradient-sunset">Cape Town&apos;s</span><br />
@@ -73,11 +75,11 @@ export default function DestinationsPage() {
       </section>
 
       {/* Featured Destination - Full Width */}
-      <section className="px-4 lg:px-6 mb-16 lg:mb-24">
-        <div className="max-w-7xl mx-auto">
+      <section className="wide-shell mb-16 lg:mb-24">
+        <div>
           <Link
             href={`/destinations/${locations[0].slug}`}
-            className="group relative block aspect-[21/9] rounded-3xl overflow-hidden"
+            className="group relative block min-h-[28rem] overflow-hidden rounded-2xl sm:aspect-[21/9]"
           >
             <Image
               src={locations[0].heroImage}
@@ -114,8 +116,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Beaches Section */}
-      <section id="beaches" className="py-12 lg:py-16 px-4 lg:px-6">
-        <div className="max-w-7xl mx-auto">
+      <section id="beaches" className="section-pad-sm">
+        <div className="wide-shell">
           <div className="flex items-center gap-4 mb-8">
             <span className="text-3xl">🏖️</span>
             <h2 
@@ -126,7 +128,7 @@ export default function DestinationsPage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-4">
             {beachLocations.map((location) => (
               <Link
                 key={location.slug}
@@ -164,8 +166,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Harbors Section */}
-      <section id="harbors" className="py-12 lg:py-16 px-4 lg:px-6 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
-        <div className="max-w-7xl mx-auto">
+      <section id="harbors" className="section-pad-sm bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
+        <div className="wide-shell">
           <div className="flex items-center gap-4 mb-8">
             <span className="text-3xl">⚓</span>
             <h2 
@@ -176,7 +178,7 @@ export default function DestinationsPage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-4">
             {harborLocations.map((location) => (
               <Link
                 key={location.slug}
@@ -214,8 +216,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Marine Reserves Section */}
-      <section id="marine-reserves" className="py-12 lg:py-16 px-4 lg:px-6">
-        <div className="max-w-7xl mx-auto">
+      <section id="marine-reserves" className="section-pad-sm">
+        <div className="wide-shell">
           <div className="flex items-center gap-4 mb-8">
             <span className="text-3xl">🐧</span>
             <h2 
@@ -270,8 +272,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Landmarks Section */}
-      <section id="landmarks" className="py-12 lg:py-16 px-4 lg:px-6 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent">
-        <div className="max-w-7xl mx-auto">
+      <section id="landmarks" className="section-pad-sm bg-gradient-to-b from-transparent via-orange-500/5 to-transparent">
+        <div className="wide-shell">
           <div className="flex items-center gap-4 mb-8">
             <span className="text-3xl">🏔️</span>
             <h2 
@@ -322,8 +324,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Map Preview Section */}
-      <section className="py-16 lg:py-24 px-4 lg:px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-pad">
+        <div className="wide-shell">
           <div className="text-center mb-12">
             <h2 
               className="text-2xl lg:text-4xl font-bold mb-4"
@@ -360,8 +362,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-24 px-4 lg:px-6">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="section-pad">
+        <div className="wide-shell text-center">
           <h2 
             className="text-2xl lg:text-4xl font-bold mb-4"
             style={{ fontFamily: "var(--font-display)" }}
@@ -389,8 +391,8 @@ export default function DestinationsPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--theme-border)] py-10 lg:py-12 px-4 lg:px-6 bg-[var(--theme-bg-secondary)] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
+      <footer className="border-t border-[var(--theme-border)] py-10 lg:py-12 bg-[var(--theme-bg-secondary)] transition-colors duration-300">
+        <div className="wide-shell">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-[var(--theme-text-muted)]">
             <div className="flex items-center gap-3">
               <Image src="/logo2.png" alt="Hey Charlie Charters" width={32} height={32} className="rounded-lg" />

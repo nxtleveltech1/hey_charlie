@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean:.next": "node -e \"try{require('node:fs').rmSync('.next',{recursive:true,force:true})}catch(e){if(e.code!=='ENOENT')throw e}\"",
     "dev": "next dev --turbopack",
+    "dev:fresh": "bun run clean:.next && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

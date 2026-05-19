@@ -5,6 +5,7 @@ import { eq, desc } from "drizzle-orm";
 import { MobileNav } from "@/components/mobile-nav";
 import { PublicDesktopNav } from "@/components/public-desktop-nav";
 import { PackageCard } from "@/components/package-card";
+import { MobileStickyActions } from "@/components/mobile-sticky-actions";
 
 export const metadata: Metadata = {
   title: "Charter Packages | Hey Charlie Charters",
@@ -19,7 +20,7 @@ export default async function PackagesPage() {
   });
 
   return (
-    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]">
+    <main className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] mobile-bottom-safe lg:pb-0">
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div
           className="absolute inset-0 transition-colors duration-300"
@@ -35,26 +36,27 @@ export default async function PackagesPage() {
 
       <MobileNav />
       <PublicDesktopNav active="packages" />
+      <MobileStickyActions primaryHref="/packages" secondaryHref="/#contact" />
 
-      <section className="relative pt-28 lg:pt-36 pb-12 px-4 lg:px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
+      <section className="relative pt-28 lg:pt-36 pb-12">
+        <div className="wide-shell text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-4" style={{ fontFamily: "var(--font-display)" }}>
             Charter <span className="text-gradient-ocean">Packages</span>
           </h1>
-          <p className="text-lg text-[var(--theme-text-muted)] max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-[var(--theme-text-muted)] max-w-3xl mx-auto">
             Curated experiences for every occasion. All packages include professional crew, safety equipment, and the Hey
             Charlie hospitality guarantee.
           </p>
         </div>
       </section>
 
-      <section className="pb-20 px-4 lg:px-6 max-w-7xl mx-auto">
+      <section className="wide-shell pb-20">
         {rows.length === 0 ? (
           <p className="text-center text-[var(--theme-text-muted)] py-16">
             No packages available yet. Please check back soon.
           </p>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {rows.map((pkg) => (
               <PackageCard
                 key={pkg.id}

@@ -47,6 +47,20 @@ export interface Location {
   category: "beach" | "harbor" | "marine-reserve" | "landmark";
 }
 
+const LOCATION_IMAGES = {
+  clifton: "/images/clifton-beaches.jpg",
+  campsBay: "/images/camps-bay.jpg",
+  houtBay: "/images/hout bay.png",
+  falseBay: "/images/false bay.png",
+  capePoint: "/images/cape point drop off.png",
+  seafood: "/images/seafood-feast.jpg",
+  simonsTown:
+    "https://upload.wikimedia.org/wikipedia/commons/e/ea/Simon%27s_Town_Harbour.jpg",
+  boulders:
+    "https://upload.wikimedia.org/wikipedia/commons/d/da/Penguins%2C_Cape_Town_%28_1050594%29.jpg",
+  sealIsland: "/images/seal-island.jpg",
+};
+
 export const locations: Location[] = [
   {
     id: "clifton-beaches",
@@ -59,20 +73,17 @@ export const locations: Location[] = [
 Each beach has its own personality. 1st Beach is popular with the LGBTQ+ community, 2nd Beach draws the trendy crowd, 3rd Beach is family-friendly, and 4th Beach is the most accessible with nearby parking and facilities.
 
 The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current, but the turquoise clarity makes it irresistible. Arrive by boat and you'll skip the steep staircase descent — plus you'll have the best view of the iconic Atlantic Seaboard mansions dotting the cliffs above.`,
-    heroImage: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.clifton,
     heroVideo: "https://www.youtube.com/embed/whFJwSFmUwk",
     coordinates: { lat: -33.9340, lng: 18.3776 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "Clifton 4th Beach aerial view", caption: "4th Beach from above — the most iconic view" },
-      { src: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&h=600&fit=crop", alt: "Clifton Beach sunset", caption: "Golden hour magic over the Atlantic" },
-      { src: "https://images.unsplash.com/photo-1591778472199-f81c7d01c7c8?w=800&h=600&fit=crop", alt: "Clifton turquoise waters", caption: "The famous turquoise waters of Clifton" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Cape Town coastline", caption: "The quintessential Clifton beach day" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Granite boulders beach", caption: "Giant boulders create sheltered coves" },
-      { src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop", alt: "Cape Town beach panorama", caption: "The full sweep of Clifton's beaches" },
+      { src: LOCATION_IMAGES.clifton, alt: "Aerial view of Clifton Beaches", caption: "The four Clifton beaches tucked below Lion's Head" },
+      { src: LOCATION_IMAGES.clifton, alt: "Clifton Beach turquoise water", caption: "White sand and Atlantic water at Clifton" },
+      { src: LOCATION_IMAGES.clifton, alt: "Clifton Beach coastline", caption: "The Atlantic Seaboard from above Clifton" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Clifton Beaches & Atlantic Seaboard 4K", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Town Beaches Tour", thumbnail: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Clifton Beaches & Atlantic Seaboard 4K", thumbnail: LOCATION_IMAGES.clifton },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Town Beaches Tour", thumbnail: LOCATION_IMAGES.clifton },
     ],
     highlights: [
       { title: "Wind-Protected", description: "Granite boulders shelter the beaches from the Cape Doctor southeast wind", icon: "🛡️" },
@@ -108,20 +119,17 @@ The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current,
 The beachfront promenade is lined with trendy restaurants, cafés, and cocktail bars — making it the perfect destination for a sundowner cruise followed by dinner. The water here is just as cold as Clifton, but the beach is more exposed to the wind, which is why arriving by boat on a calm day is pure magic.
 
 From the water, you'll appreciate the full grandeur of the mountains rising 800 meters straight from the sea, with Lion's Head standing sentinel to the north. It's a view that simply can't be captured from land.`,
-    heroImage: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.campsBay,
     heroVideo: "https://www.youtube.com/embed/whFJwSFmUwk",
     coordinates: { lat: -33.9505, lng: 18.3782 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=800&h=600&fit=crop", alt: "Camps Bay with Twelve Apostles", caption: "The iconic Camps Bay beachfront" },
-      { src: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=800&h=600&fit=crop", alt: "Camps Bay beach", caption: "The Twelve Apostles at golden hour" },
-      { src: "https://images.unsplash.com/photo-1578922746465-b2f7c6e20c00?w=800&h=600&fit=crop", alt: "Camps Bay palm trees", caption: "Palm-lined paradise" },
-      { src: "https://images.unsplash.com/photo-1591778472199-f81c7d01c7c8?w=800&h=600&fit=crop", alt: "Camps Bay sunset", caption: "Camps Bay sunset spektakel" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Cape Town beach panorama", caption: "Full sweep of the bay" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Lions Head view", caption: "Mountains meet sea" },
+      { src: LOCATION_IMAGES.campsBay, alt: "Camps Bay and the Twelve Apostles", caption: "The iconic Camps Bay beachfront under the Twelve Apostles" },
+      { src: LOCATION_IMAGES.campsBay, alt: "Camps Bay mountain backdrop", caption: "Mountain ridges rising behind Camps Bay" },
+      { src: LOCATION_IMAGES.campsBay, alt: "Camps Bay coastline panorama", caption: "The full sweep of Camps Bay" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Camps Bay & Twelve Apostles 4K", thumbnail: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Beach Experience", thumbnail: "https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Camps Bay & Twelve Apostles 4K", thumbnail: LOCATION_IMAGES.campsBay },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Beach Experience", thumbnail: LOCATION_IMAGES.campsBay },
     ],
     highlights: [
       { title: "Mountain Majesty", description: "The Twelve Apostles create a jaw-dropping backdrop", icon: "⛰️" },
@@ -157,19 +165,16 @@ From the water, you'll appreciate the full grandeur of the mountains rising 800 
 This is where you'll find the real Cape Town. Watch the fishing boats unload their catch, sample the freshest fish and chips at the harbour market, and then head out to Duiker Island — a short boat ride away — where thousands of Cape fur seals sun themselves on the rocks.
 
 The harbour is also the traditional starting point for the famous crayfish diving experience. When it's crayfish season (November to April), there's nothing quite like catching your own lobster and having it cooked fresh on the beach.`,
-    heroImage: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.houtBay,
     coordinates: { lat: -34.0476, lng: 18.3535 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800&h=600&fit=crop", alt: "Hout Bay harbor", caption: "The working fishing harbor" },
-      { src: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=800&h=600&fit=crop", alt: "Cape fur seals", caption: "Thousands of Cape fur seals on Duiker Island" },
-      { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "Chapman's Peak view", caption: "Chapman's Peak Drive from the water" },
-      { src: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?w=800&h=600&fit=crop", alt: "Fresh seafood platter", caption: "Fresh catch at the harbor market" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Hout Bay beach", caption: "Hout Bay beach at sunset" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Mountain backdrop", caption: "Surrounded by dramatic peaks" },
+      { src: LOCATION_IMAGES.houtBay, alt: "Hout Bay harbor and mountains", caption: "The working harbor below Hout Bay's mountain bowl" },
+      { src: LOCATION_IMAGES.sealIsland, alt: "Cape fur seals on Duiker Island", caption: "Cape fur seals on Duiker Island" },
+      { src: LOCATION_IMAGES.seafood, alt: "Fresh seafood platter", caption: "Fresh catch and seafood flavors from the harbor" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Hout Bay Harbor & Seal Island", thumbnail: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Fishing Harbor Tour", thumbnail: "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Hout Bay Harbor & Seal Island", thumbnail: LOCATION_IMAGES.sealIsland },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Fishing Harbor Tour", thumbnail: LOCATION_IMAGES.houtBay },
     ],
     highlights: [
       { title: "Seal Colony", description: "Visit Duiker Island's 5,000+ Cape fur seals", icon: "🦭" },
@@ -206,20 +211,17 @@ The harbour is also the traditional starting point for the famous crayfish divin
 But the real stars of Simon's Town are the African penguins. The colony at nearby Boulders Beach has made this one of Cape Town's most popular destinations. Arriving by boat gives you a unique perspective — watching the penguins waddle between boulders from the water, away from the crowds.
 
 The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas Current. This makes for more comfortable swimming and attracts different marine life — including the great white sharks that patrol the bay (don't worry, they're only interested in seals).`,
-    heroImage: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.simonsTown,
     heroVideo: "https://www.youtube.com/embed/hho0kiwXOaI",
     coordinates: { lat: -34.1908, lng: 18.4325 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=800&h=600&fit=crop", alt: "African penguins on beach", caption: "The famous Boulders Beach penguins" },
-      { src: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=800&h=600&fit=crop", alt: "African penguin close-up", caption: "African penguin portrait" },
-      { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "False Bay view", caption: "The warm waters of False Bay" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Cape Town coast", caption: "Colonial architecture along the main street" },
-      { src: "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=800&h=600&fit=crop", alt: "Penguin colony", caption: "Thousands of African penguins" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "False Bay coastline", caption: "The dramatic False Bay coastline" },
+      { src: LOCATION_IMAGES.simonsTown, alt: "Simon's Town harbor", caption: "The historic harbor and naval town" },
+      { src: LOCATION_IMAGES.boulders, alt: "African penguins near Simon's Town", caption: "Boulders Beach penguins nearby" },
+      { src: LOCATION_IMAGES.falseBay, alt: "False Bay coastline", caption: "The warmer waters of False Bay" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Simon's Town & Boulders Beach Penguins", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "False Bay Naval Heritage Tour", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Simon's Town & Boulders Beach Penguins", thumbnail: LOCATION_IMAGES.boulders },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "False Bay Naval Heritage Tour", thumbnail: LOCATION_IMAGES.simonsTown },
     ],
     highlights: [
       { title: "Penguin Paradise", description: "One of the world's most accessible penguin colonies", icon: "🐧" },
@@ -255,20 +257,17 @@ The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas 
 The waters here are wild and beautiful. The warm Agulhas Current from the Indian Ocean meets the cold Benguela Current from the Atlantic, creating swirling patterns you can actually see from the boat. This mixing of waters creates incredibly rich marine ecosystems — whales, dolphins, and seals are common sights.
 
 Approaching Cape Point from the sea gives you a perspective that most visitors never see. The cliffs, the lighthouse, the waves crashing against rocks that have claimed countless ships — it's a humbling and exhilarating experience.`,
-    heroImage: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.capePoint,
     heroVideo: "https://www.youtube.com/embed/hho0kiwXOaI",
     coordinates: { lat: -34.3568, lng: 18.4975 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "Cape Point aerial", caption: "The historic Cape Point lighthouse" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Dramatic cliffs", caption: "250-meter cliffs plunging into the sea" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Cape coastline", caption: "Where the Atlantic meets the Indian Ocean" },
-      { src: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=800&h=600&fit=crop", alt: "Marine wildlife", caption: "Marine life thrives in the mixing currents" },
-      { src: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&h=600&fit=crop", alt: "Sunset at Cape Point", caption: "Golden hour at the edge of Africa" },
-      { src: "https://images.unsplash.com/photo-1591778472199-f81c7d01c7c8?w=800&h=600&fit=crop", alt: "Cape Point from sea", caption: "The view most people never see" },
+      { src: LOCATION_IMAGES.capePoint, alt: "Cape Point cliffs and coastline", caption: "Cape Point's cliffs dropping into the sea" },
+      { src: LOCATION_IMAGES.capePoint, alt: "Cape Point from above", caption: "The dramatic edge of the Cape Peninsula" },
+      { src: LOCATION_IMAGES.falseBay, alt: "False Bay coastline near Cape Point", caption: "False Bay on the Cape Point route" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Point Lighthouse & Two Oceans", thumbnail: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Peninsula Dramatic Coastline", thumbnail: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Point Lighthouse & Two Oceans", thumbnail: LOCATION_IMAGES.capePoint },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Peninsula Dramatic Coastline", thumbnail: LOCATION_IMAGES.capePoint },
     ],
     highlights: [
       { title: "Two Oceans", description: "Witness the Atlantic and Indian Oceans meeting", icon: "🌊" },
@@ -304,20 +303,17 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
 The massive granite boulders that give the beach its name create sheltered pools with calm, crystal-clear water. Swimming here, you'll often find penguins swimming alongside you — an experience you simply can't get anywhere else in the world.
 
 Arriving by boat allows you to observe the colony from the water before the crowds arrive. You'll see penguins porpoising through the waves, surfing the swells, and diving for fish. It's a completely different perspective from the land-based boardwalks.`,
-    heroImage: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=1920&h=1080&fit=crop",
+    heroImage: LOCATION_IMAGES.boulders,
     heroVideo: "https://www.youtube.com/embed/hho0kiwXOaI",
     coordinates: { lat: -34.1976, lng: 18.4520 },
     gallery: [
-      { src: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=800&h=600&fit=crop", alt: "African penguin close-up", caption: "African penguins in their natural habitat" },
-      { src: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=800&h=600&fit=crop", alt: "Penguins on beach", caption: "Penguins on the famous boulders" },
-      { src: "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=800&h=600&fit=crop", alt: "Penguin colony", caption: "Penguin colony at Boulders Beach" },
-      { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop", alt: "Cape Town beach", caption: "Crystal-clear swimming pools" },
-      { src: "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=800&h=600&fit=crop", alt: "Coastal view", caption: "3,000+ penguins call this home" },
-      { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?w=800&h=600&fit=crop", alt: "Beach panorama", caption: "The full sweep of Boulders Beach" },
+      { src: LOCATION_IMAGES.boulders, alt: "African penguins at Boulders Beach", caption: "African penguins on the Boulders Beach sand" },
+      { src: LOCATION_IMAGES.boulders, alt: "Boulders Beach penguin colony", caption: "The famous penguin colony near Simon's Town" },
+      { src: LOCATION_IMAGES.simonsTown, alt: "Simon's Town near Boulders Beach", caption: "The nearby Simon's Town harbor" },
     ],
     videos: [
-      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Boulders Beach African Penguins", thumbnail: "https://images.unsplash.com/photo-1551009175-15bdf9dcb580?w=400&h=225&fit=crop" },
-      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Swimming with Penguins Experience", thumbnail: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=400&h=225&fit=crop" },
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Boulders Beach African Penguins", thumbnail: LOCATION_IMAGES.boulders },
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Swimming with Penguins Experience", thumbnail: LOCATION_IMAGES.boulders },
     ],
     highlights: [
       { title: "Swim with Penguins", description: "A once-in-a-lifetime wildlife experience", icon: "🐧" },
@@ -351,4 +347,3 @@ export function getLocationBySlug(slug: string): Location | undefined {
 export function getLocationsByCategory(category: Location["category"]): Location[] {
   return locations.filter((loc) => loc.category === category);
 }
-

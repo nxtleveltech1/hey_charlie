@@ -2,32 +2,44 @@
 
 import { useTheme } from "./theme-provider";
 
-export function ThemeToggle() {
-  const { theme, toggleTheme, mounted } = useTheme();
+interface ThemeToggleProps {
+  variant?: "default" | "on-dark";
+}
 
-  // Avoid hydration mismatch by not rendering until mounted
+export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
+  const { theme, toggleTheme, mounted } = useTheme();
+  const onDark = variant === "on-dark";
+
   if (!mounted) {
     return (
-      <div className="w-10 h-10 rounded-full bg-[var(--theme-surface)] border border-[var(--theme-border)]" />
+      <div
+        className={`h-10 w-10 rounded-full border ${
+          onDark ? "border-white/25 bg-white/10" : "border-[var(--theme-border)] bg-[var(--theme-surface)]"
+        }`}
+      />
     );
   }
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-10 h-10 rounded-full bg-[var(--theme-surface)] border border-[var(--theme-border)] flex items-center justify-center hover:bg-[var(--theme-surface-hover)] transition-all duration-300 group"
+      className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
+        onDark
+          ? "border-white/25 bg-white/10 hover:bg-white/20"
+          : "border-[var(--theme-border)] bg-[var(--theme-surface)] hover:bg-[var(--theme-surface-hover)]"
+      }`}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
-      {/* Sun icon */}
       <svg
-        className={`w-5 h-5 absolute text-yellow-500 transition-all duration-300 ${
+        className={`absolute h-5 w-5 transition-all duration-300 ${
           theme === "dark"
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 rotate-90 scale-50"
-        }`}
+            ? "scale-100 rotate-0 opacity-100"
+            : "scale-50 rotate-90 opacity-0"
+        } ${onDark ? "text-yellow-300" : "text-yellow-500"}`}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -36,16 +48,16 @@ export function ThemeToggle() {
           d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
         />
       </svg>
-      {/* Moon icon */}
       <svg
-        className={`w-5 h-5 absolute text-slate-700 transition-all duration-300 ${
+        className={`absolute h-5 w-5 transition-all duration-300 ${
           theme === "light"
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 -rotate-90 scale-50"
-        }`}
+            ? "scale-100 rotate-0 opacity-100"
+            : "scale-50 -rotate-90 opacity-0"
+        } ${onDark ? "text-white" : "text-slate-700"}`}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
