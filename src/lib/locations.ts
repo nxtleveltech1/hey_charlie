@@ -116,7 +116,7 @@ The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current,
     heroDescription: "Where the Twelve Apostles mountain range plunges into the Atlantic. White sand, swaying palms, and Cape Town's most glamorous beachfront strip.",
     fullDescription: `Camps Bay is arguably Cape Town's most famous beach, and for good reason. The kilometre-long stretch of white sand is backed by the dramatic Twelve Apostles mountain range, creating one of the most photographed beach scenes in the world.
 
-The beachfront promenade is lined with trendy restaurants, cafés, and cocktail bars — making it the perfect destination for a sundowner cruise followed by dinner. The water here is just as cold as Clifton, but the beach is more exposed to the wind, which is why arriving by boat on a calm day is pure magic.
+The beachfront promenade is lined with trendy restaurants, cafés, and cocktail bars — making it the perfect destination for a sundowner cruise followed by dinner. The water here is just as cold as Clifton, but the beach is more exposed to the wind, which is why arriving by boat on a calm day shows it at its best.
 
 From the water, you'll appreciate the full grandeur of the mountains rising 800 meters straight from the sea, with Lion's Head standing sentinel to the north. It's a view that simply can't be captured from land.`,
     heroImage: LOCATION_IMAGES.campsBay,
@@ -177,7 +177,7 @@ The harbour is also the traditional starting point for the famous crayfish divin
       { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Cape Town Fishing Harbor Tour", thumbnail: LOCATION_IMAGES.houtBay },
     ],
     highlights: [
-      { title: "Seal Colony", description: "Visit Duiker Island's 5,000+ Cape fur seals", icon: "🦭" },
+      { title: "Seal Colony", description: "Visit Duiker Island's large Cape fur seal colony", icon: "🦭" },
       { title: "Fresh Seafood", description: "Catch-of-the-day at the harbor market", icon: "🐟" },
       { title: "Crayfish Central", description: "The home of Cape Town crayfish diving", icon: "🦞" },
       { title: "Chapman's Peak", description: "See the famous road from sea level", icon: "🛣️" },
@@ -205,12 +205,12 @@ The harbour is also the traditional starting point for the famous crayfish divin
     slug: "simons-town",
     name: "Simon's Town",
     tagline: "Naval Heritage & African Penguins",
-    heroDescription: "Historic naval base meets penguin paradise. This charming False Bay town offers warm water swimming, rich maritime history, and unforgettable wildlife encounters.",
+    heroDescription: "Historic naval base meets penguin paradise. This charming False Bay town offers warm water swimming, rich maritime history, and remarkable wildlife encounters.",
     fullDescription: `Simon's Town has been home to navies for over 200 years — first the British Royal Navy, now the South African Navy. The result is a town dripping with maritime heritage: Victorian buildings, historic pubs, and tales of legendary ships.
 
 But the real stars of Simon's Town are the African penguins. The colony at nearby Boulders Beach has made this one of Cape Town's most popular destinations. Arriving by boat gives you a unique perspective — watching the penguins waddle between boulders from the water, away from the crowds.
 
-The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas Current. This makes for more comfortable swimming and attracts different marine life — including the great white sharks that patrol the bay (don't worry, they're only interested in seals).`,
+The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas Current. This makes for more comfortable swimming and attracts different marine life, including the dolphins and, in season, the whales that move through the bay.`,
     heroImage: LOCATION_IMAGES.simonsTown,
     heroVideo: "https://www.youtube.com/embed/hho0kiwXOaI",
     coordinates: { lat: -34.1908, lng: 18.4325 },
@@ -240,7 +240,7 @@ The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas 
     tips: [
       "Visit penguins early morning or late afternoon for active behaviour",
       "The historic main street has excellent restaurants",
-      "This is whale shark territory in summer (Feb-April)",
+      "Book a private charter to combine penguins with Cape Point in one day",
       "Combine with a Cape Point visit for the ultimate day trip",
     ],
     nearbyAttractions: ["Boulders Beach penguin colony", "Cape Point Nature Reserve", "Kalk Bay harbor", "Muizenberg surf beach"],
@@ -298,11 +298,11 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
     name: "Boulders Beach",
     tagline: "Swim with African Penguins",
     heroDescription: "One of the only places on Earth where you can swim alongside endangered African penguins. Ancient granite boulders create sheltered pools perfect for close encounters.",
-    fullDescription: `Boulders Beach isn't just famous — it's magical. The colony of African penguins (also called jackass penguins for their braying call) has made this their home since 1982, and the population has grown to around 3,000 birds.
+    fullDescription: `Boulders Beach is famous for good reason. A colony of African penguins (also called jackass penguins for their braying call) has made this their home since the 1980s, and the resident birds are a reliable sight year-round.
 
-The massive granite boulders that give the beach its name create sheltered pools with calm, crystal-clear water. Swimming here, you'll often find penguins swimming alongside you — an experience you simply can't get anywhere else in the world.
+The massive granite boulders that give the beach its name create sheltered pools with calm, crystal-clear water. Swimming here, you'll often see penguins porpoising through the waves nearby.
 
-Arriving by boat allows you to observe the colony from the water before the crowds arrive. You'll see penguins porpoising through the waves, surfing the swells, and diving for fish. It's a completely different perspective from the land-based boardwalks.`,
+Arriving by boat allows you to observe the colony from the water before the crowds arrive. You'll see penguins porpoising through the waves, surfing the swells, and diving for fish. It's a different perspective from the land-based boardwalks.`,
     heroImage: LOCATION_IMAGES.boulders,
     heroVideo: "https://www.youtube.com/embed/hho0kiwXOaI",
     coordinates: { lat: -34.1976, lng: 18.4520 },
@@ -316,7 +316,7 @@ Arriving by boat allows you to observe the colony from the water before the crow
       { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Swimming with Penguins Experience", thumbnail: LOCATION_IMAGES.boulders },
     ],
     highlights: [
-      { title: "Swim with Penguins", description: "A once-in-a-lifetime wildlife experience", icon: "🐧" },
+      { title: "Penguins Up Close", description: "Watch the colony from the water", icon: "🐧" },
       { title: "Sheltered Pools", description: "Calm, warm water protected by boulders", icon: "🏊" },
       { title: "Marine Reserve", description: "Protected habitat for endangered species", icon: "🌿" },
       { title: "Unique Perspective", description: "See penguins fishing from the boat", icon: "👀" },

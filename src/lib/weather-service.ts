@@ -1,11 +1,32 @@
 // Weather API Service for Hey Charlie Charters
-// Integrates StormGlass.io (marine data) and OpenWeatherMap (fallback)
+// Integrates StormGlass.io (marine data) and OpenWeatherMap (fallback).
+//
+// Mock/fabricated data is gated behind NEXT_PUBLIC_WEATHER_MOCK_ENABLED
+// (defaults to false). When API keys are absent and mock is disabled, the
+// public-facing getters return a clearly-marked "unavailable" state instead
+// of presenting fabricated data as live.
 
-// Durban coordinates (update as needed for Hey Charlie's location)
+// Cape Town — V&A Waterfront (departure point for every charter).
 export const CHARTER_COORDS = {
-  lat: -29.8587,
-  lng: 31.0218,
+  lat: -33.9077,
+  lng: 18.4235,
 };
+
+/** Whether at least one weather API key is configured. */
+export function hasWeatherApiKeys(): boolean {
+  return Boolean(
+    (process.env.STORMGLASS_API_KEY && process.env.STORMGLASS_API_KEY.length > 0) ||
+      (process.env.OPENWEATHERMAP_API_KEY && process.env.OPENWEATHERMAP_API_KEY.length > 0),
+  );
+}
+
+/**
+ * Explicit opt-in for mock/fabricated data. Defaults to false so the service
+ * NEVER presents fabricated conditions as live in production.
+ */
+export function isWeatherMockEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_WEATHER_MOCK_ENABLED === "true";
+}
 
 // Types
 export interface MarineConditions {
@@ -46,7 +67,8 @@ export interface DailyForecast {
   date: Date;
   conditions: MarineConditions;
   tides: TideData[];
-  sunTimes: SunTimes;
+  /** Nullable when the (keyless) sun API is unreachable and mock is disabled. */
+  sunTimes: SunTimes | null;
   fishingRating: FishingRating;
 }
 
@@ -66,6 +88,20 @@ export interface WeatherAlert {
   activeFrom: Date;
   activeTo: Date;
 }
+
+/** Clearly-marked "unavailable" payload returned by public getters. */
+export interface WeatherUnavailable {
+  available: false;
+  reason: "configuration" | "upstream-error";
+}
+
+export type CurrentConditionsResult =
+  | { available: true; conditions: MarineConditions }
+  | WeatherUnavailable;
+
+export type ForecastResult =
+  | { available: true; forecast: DailyForecast[] }
+  | WeatherUnavailable;
 
 // In-memory cache
 interface CacheEntry<T> {
@@ -227,7 +263,7 @@ function parseOpenWeatherConditions(data: Record<string, unknown>): MarineCondit
   }
 }
 
-// Get current marine conditions
+// Get current marine conditions (real APIs only). Returns null when unavailable.
 export async function getCurrentConditions(): Promise<MarineConditions | null> {
   const cacheKey = "current-conditions";
   const cached = getCached<MarineConditions>(cacheKey);
@@ -263,7 +299,24 @@ export async function getCurrentConditions(): Promise<MarineConditions | null> {
   return null;
 }
 
-// Get 7-day marine forecast
+/**
+ * Public-facing current-conditions getter. Returns live data when available,
+ * mock data only when explicitly enabled, otherwise a clearly-marked
+ * "unavailable" state. This is the recommended getter for pages/API consumers.
+ */
+export async function getPublicCurrentConditions(): Promise<CurrentConditionsResult> {
+  const conditions = await getCurrentConditions();
+  if (conditions) return { available: true as const, conditions };
+  if (isWeatherMockEnabled()) {
+    return { available: true as const, conditions: getMockConditions() };
+  }
+  const reason: WeatherUnavailable["reason"] = hasWeatherApiKeys()
+    ? "upstream-error"
+    : "configuration";
+  return { available: false as const, reason };
+}
+
+// Get 7-day marine forecast (real APIs only; mock fabricaton gated behind flag).
 export async function getMarineForecast(days = 7): Promise<DailyForecast[]> {
   const cacheKey = `forecast-${days}`;
   const cached = getCached<DailyForecast[]>(cacheKey);
@@ -306,29 +359,29 @@ export async function getMarineForecast(days = 7): Promise<DailyForecast[]> {
         forecasts.push({ date, conditions, tides, sunTimes, fishingRating });
       }
     }
-  } else {
+  } else if (isWeatherMockEnabled()) {
+    // DEV ONLY: fabricate a forecast from current conditions when mock is enabled.
     const current = await getCurrentConditions();
-    if (current) {
-      for (let i = 0; i < days; i++) {
-        const date = new Date(now);
-        date.setDate(date.getDate() + i);
+    const baseConditions = current ?? getMockConditions();
+    for (let i = 0; i < days; i++) {
+      const date = new Date(now);
+      date.setDate(date.getDate() + i);
 
-        const variation = (Math.random() - 0.5) * 0.4;
-        const mockConditions: MarineConditions = {
-          ...current,
-          timestamp: date,
-          airTemperature: current.airTemperature + variation * 5,
-          windSpeed: Math.max(5, current.windSpeed + variation * 10),
-          waveHeight: Math.max(0.5, current.waveHeight + variation * 1.5),
-          swellHeight: Math.max(0.3, current.swellHeight + variation * 1),
-        };
+      const variation = (Math.random() - 0.5) * 0.4;
+      const mockConditions: MarineConditions = {
+        ...baseConditions,
+        timestamp: date,
+        airTemperature: baseConditions.airTemperature + variation * 5,
+        windSpeed: Math.max(5, baseConditions.windSpeed + variation * 10),
+        waveHeight: Math.max(0.5, baseConditions.waveHeight + variation * 1.5),
+        swellHeight: Math.max(0.3, baseConditions.swellHeight + variation * 1),
+      };
 
-        const tides = await getTideData(date);
-        const sunTimes = await getSunTimes(date);
-        const fishingRating = calculateFishingRating(mockConditions);
+      const tides = await getTideData(date);
+      const sunTimes = await getSunTimes(date);
+      const fishingRating = calculateFishingRating(mockConditions);
 
-        forecasts.push({ date, conditions: mockConditions, tides, sunTimes, fishingRating });
-      }
+      forecasts.push({ date, conditions: mockConditions, tides, sunTimes, fishingRating });
     }
   }
 
@@ -339,7 +392,20 @@ export async function getMarineForecast(days = 7): Promise<DailyForecast[]> {
   return forecasts;
 }
 
-// Get tide data for a specific date
+/**
+ * Public-facing forecast getter. Returns live data when available, mock data
+ * only when enabled, otherwise a clearly-marked "unavailable" state.
+ */
+export async function getPublicForecast(days = 7): Promise<ForecastResult> {
+  const forecast = await getMarineForecast(days);
+  if (forecast.length > 0) return { available: true as const, forecast };
+  const reason: WeatherUnavailable["reason"] = hasWeatherApiKeys()
+    ? "upstream-error"
+    : "configuration";
+  return { available: false as const, reason };
+}
+
+// Get tide data for a specific date (real API; estimate only when mock enabled).
 export async function getTideData(date: Date): Promise<TideData[]> {
   const dateStr = date.toISOString().split("T")[0];
   const cacheKey = `tides-${dateStr}`;
@@ -364,23 +430,27 @@ export async function getTideData(date: Date): Promise<TideData[]> {
     return tides;
   }
 
-  // Fallback: Generate approximate tides
-  const baseTides: TideData[] = [
-    { time: new Date(date.setHours(6, 30)), height: 0.4, type: "low" },
-    { time: new Date(date.setHours(12, 45)), height: 1.8, type: "high" },
-    { time: new Date(date.setHours(18, 30)), height: 0.5, type: "low" },
-    { time: new Date(date.setHours(0, 15)), height: 1.6, type: "high" },
-  ];
+  // No real data. Only return an estimate when mock is explicitly enabled.
+  if (isWeatherMockEnabled()) {
+    const baseTides: TideData[] = [
+      { time: new Date(date.setHours(6, 30)), height: 0.4, type: "low" },
+      { time: new Date(date.setHours(12, 45)), height: 1.8, type: "high" },
+      { time: new Date(date.setHours(18, 30)), height: 0.5, type: "low" },
+      { time: new Date(date.setHours(0, 15)), height: 1.6, type: "high" },
+    ];
+    setCache(cacheKey, baseTides);
+    return baseTides;
+  }
 
-  setCache(cacheKey, baseTides);
-  return baseTides;
+  return [];
 }
 
-// Get sunrise/sunset times
-export async function getSunTimes(date: Date): Promise<SunTimes> {
+// Get sunrise/sunset times (keyless sunrise-sunset.org API). Null when
+// unreachable and mock is disabled.
+export async function getSunTimes(date: Date): Promise<SunTimes | null> {
   const dateStr = date.toISOString().split("T")[0];
   const cacheKey = `sun-${dateStr}`;
-  const cached = getCached<SunTimes>(cacheKey);
+  const cached = getCached<SunTimes | null>(cacheKey);
   if (cached) return cached;
 
   try {
@@ -405,15 +475,19 @@ export async function getSunTimes(date: Date): Promise<SunTimes> {
     console.error("Error fetching sun times:", error);
   }
 
-  const fallback: SunTimes = {
-    sunrise: new Date(date.setHours(6, 30)),
-    sunset: new Date(date.setHours(18, 30)),
-    firstLight: new Date(date.setHours(6, 0)),
-    lastLight: new Date(date.setHours(19, 0)),
-  };
+  // Only fall back to an estimate when mock is explicitly enabled.
+  if (isWeatherMockEnabled()) {
+    const fallback: SunTimes = {
+      sunrise: new Date(date.setHours(6, 30)),
+      sunset: new Date(date.setHours(18, 30)),
+      firstLight: new Date(date.setHours(6, 0)),
+      lastLight: new Date(date.setHours(19, 0)),
+    };
+    setCache(cacheKey, fallback);
+    return fallback;
+  }
 
-  setCache(cacheKey, fallback);
-  return fallback;
+  return null;
 }
 
 // Calculate fishing rating based on conditions
@@ -498,7 +572,7 @@ export function calculateFishingRating(conditions: MarineConditions): FishingRat
   return { score, label, reasons: [...reasons, ...negatives], bestTimes };
 }
 
-// Get active weather alerts (from API and admin)
+// Get active weather alerts (from API and admin). Returns [] when no live data.
 export async function getActiveAlerts(): Promise<WeatherAlert[]> {
   const cacheKey = "active-alerts";
   const cached = getCached<WeatherAlert[]>(cacheKey);
@@ -585,7 +659,11 @@ export function formatDate(date: Date): string {
   });
 }
 
-// Generate mock data for development
+/**
+ * Static mock conditions for development/demo. Only ever surfaced to consumers
+ * through `getPublicCurrentConditions()` / `getPublicForecast()` when
+ * NEXT_PUBLIC_WEATHER_MOCK_ENABLED is set to "true".
+ */
 export function getMockConditions(): MarineConditions {
   return {
     timestamp: new Date(),
@@ -608,4 +686,3 @@ export function getMockConditions(): MarineConditions {
     uvIndex: 6,
   };
 }
-

@@ -1,79 +1,59 @@
-export const siteConfig = {
-  name: "Hey Charlie Charters",
-  tagline: "Cape Town's Premier Charter Experience",
-  description:
-    "Experience Cape Town's stunning coastline with Hey Charlie Charters. Sundowner cruises, whale watching, fishing trips, crayfish diving, and private charters.",
-  url: "https://heycharliecharters.co.za",
-  address: "V&A Waterfront, Cape Town",
-  phone: "+27123456789",
-  phoneDisplay: "+27 12 345 6789",
-  email: "ahoy@heycharliecharters.co.za",
-  whatsapp: "27123456789",
-  heroPoster: "/images/sundown-cruise-hero.png",
-  heroVideo: "/Gallery/HC%201%20(1).mp4",
-  social: {
-    facebook: "#",
-    instagram: "#",
-    twitter: "#",
-  },
-} as const;
+/**
+ * Hey Charlie Charters — site configuration (backward-compat facade).
+ *
+ * The canonical config now lives in `@/lib/content/site-config`. This module
+ * re-exports it and keeps the legacy names (`siteConfig`, `getSiteConfig`,
+ * `getPublicSiteConfig`, `howItWorksSteps`, and the deprecated `trustStats`,
+ * `testimonials`, `certifications`) alive so existing imports keep resolving
+ * while other waves migrate.
+ *
+ * Canonical domain: https://heycharliecharters.com
+ * "Hey Charlie" is the BRAND/BOAT name only — there is no "Captain Charlie".
+ */
 
-export const trustStats = [
-  { value: "500+", label: "Happy Guests" },
-  { value: "4.9★", label: "Rating" },
-  { value: "8+", label: "Experiences" },
-] as const;
+import {
+  siteConfig,
+  getSiteConfig,
+  getPublicSiteConfig,
+} from "@/lib/content/site-config";
 
-export const testimonials = [
-  {
-    quote:
-      "The sundowner cruise was absolutely magical. Captain Charlie knows every hidden spot along the coast.",
-    author: "Sarah M.",
-    location: "London, UK",
-    rating: 5,
-  },
-  {
-    quote:
-      "Catching our own crayfish and having it cooked on the beach - best food experience of our lives!",
-    author: "James & Lisa",
-    location: "Sydney, Australia",
-    rating: 5,
-  },
-  {
-    quote:
-      "We saw 12 whales in 3 hours! The marine biologist guide made it educational and unforgettable.",
-    author: "The Van Der Berg Family",
-    location: "Johannesburg, SA",
-    rating: 5,
-  },
-] as const;
+export { siteConfig, getSiteConfig, getPublicSiteConfig };
 
-export const howItWorksSteps = [
-  {
-    step: 1,
-    title: "Choose Your Charter",
-    description:
-      "Browse our curated packages and pick the perfect adventure for your group.",
-    icon: "compass" as const,
-  },
-  {
-    step: 2,
-    title: "Meet at the V&A",
-    description:
-      "Board at the Waterfront with our professional crew ready to welcome you aboard.",
-    icon: "anchor" as const,
-  },
-  {
-    step: 3,
-    title: "Live the Experience",
-    description:
-      "Sail the Cape coast, spot wildlife, and create memories that last a lifetime.",
-    icon: "sparkles" as const,
-  },
-] as const;
+export type {
+  SiteConfig,
+  ServerSiteConfig,
+  AddressConfig,
+  BusinessHoursConfig,
+  BusinessHoursDay,
+  GeoConfig,
+  SocialConfig,
+  Credential,
+  CredentialAuthority,
+  HowItWorksStep,
+  PermitConfig,
+} from "@/lib/content/site-config";
 
-export const certifications = [
-  { label: "SAMSA Certified", icon: "shield" as const },
-  { label: "Fully Insured", icon: "shield" as const },
-  { label: "Coast Guard", icon: "shield" as const },
-] as const;
+/** Top-level alias consumed by the "How it works" section. */
+export const howItWorksSteps = siteConfig.howItWorksSteps;
+
+// --- Deprecated aliases (backward compatibility) ----------------------------
+//
+// These keep existing imports compiling while other waves migrate to the new
+// structured fields. They intentionally carry NO numeric claims, NO fake
+// testimonials and NO unverified credential badges.
+
+/** @deprecated Numeric trust claims removed. Use `siteConfig.credentials` / reviews instead. */
+export const trustStats: readonly { value: string; label: string }[] = [];
+
+/** @deprecated Fake testimonials removed. Reviews are disabled pending real guest stories. */
+export const testimonials: readonly {
+  quote: string;
+  author: string;
+  location: string;
+  rating: number;
+}[] = [];
+
+/** @deprecated Use `siteConfig.credentials`. Only verified credentials are surfaced. */
+export const certifications: readonly { label: string; icon: "shield" }[] = siteConfig.credentials
+  .filter((c) => c.verified)
+  .map((c) => ({ label: c.label, icon: "shield" as const }));

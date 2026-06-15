@@ -1,5 +1,4 @@
-import { locations } from "@/lib/locations";
-import { specialOffers } from "@/lib/packages";
+import { getDestinations, getActiveOffers } from "@/lib/content";
 
 export type ExperienceIcon =
   | "sunset"
@@ -42,39 +41,74 @@ export const experiences: ExperienceCategory[] = [
   {
     name: "Beach Hopping",
     icon: "beach",
-    count: "Secret coves",
+    count: "Atlantic coves",
     href: "/destinations/clifton-beaches",
     image: "/images/clifton-beaches.jpg",
   },
   {
     name: "Crayfish Diving",
     icon: "crayfish",
-    count: "Catch & cook",
+    count: "In season",
     href: "/booking/crayfish-experience",
     image: "/images/catch-cook-crayfish.jpg",
   },
   {
     name: "Private Events",
     icon: "champagne",
-    count: "Customized",
+    count: "Up to 12 guests",
     href: "/booking/private-charter",
     image: "/images/private-charter-guests.jpeg",
   },
 ];
 
-export const homeDestinations = locations.slice(0, 6).map((loc) => ({
-  name: loc.name,
-  description: loc.tagline,
-  slug: loc.slug,
-  image: loc.heroImage,
-  category: loc.category,
-}));
+/**
+ * Home destinations preview, sourced from the content module.
+ *
+ * Curated to destinations that currently have a valid local hero image, so the
+ * homepage never renders a broken/placeholder image. Simon's Town and Boulders
+ * Beach are flagged (REQUIRED-ASSET) in the content module and join the preview
+ * once their local photos are supplied. Five items fill the destinations grid
+ * (one featured 2×2 + four cards).
+ */
+const HOME_DESTINATION_SLUGS = [
+  "clifton-beaches",
+  "camps-bay",
+  "hout-bay",
+  "seal-island",
+  "cape-point",
+] as const;
 
-export { specialOffers };
+const homeDestinationsSource = getDestinations();
+
+export const homeDestinations = HOME_DESTINATION_SLUGS.flatMap((slug) => {
+  const dest = homeDestinationsSource.find((d) => d.slug === slug);
+  return dest
+    ? {
+        name: dest.name,
+        description: dest.tagline,
+        slug: dest.slug,
+        image: dest.heroImage,
+        category: dest.category,
+      }
+    : [];
+});
+
+/**
+ * Active offers sourced from the content module so expired offers never render.
+ * Legacy shape preserved for the offers carousel.
+ */
+export const specialOffers = getActiveOffers().map((o) => ({
+  id: o.id,
+  title: o.title,
+  description: o.description,
+  validUntil: o.validUntilDisplay,
+  code: o.code,
+}));
 
 export const categoryLabels: Record<string, string> = {
   beach: "Beach",
   harbor: "Harbor",
   "marine-reserve": "Marine Reserve",
   landmark: "Landmark",
+  "departure-hub": "Departure Hub",
 };

@@ -2,239 +2,105 @@ import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 import "dotenv/config";
+import {
+  getPackages,
+  getCrew,
+  CREW_IMAGE_REQUIRED,
+  type Package as ContentPackage,
+  type PackageCategory,
+} from "@/lib/content";
 
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
 
-/** Synced from Cape Marine Charters crew; Myles Seymor replaced by Justin Profer for Hey Charlie. */
-const crewMembersToSeed = [
-  {
-    name: "Gareth Bew",
-    role: "Captain, Founder & Owner",
-    bio: "Gareth is the driving force behind Hey Charlie Charters. As Captain, Founder and Owner, he brings unmatched passion and expertise to every expedition. His deep knowledge of Cape waters and dedication to exceptional on-water experiences has built Hey Charlie Charters into the premier charter operation it is today.",
-    yearsExperience: 15,
-    certifications: ["SAMSA Skipper License", "Sea Safety Certificate", "Advanced First Aid", "VHF Radio Operator"],
-    email: "gareth@heycharliecharters.co.za",
-    phone: "+27 82 555 0001",
-    imageUrl: "/images/gareth.png",
-    isActive: true,
-    displayOrder: 1,
-  },
-  {
-    name: "Justin Profer",
-    role: "Owner",
-    bio: "Justin is a co-owner of Hey Charlie Charters, bringing business acumen and a shared passion for the ocean to the operation. His commitment to customer satisfaction and operational excellence ensures every charter runs smoothly from booking to disembarkation.",
-    yearsExperience: 10,
-    certifications: ["Sea Safety Certificate", "First Aid Level 2"],
-    email: "justin@heycharliecharters.co.za",
-    phone: "+27 82 555 0002",
-    imageUrl: "/images/justin-profer.png",
-    isActive: true,
-    displayOrder: 2,
-  },
-  {
-    name: "Wayne Laufs",
-    role: "First Hand",
-    bio: "Wayne is our skilled First Hand, essential to every successful charter. His expertise in rigging, safety, and guest experience ensures you get the most out of your time on the water — whether you are cruising, fishing, or exploring the coast.",
-    yearsExperience: 8,
-    certifications: ["SAMSA Deckhand Certificate", "Sea Safety Certificate", "First Aid Level 2"],
-    email: "wayne@heycharliecharters.co.za",
-    phone: "+27 82 555 0003",
-    imageUrl: "/images/wayne.png",
-    isActive: true,
-    displayOrder: 3,
-  },
-];
+/**
+ * SOURCE OF TRUTH SPLIT (important for future waves):
+ *
+ *  - The canonical package + crew content lives in `@/lib/content`. Marketing
+ *    reads directly from there (richer model: season, inclusions, exclusions,
+ *    permits, FAQs, relatedSlugs, bestFor, offSeason, byRequest, etc.).
+ *  - This seed maps the content module onto the EXISTING booking/admin DB
+ *    schema, which currently has fewer columns. Fields the schema lacks
+ *    (season, inclusions, exclusions, requiresPermit, faqs, relatedSlugs,
+ *    bestFor, offSeason, byRequest, etc.) are intentionally NOT stored here —
+ *    they live in the content module only. DB = booking/admin source;
+ *    content module = marketing source.
+ *  - Required DB columns are always satisfied. Crew phones are the real numbers
+ *    from the content module; crew photos are NOT seeded (no owned assets yet —
+ *    in particular the missing justin-profer.png is never inserted) and are
+ *    stored as NULL with a loud warning until real assets are supplied.
+ */
 
-const packagesToSeed = [
-  {
-    slug: "sundowner-cruise",
-    name: "Sundowner Cruise",
-    tagline: "Golden hour on the Atlantic",
-    description: "Watch the sun melt into the Atlantic Ocean as you cruise along the stunning Cape Town coastline. Complimentary sparkling wine and canapés included.",
-    duration: "2.5 hours",
-    pricePerPerson: "850",
-    minGuests: 2,
-    maxGuests: 12,
-    category: "relaxation",
-    highlights: [
-      "Sparkling wine & canapés",
-      "Professional skipper",
-      "Music & Bluetooth speakers",
-      "Photo opportunities at iconic landmarks",
-    ],
-    isActive: true,
-    isFeatured: true,
-  },
-  {
-    slug: "whale-watching",
-    name: "Whale Watching Safari",
-    tagline: "Giants of the deep",
-    description: "Witness the majestic Southern Right Whales and Humpbacks in their natural habitat. Peak season June–November with near-guaranteed sightings.",
-    duration: "3 hours",
-    pricePerPerson: "1200",
-    minGuests: 2,
-    maxGuests: 10,
-    category: "wildlife",
-    highlights: [
-      "Marine biologist guide",
-      "Whale sighting guarantee*",
-      "Hot beverages & snacks",
-      "Waterproof jackets provided",
-    ],
-    isActive: true,
-    isFeatured: true,
-  },
-  {
-    slug: "crayfish-experience",
-    name: "Catch & Cook Crayfish",
-    tagline: "Ocean to plate in hours",
-    description: "Dive for your own West Coast rock lobster, then feast on the beach as our chef prepares your catch with local flavors. An authentic Cape experience.",
-    duration: "Full day (8 hours)",
-    pricePerPerson: "2800",
-    minGuests: 2,
-    maxGuests: 6,
-    category: "culinary",
-    highlights: [
-      "Snorkeling gear provided",
-      "Professional dive guide",
-      "Beach-side cooking station",
-      "All sides & drinks included",
-      "Crayfish permit included",
-    ],
-    isActive: true,
-    isFeatured: true,
-  },
-  {
-    slug: "deep-sea-fishing",
-    name: "Deep Sea Fishing",
-    tagline: "Battle the big ones",
-    description: "Target Yellowfin Tuna, Cape Snoek, and the legendary Cape Yellowtail with our experienced crew. All skill levels welcome.",
-    duration: "6 hours",
-    pricePerPerson: "1800",
-    minGuests: 2,
-    maxGuests: 8,
-    category: "adventure",
-    highlights: [
-      "All tackle & bait included",
-      "Experienced fishing crew",
-      "Keep your catch",
-      "Light lunch & drinks",
-    ],
-    isActive: true,
-    isFeatured: false,
-  },
-  {
-    slug: "beach-hopper",
-    name: "Beach Hopper",
-    tagline: "Discover hidden coves",
-    description: "Explore Cape Town's most beautiful and secluded beaches, only accessible by boat. Swim, snorkel, and sunbathe in paradise.",
-    duration: "5 hours",
-    pricePerPerson: "1500",
-    minGuests: 4,
-    maxGuests: 10,
-    category: "adventure",
-    highlights: [
-      "3 exclusive beach stops",
-      "Snorkeling equipment",
-      "Picnic lunch & refreshments",
-      "Beach games & paddleboards",
-    ],
-    isActive: true,
-    isFeatured: false,
-  },
-  {
-    slug: "private-charter",
-    name: "Private Charter",
-    tagline: "Your ocean, your rules",
-    description: "Exclusive use of Hey Charlie for your group. Customize your itinerary, catering, and experience. Perfect for celebrations.",
-    duration: "Custom",
-    pricePerPerson: "12000",
-    minGuests: 6,
-    maxGuests: 20,
-    category: "relaxation",
-    highlights: [
-      "Up to 12 guests",
-      "Fully customizable itinerary",
-      "Premium catering options",
-      "Dedicated crew & service",
-      "Special occasion packages",
-    ],
-    isActive: true,
-    isFeatured: false,
-  },
-  {
-    slug: "coastline-explorer",
-    name: "Coastline Explorer",
-    tagline: "The full Cape experience",
-    description: "From the V&A Waterfront to Cape Point, cruise the entire False Bay coastline. See seals, penguins, and dramatic cliff faces.",
-    duration: "Full day (7 hours)",
-    pricePerPerson: "2200",
-    minGuests: 4,
-    maxGuests: 8,
-    category: "adventure",
-    highlights: [
-      "Cape Point & Boulders Beach views",
-      "Seal Island stop",
-      "Gourmet lunch onboard",
-      "Commentary & history",
-    ],
-    isActive: true,
-    isFeatured: true,
-  },
-  {
-    slug: "seafood-feast",
-    name: "Seafood Beach Feast",
-    tagline: "Gourmet dining on the sand",
-    description: "A curated five-course seafood experience served on a private beach. Fresh oysters, grilled linefish, and local delicacies under the stars.",
-    duration: "4 hours",
-    pricePerPerson: "3500",
-    minGuests: 4,
-    maxGuests: 12,
-    category: "culinary",
-    highlights: [
-      "5-course tasting menu",
-      "Wine pairing included",
-      "Private chef & service",
-      "Bonfire & live music",
-      "Sunset cruise included",
-    ],
-    isActive: true,
-    isFeatured: false,
-  },
-  {
-    slug: "seal-island",
-    name: "Seal Island Tour",
-    tagline: "Get up close with thousands of seals",
-    description: "Visit Duiker Island (Seal Island) off Hout Bay, home to over 5,000 Cape fur seals. This short boat trip offers incredible wildlife viewing as seals swim alongside the boat and sunbathe on the rocks.",
-    duration: "1.5 hours",
-    pricePerPerson: "450",
-    minGuests: 2,
-    maxGuests: 12,
-    category: "wildlife",
-    highlights: [
-      "5,000+ Cape fur seals",
-      "Wildlife photography opportunities",
-      "Expert commentary",
-      "Close-up seal encounters",
-      "Perfect for families",
-    ],
-    isActive: true,
-    isFeatured: false,
-  },
-];
+// Map canonical content categories onto the legacy booking/admin category
+// vocabulary the current PackageCard / booking UI expects. The three new
+// off-season categories map to the closest existing bucket.
+const DB_CATEGORY_MAP: Record<PackageCategory, string> = {
+  sundowner: "relaxation",
+  private: "private",
+  "whale-watching": "wildlife",
+  fishing: "fishing",
+  crayfish: "culinary",
+  "beach-hopping": "adventure",
+  corporate: "private",
+  coastal: "adventure",
+  wildlife: "wildlife",
+  shipwreck: "adventure",
+  "event-support": "private",
+  custom: "private",
+};
+
+const packagesToSeed = getPackages().map((pkg: ContentPackage) => ({
+  slug: pkg.slug,
+  name: pkg.name,
+  tagline: pkg.tagline,
+  description: pkg.longDescription,
+  duration: pkg.durationLabel,
+  // NOTE: the DB only has `price_per_person`. For private-charter the content
+  // price is the boat price for a half-day (priceUnit "per half-day"); the
+  // booking layer must interpret `priceUnit` rather than assuming per-person.
+  // For priceUnit "request" (off-season/on-request services) the content price
+  // is 0 — the UI shows "Request a quote"; the booking layer should treat a
+  // zero/`request` price as quote-on-request rather than free.
+  pricePerPerson: pkg.price.toString(),
+  minGuests: pkg.minGuests,
+  maxGuests: pkg.maxGuests,
+  category: DB_CATEGORY_MAP[pkg.category],
+  highlights: pkg.highlights,
+  // Store NULL for placeholder/sentinel hero images (e.g. "REQUIRED-ASSET: ...")
+  // so the booking/admin DB never holds a broken placeholder path. The
+  // marketing layer reads the real asset from the content module.
+  imageUrl: pkg.heroImage.startsWith("REQUIRED-ASSET") ? null : pkg.heroImage,
+  isActive: true,
+  isFeatured: pkg.featured,
+}));
+
+const crewMembersToSeed = getCrew().map((member) => ({
+  name: member.name,
+  role: member.role,
+  bio: member.bio,
+  yearsExperience: member.yearsExperience,
+  // Verified status lives in the content module; the DB stores labels only.
+  certifications: member.certifications.map((c) => c.label),
+  email: null, // REQUIRED: individual crew emails pending confirmation.
+  phone: member.phone, // Real crew number from the content module.
+  // REQUIRED: real owned crew photo pending (do NOT seed the missing
+  // justin-profer.png or any other unowned asset). NULL until supplied.
+  imageUrl: member.image === CREW_IMAGE_REQUIRED ? null : member.image,
+  isActive: member.active,
+  displayOrder: member.order,
+}));
 
 async function seed() {
   console.log("🌱 Seeding database...");
 
   try {
-    // Insert packages
+    // Insert packages (idempotent on slug).
     for (const pkg of packagesToSeed) {
       await db.insert(schema.packages).values(pkg).onConflictDoNothing();
       console.log(`  ✓ Package: ${pkg.name}`);
     }
 
-    // Insert default time slots
+    // Insert default time slots (idempotent).
     const timeSlots = [
       { name: "Morning", startTime: "08:00", endTime: "12:00", isActive: true },
       { name: "Afternoon", startTime: "13:00", endTime: "17:00", isActive: true },
@@ -255,6 +121,11 @@ async function seed() {
     }
 
     console.log("\n✅ Seeding complete!");
+    if (crewMembersToSeed.some((m) => m.imageUrl === null)) {
+      console.log(
+        "  ⚠️  Crew images are NULL — supply real owned photos in @/lib/content/crew.ts.",
+      );
+    }
   } catch (error) {
     console.error("❌ Seeding failed:", error);
     process.exit(1);
@@ -262,4 +133,3 @@ async function seed() {
 }
 
 seed();
-

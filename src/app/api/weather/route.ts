@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import {
-  getCurrentConditions,
-  getMarineForecast,
+  getPublicCurrentConditions,
+  getPublicForecast,
   getTideData,
   getActiveAlerts,
-  getMockConditions,
   calculateFishingRating,
   getSunTimes,
 } from "@/lib/weather-service";
+
+// NOTE: This route delegates to the public-facing getters in weather-service,
+// which gate mock data behind NEXT_PUBLIC_WEATHER_MOCK_ENABLED and return a
+// clearly-marked "unavailable" state when live data can't be obtained. Mock
+// data is therefore never presented as live unless explicitly enabled.
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,69 +21,78 @@ export async function GET(request: Request) {
   try {
     switch (type) {
       case "current": {
-        let conditions = await getCurrentConditions();
-        
-        // Use mock data if API fails
-        if (!conditions) {
-          conditions = getMockConditions();
-        }
-        
-        const fishingRating = calculateFishingRating(conditions);
+        const result = await getPublicCurrentConditions();
         const alerts = await getActiveAlerts();
-        const sunTimes = await getSunTimes(new Date());
         const tides = await getTideData(new Date());
-        
+        const sunTimes = await getSunTimes(new Date());
+
+        if (result.available) {
+          return NextResponse.json({
+            available: true,
+            conditions: result.conditions,
+            fishingRating: calculateFishingRating(result.conditions),
+            alerts,
+            sunTimes,
+            tides,
+          });
+        }
+
         return NextResponse.json({
-          conditions,
-          fishingRating,
+          available: false,
+          reason: result.reason,
+          conditions: null,
+          fishingRating: null,
           alerts,
           sunTimes,
           tides,
         });
       }
-      
+
       case "forecast": {
-        const forecast = await getMarineForecast(days);
-        return NextResponse.json({ forecast });
+        const result = await getPublicForecast(days);
+        if (result.available) {
+          return NextResponse.json({ available: true, forecast: result.forecast });
+        }
+        return NextResponse.json({
+          available: false,
+          reason: result.reason,
+          forecast: [],
+        });
       }
-      
+
       case "tides": {
         const date = searchParams.get("date")
           ? new Date(searchParams.get("date")!)
           : new Date();
         const tides = await getTideData(date);
-        return NextResponse.json({ tides });
+        return NextResponse.json({ available: tides.length > 0, tides });
       }
-      
+
       case "alerts": {
         const alerts = await getActiveAlerts();
         return NextResponse.json({ alerts });
       }
-      
+
       default:
         return NextResponse.json(
           { error: "Invalid type parameter" },
-          { status: 400 }
+          { status: 400 },
         );
     }
   } catch (error) {
     console.error("Weather API error:", error);
-    
-    // Return mock data on error to prevent UI breakage
-    const mockConditions = getMockConditions();
-    return NextResponse.json({
-      conditions: mockConditions,
-      fishingRating: calculateFishingRating(mockConditions),
-      alerts: [],
-      sunTimes: {
-        sunrise: new Date(new Date().setHours(6, 30)),
-        sunset: new Date(new Date().setHours(18, 30)),
-        firstLight: new Date(new Date().setHours(6, 0)),
-        lastLight: new Date(new Date().setHours(19, 0)),
+    return NextResponse.json(
+      {
+        available: false,
+        reason: "upstream-error",
+        conditions: null,
+        fishingRating: null,
+        alerts: [],
+        sunTimes: null,
+        tides: [],
+        error: "Weather data temporarily unavailable",
       },
-      tides: [],
-      error: "Weather data temporarily unavailable",
-    });
+      { status: 200 },
+    );
   }
 }
-
