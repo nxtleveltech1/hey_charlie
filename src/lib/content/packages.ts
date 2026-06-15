@@ -897,15 +897,33 @@ export const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
   "private-charter": PACKAGE_IMAGES.privateCharter,
   "seal-island": PACKAGE_IMAGES.sealIsland,
   "shipwreck-tour": "/images/cape point drop off.png",
+  "mobile-refreshment-station": "/images/private-charter-guests.jpeg",
   "custom-services": "/images/private-charter-guests.jpeg",
 };
 
 const DEFAULT_PACKAGE_IMAGE = PACKAGE_IMAGES.sundowner;
 
+/** Placeholder sentinel in content — never pass to next/image. */
+export function isValidPackageImage(
+  src: string | null | undefined,
+): src is string {
+  return !!src && src.length > 0 && !src.startsWith("REQUIRED-ASSET");
+}
+
+/** DB imageUrl when set, otherwise catalogue → slug map → default. */
+export function resolvePackageImageUrl(
+  imageUrl: string | null | undefined,
+  slug: string,
+): string {
+  if (isValidPackageImage(imageUrl)) return imageUrl;
+  return getFallbackPackageImage(slug);
+}
+
 /** Resolve a fallback hero image for a slug: catalogue → slug map → default. */
 export function getFallbackPackageImage(slug: string): string {
   const pkg = getPackageBySlug(slug);
-  return pkg?.heroImage ?? PACKAGE_IMAGE_BY_SLUG[slug] ?? DEFAULT_PACKAGE_IMAGE;
+  if (isValidPackageImage(pkg?.heroImage)) return pkg.heroImage;
+  return PACKAGE_IMAGE_BY_SLUG[slug] ?? DEFAULT_PACKAGE_IMAGE;
 }
 
 export { packages as packageCatalogue };

@@ -13,7 +13,7 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
   if (!mounted) {
     return (
       <div
-        className={`h-10 w-10 rounded-full border ${
+        className={`h-11 w-11 rounded-full border ${
           onDark ? "border-white/25 bg-white/10" : "border-[var(--theme-border)] bg-[var(--theme-surface)]"
         }`}
       />
@@ -23,7 +23,7 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
   return (
     <button
       onClick={toggleTheme}
-      className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
+      className={`relative flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300 ${
         onDark
           ? "border-white/25 bg-white/10 hover:bg-white/20"
           : "border-[var(--theme-border)] bg-[var(--theme-surface)] hover:bg-[var(--theme-surface-hover)]"

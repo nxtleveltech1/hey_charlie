@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PackageCard } from "@/components/package-card";
 import { formatPrice } from "@/lib/booking-utils";
-import { getFallbackPackageImage } from "@/lib/packages";
+import { resolvePackageImageUrl } from "@/lib/packages";
 import { SectionHeader } from "./section-header";
 import { RevealOnScroll } from "./reveal-on-scroll";
 
@@ -23,13 +23,14 @@ export interface HomePackage {
 interface HomePackagesSectionProps {
   packages: HomePackage[];
   totalCount: number;
+  /** Hide section header when the page already has its own hero title */
+  hideHeader?: boolean;
+  /** Show link to /packages (default true) */
+  showViewAllLink?: boolean;
 }
 
 function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
-  const imageSrc =
-    pkg.imageUrl && pkg.imageUrl.length > 0
-      ? pkg.imageUrl
-      : getFallbackPackageImage(pkg.slug);
+  const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
 
   return (
     <Link
@@ -75,26 +76,38 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
   );
 }
 
-export function HomePackagesSection({ packages, totalCount }: HomePackagesSectionProps) {
+export function HomePackagesSection({
+  packages,
+  totalCount,
+  hideHeader = false,
+  showViewAllLink = true,
+}: HomePackagesSectionProps) {
   const featured = packages.find((p) => p.isFeatured);
   const gridPackages = featured ? packages.filter((p) => p.id !== featured.id) : packages;
 
   return (
-    <section id="packages" className="section-pad" aria-labelledby="packages-heading">
+    <section
+      id="packages"
+      className="section-pad"
+      aria-labelledby={hideHeader ? undefined : "packages-heading"}
+      aria-label={hideHeader ? "Charter packages" : undefined}
+    >
       <div className="wide-shell">
         <RevealOnScroll>
           <div className="section-stack">
-            <SectionHeader
-              id="packages-heading"
-              dense
-              eyebrow="Curated for you"
-              title={
-                <>
-                  Charter <span className="text-gradient-ocean">Packages</span>
-                </>
-              }
-              subtitle="Curated experiences for every occasion. All packages include professional crew, safety equipment, and the Hey Charlie hospitality guarantee."
-            />
+            {!hideHeader && (
+              <SectionHeader
+                id="packages-heading"
+                dense
+                eyebrow="Curated for you"
+                title={
+                  <>
+                    Charter <span className="text-gradient-ocean">Packages</span>
+                  </>
+                }
+                subtitle="Curated experiences for every occasion. All packages include professional crew, safety equipment, and the Hey Charlie hospitality guarantee."
+              />
+            )}
 
             {packages.length === 0 ? (
               <p className="text-center text-[var(--theme-text-muted)] py-6">
@@ -113,7 +126,7 @@ export function HomePackagesSection({ packages, totalCount }: HomePackagesSectio
           </div>
         </RevealOnScroll>
 
-        {totalCount > 0 && (
+        {showViewAllLink && totalCount > 0 && (
           <div className="text-center mt-6 lg:mt-8">
             <Link
               href="/packages"

@@ -1,5 +1,6 @@
 // Weather API Service for Hey Charlie Charters
-// Integrates StormGlass.io (marine data) and OpenWeatherMap (fallback).
+// Primary provider: Open-Meteo (paid Commercial plan). Fallbacks: StormGlass.io
+// (marine data) and OpenWeatherMap.
 //
 // Mock/fabricated data is gated behind NEXT_PUBLIC_WEATHER_MOCK_ENABLED
 // (defaults to false). When API keys are absent and mock is disabled, the
@@ -15,7 +16,8 @@ export const CHARTER_COORDS = {
 /** Whether at least one weather API key is configured. */
 export function hasWeatherApiKeys(): boolean {
   return Boolean(
-    (process.env.STORMGLASS_API_KEY && process.env.STORMGLASS_API_KEY.length > 0) ||
+    (process.env.OPEN_METEO_API_KEY && process.env.OPEN_METEO_API_KEY.length > 0) ||
+      (process.env.STORMGLASS_API_KEY && process.env.STORMGLASS_API_KEY.length > 0) ||
       (process.env.OPENWEATHERMAP_API_KEY && process.env.OPENWEATHERMAP_API_KEY.length > 0),
   );
 }
@@ -177,6 +179,207 @@ async function fetchOpenWeather(endpoint: string, params: Record<string, string>
   return response.json();
 }
 
+// --- Open-Meteo (PRIMARY provider) -----------------------------------------
+// Open-Meteo is the primary marine/weather source. A paid "Commercial" plan
+// uses the customer host (customer-api.open-meteo.com) and appends
+// &apikey=<key>. The key is read ONLY from process.env.OPEN_METEO_API_KEY and
+// is never hardcoded. StormGlass and OpenWeatherMap remain as fallbacks.
+
+const OPEN_METEO_BASE_URL =
+  process.env.OPEN_METEO_BASE_URL || "https://customer-api.open-meteo.com";
+
+/** Marine API uses a separate customer host (not customer-api.open-meteo.com). */
+const OPEN_METEO_MARINE_BASE_URL =
+  process.env.OPEN_METEO_MARINE_BASE_URL ||
+  "https://customer-marine-api.open-meteo.com";
+
+/** Coerce an unknown API value to a finite number (0 when missing/invalid). */
+function asNum(value: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  return 0;
+}
+
+function mean(...values: number[]): number {
+  const nums = values.filter((v) => Number.isFinite(v));
+  if (nums.length === 0) return 0;
+  return nums.reduce((a, b) => a + b, 0) / nums.length;
+}
+
+async function fetchOpenMeteo(
+  path: string,
+  params: Record<string, string>,
+  baseUrl: string = OPEN_METEO_BASE_URL,
+): Promise<Record<string, unknown> | null> {
+  const url = new URL(`${baseUrl}/${path}`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.set(key, value),
+  );
+
+  // Paid customer host requires the api key. Never hardcode it.
+  const apiKey = process.env.OPEN_METEO_API_KEY;
+  if (apiKey) url.searchParams.set("apikey", apiKey);
+
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      console.error(`Open-Meteo API error: ${response.status}`);
+      return null;
+    }
+    return (await response.json()) as Record<string, unknown>;
+  } catch (error) {
+    console.error("Open-Meteo fetch failed:", error);
+    return null;
+  }
+}
+
+// Build current MarineConditions from Open-Meteo marine + forecast "current".
+async function fetchOpenMeteoCurrentConditions(): Promise<MarineConditions | null> {
+  const marine = await fetchOpenMeteo(
+    "v1/marine",
+    {
+      latitude: CHARTER_COORDS.lat.toString(),
+      longitude: CHARTER_COORDS.lng.toString(),
+      current: "wave_height,wave_direction,wave_period,sea_surface_temperature",
+    },
+    OPEN_METEO_MARINE_BASE_URL,
+  );
+  const forecast = await fetchOpenMeteo("v1/forecast", {
+    latitude: CHARTER_COORDS.lat.toString(),
+    longitude: CHARTER_COORDS.lng.toString(),
+    current:
+      "temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,uv_index,visibility",
+    wind_speed_unit: "ms",
+  });
+
+  if (!marine || !forecast) return null;
+
+  try {
+    const m = (marine.current ?? {}) as Record<string, unknown>;
+    const f = (forecast.current ?? {}) as Record<string, unknown>;
+
+    const waveHeight = asNum(m.wave_height);
+    const wavePeriod = asNum(m.wave_period);
+    const waveDirection = asNum(m.wave_direction);
+    const windMs = asNum(f.wind_speed_10m);
+
+    return {
+      timestamp: new Date(),
+      airTemperature: asNum(f.temperature_2m),
+      waterTemperature: asNum(m.sea_surface_temperature),
+      windSpeed: msToKnots(windMs),
+      windDirection: asNum(f.wind_direction_10m),
+      windGust: msToKnots(asNum(f.wind_gusts_10m) || windMs),
+      waveHeight,
+      wavePeriod,
+      waveDirection,
+      // Open-Meteo's global wave model exposes wave but not a separate swell
+      // breakdown; approximate swell from wave (real data, documented).
+      swellHeight: waveHeight,
+      swellPeriod: wavePeriod,
+      swellDirection: waveDirection,
+      visibility: asNum(f.visibility) / 1000, // metres -> km
+      cloudCover: asNum(f.cloud_cover),
+      precipitation: asNum(f.precipitation),
+      pressure: asNum(f.surface_pressure),
+      humidity: asNum(f.relative_humidity_2m),
+      uvIndex: asNum(f.uv_index),
+    };
+  } catch (error) {
+    console.error("Error parsing Open-Meteo current data:", error);
+    return null;
+  }
+}
+
+// Build a multi-day DailyForecast[] from Open-Meteo daily aggregates.
+async function fetchOpenMeteoDailyForecast(
+  days: number,
+): Promise<DailyForecast[] | null> {
+  const marine = await fetchOpenMeteo(
+    "v1/marine",
+    {
+      latitude: CHARTER_COORDS.lat.toString(),
+      longitude: CHARTER_COORDS.lng.toString(),
+      daily: "wave_height_max,wave_period_max,wave_direction_dominant",
+      forecast_days: String(days),
+      timezone: "Africa/Johannesburg",
+    },
+    OPEN_METEO_MARINE_BASE_URL,
+  );
+  const forecast = await fetchOpenMeteo("v1/forecast", {
+    latitude: CHARTER_COORDS.lat.toString(),
+    longitude: CHARTER_COORDS.lng.toString(),
+    daily:
+      "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,uv_index_max,visibility_max",
+    wind_speed_unit: "ms",
+    forecast_days: String(days),
+    timezone: "Africa/Johannesburg",
+  });
+
+  if (!marine || !forecast) return null;
+
+  try {
+    const mDaily = (marine.daily ?? {}) as Record<string, unknown>;
+    const fDaily = (forecast.daily ?? {}) as Record<string, unknown>;
+    const times =
+      (fDaily.time as string[] | undefined) ??
+      (mDaily.time as string[] | undefined);
+    if (!times || times.length === 0) return null;
+
+    const forecasts: DailyForecast[] = [];
+    const count = Math.min(times.length, days);
+
+    for (let i = 0; i < count; i++) {
+      const date = new Date(`${times[i]}T12:00:00`);
+      const waveHeight = asNum((mDaily.wave_height_max as number[] | undefined)?.[i]);
+      const wavePeriod = asNum((mDaily.wave_period_max as number[] | undefined)?.[i]);
+      const waveDirection = asNum(
+        (mDaily.wave_direction_dominant as number[] | undefined)?.[i],
+      );
+      const windMs = asNum((fDaily.wind_speed_10m_max as number[] | undefined)?.[i]);
+      const gustMs = asNum((fDaily.wind_gusts_10m_max as number[] | undefined)?.[i]);
+      const airTemp = mean(
+        asNum((fDaily.temperature_2m_max as number[] | undefined)?.[i]),
+        asNum((fDaily.temperature_2m_min as number[] | undefined)?.[i]),
+      );
+
+      const conditions: MarineConditions = {
+        timestamp: date,
+        airTemperature: airTemp,
+        waterTemperature: 0,
+        windSpeed: msToKnots(windMs),
+        windDirection: asNum(
+          (fDaily.wind_direction_10m_dominant as number[] | undefined)?.[i],
+        ),
+        windGust: msToKnots(gustMs || windMs),
+        waveHeight,
+        wavePeriod,
+        waveDirection,
+        swellHeight: waveHeight,
+        swellPeriod: wavePeriod,
+        swellDirection: waveDirection,
+        visibility:
+          asNum((fDaily.visibility_max as number[] | undefined)?.[i]) / 1000,
+        cloudCover: 0,
+        precipitation: asNum((fDaily.precipitation_sum as number[] | undefined)?.[i]),
+        pressure: 0,
+        humidity: 0,
+        uvIndex: asNum((fDaily.uv_index_max as number[] | undefined)?.[i]),
+      };
+
+      const tides = await getTideData(date);
+      const sunTimes = await getSunTimes(date);
+      const fishingRating = calculateFishingRating(conditions);
+
+      forecasts.push({ date, conditions, tides, sunTimes, fishingRating });
+    }
+
+    return forecasts.length > 0 ? forecasts : null;
+  } catch (error) {
+    console.error("Error parsing Open-Meteo forecast data:", error);
+    return null;
+  }
+}
+
 // Convert wind speed from m/s to knots
 function msToKnots(ms: number): number {
   return ms * 1.94384;
@@ -264,11 +467,20 @@ function parseOpenWeatherConditions(data: Record<string, unknown>): MarineCondit
 }
 
 // Get current marine conditions (real APIs only). Returns null when unavailable.
+// Provider order: Open-Meteo (primary) → StormGlass → OpenWeatherMap.
 export async function getCurrentConditions(): Promise<MarineConditions | null> {
   const cacheKey = "current-conditions";
   const cached = getCached<MarineConditions>(cacheKey);
   if (cached) return cached;
 
+  // 1) Open-Meteo (primary)
+  const openMeteoConditions = await fetchOpenMeteoCurrentConditions();
+  if (openMeteoConditions) {
+    setCache(cacheKey, openMeteoConditions);
+    return openMeteoConditions;
+  }
+
+  // 2) StormGlass
   const stormGlassData = await fetchStormGlass("weather/point", {
     lat: CHARTER_COORDS.lat.toString(),
     lng: CHARTER_COORDS.lng.toString(),
@@ -283,6 +495,7 @@ export async function getCurrentConditions(): Promise<MarineConditions | null> {
     }
   }
 
+  // 3) OpenWeatherMap
   const owmData = await fetchOpenWeather("weather", {
     lat: CHARTER_COORDS.lat.toString(),
     lon: CHARTER_COORDS.lng.toString(),
@@ -321,6 +534,13 @@ export async function getMarineForecast(days = 7): Promise<DailyForecast[]> {
   const cacheKey = `forecast-${days}`;
   const cached = getCached<DailyForecast[]>(cacheKey);
   if (cached) return cached;
+
+  // Open-Meteo is the primary forecast source.
+  const openMeteoForecast = await fetchOpenMeteoDailyForecast(days);
+  if (openMeteoForecast && openMeteoForecast.length > 0) {
+    setCache(cacheKey, openMeteoForecast);
+    return openMeteoForecast;
+  }
 
   const forecasts: DailyForecast[] = [];
   const now = new Date();

@@ -28,7 +28,7 @@ export function ExperienceGrid() {
             />
 
             <div className="relative">
-              <div className="mobile-scroll-strip lg:grid lg:grid-cols-3 2xl:grid-cols-6 lg:gap-5 2xl:gap-4">
+              <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-3 2xl:grid-cols-6 lg:gap-5 2xl:gap-4">
                 {experiences.map((exp) => (
                   <Link
                     key={exp.name}

@@ -14,7 +14,7 @@ export function OffersCarousel() {
           <span className="h-1.5 w-1.5 rounded-full bg-orange-500 animate-pulse" aria-hidden="true" />
           Special offers
         </p>
-        <div className="mobile-scroll-strip lg:grid lg:grid-cols-3 lg:gap-5">
+        <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-3 lg:gap-5">
           {specialOffers.map((offer) => (
             <div
               key={offer.id}

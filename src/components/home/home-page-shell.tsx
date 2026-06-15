@@ -4,11 +4,12 @@ import { HomeScrollNav } from "./home-scroll-nav";
 
 interface HomePageShellProps {
   children: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
-export function HomePageShell({ children }: HomePageShellProps) {
+export function HomePageShell({ children, footer }: HomePageShellProps) {
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] overflow-x-hidden transition-colors duration-300 mobile-bottom-safe lg:pb-0">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] overflow-x-clip transition-colors duration-300">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -45,7 +46,11 @@ export function HomePageShell({ children }: HomePageShellProps) {
 
       <MobileStickyActions primaryHref="#packages" secondaryHref="#contact" />
 
-      <main id="main-content">{children}</main>
+      <main id="main-content" className="mobile-bottom-safe">
+        {children}
+      </main>
+
+      {footer}
     </div>
   );
 }

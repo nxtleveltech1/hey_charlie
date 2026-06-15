@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Sign Up",
+  robots: { index: false, follow: false },
+};
 
 export default function SignUpPage() {
   return (

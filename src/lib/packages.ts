@@ -17,11 +17,17 @@ import {
   getActiveOffers,
   getOffSeasonServices,
   getFallbackPackageImage,
+  resolvePackageImageUrl,
   PACKAGE_IMAGE_BY_SLUG,
   type Package as ContentPackage,
 } from "@/lib/content";
 
-export { getFallbackPackageImage, getOffSeasonServices, PACKAGE_IMAGE_BY_SLUG };
+export {
+  getFallbackPackageImage,
+  resolvePackageImageUrl,
+  getOffSeasonServices,
+  PACKAGE_IMAGE_BY_SLUG,
+};
 
 /** Legacy package shape kept for backward compatibility. */
 export interface Package {

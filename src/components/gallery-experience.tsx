@@ -64,18 +64,24 @@ function MediaPreview({
   sizes,
   priority = false,
   playPreview = false,
+  fill = false,
   className = "",
 }: {
   item: GalleryMediaItem;
   sizes: string;
   priority?: boolean;
   playPreview?: boolean;
+  fill?: boolean;
   className?: string;
 }) {
+  const coverClass = fill
+    ? `absolute inset-0 h-full w-full object-cover ${className}`
+    : `h-full w-full object-cover ${className}`;
+
   if (item.type === "video") {
     return (
       <video
-        className={`h-full w-full object-cover ${className}`}
+        className={coverClass}
         poster={item.poster}
         muted
         loop
@@ -85,6 +91,19 @@ function MediaPreview({
       >
         <source src={item.src} type="video/mp4" />
       </video>
+    );
+  }
+
+  if (fill) {
+    return (
+      <Image
+        src={item.src}
+        alt={item.alt}
+        fill
+        priority={priority}
+        sizes={sizes}
+        className={`object-cover ${className}`}
+      />
     );
   }
 
@@ -108,7 +127,7 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
   const videos = useMemo(() => media.filter((item) => item.type === "video"), [media]);
   const featuredMedia = videos[0] ?? photos[0];
   const heroStrip = useMemo(
-    () => [photos[7], videos[1], photos[14], photos[24], videos[3], photos[35]].filter(Boolean) as GalleryMediaItem[],
+    () => [photos[7], videos[0], photos[14], photos[24], videos[3], photos[35]].filter(Boolean) as GalleryMediaItem[],
     [photos, videos],
   );
 
@@ -197,50 +216,69 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
         />
       </div>
 
-      <section className="relative min-h-[92svh] overflow-hidden pt-24 lg:min-h-screen lg:pt-32">
-        <div className="absolute inset-0">
-          <MediaPreview
-            item={featuredMedia}
-            priority
-            sizes="100vw"
-            playPreview
-            className="scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/35 to-[var(--theme-bg)] lg:bg-gradient-to-r lg:from-black/80 lg:via-black/45 lg:to-black/20" />
+      <section
+        className="relative min-h-[88svh] overflow-hidden pt-20 sm:pt-24 lg:min-h-screen lg:pt-28"
+        aria-labelledby="gallery-hero-heading"
+      >
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="relative h-full w-full overflow-hidden">
+            <MediaPreview
+              item={featuredMedia}
+              priority
+              fill
+              sizes="100vw"
+              playPreview
+              className="scale-105"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/50 lg:to-black/25" />
         </div>
 
-        <div className="wide-shell relative flex min-h-[calc(92svh-6rem)] items-end pb-10 lg:min-h-[calc(100vh-8rem)] lg:items-center lg:pb-0">
-          <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(24rem,0.52fr)] lg:items-end">
-            <div className="max-w-5xl">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-cyan-300" />
+        <div className="wide-shell relative flex min-h-[calc(88svh-5rem)] items-end pb-16 sm:pb-20 lg:min-h-[calc(100vh-7rem)] lg:items-center lg:pb-0">
+          <div className="grid w-full items-end gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(24rem,0.52fr)] lg:items-end lg:gap-10">
+            <div className="max-w-4xl space-y-4 sm:space-y-5 lg:space-y-6">
+              <div className="section-eyebrow-hero">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" aria-hidden="true" />
                 Real charters, real Cape water
               </div>
 
               <h1
-                className="max-w-5xl text-4xl font-bold leading-[1.02] text-white sm:text-6xl lg:text-8xl 2xl:text-9xl"
+                id="gallery-hero-heading"
+                className="max-w-[95%] text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.05] text-white text-balance sm:max-w-4xl lg:max-w-none lg:text-7xl 2xl:text-8xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                The <span className="text-gradient-sunset">Hey Charlie</span>{" "}
-                <span className="text-gradient-ocean">Gallery</span>
+                <span className="block">
+                  The <span className="text-gradient-sunset">Hey Charlie</span>
+                </span>
+                <span className="text-gradient-ocean block">Gallery</span>
               </h1>
 
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/78 sm:text-lg lg:text-xl">
+              <p className="max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg lg:text-xl">
                 Salt spray, open decks, big smiles, fish on the line, and Cape Town doing that outrageous Cape Town thing.
               </p>
 
-              <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
-                <div className="border-l border-white/20 pl-4">
-                  <p className="text-3xl font-bold text-white">{photos.length}</p>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-white/55">Photos</p>
+              <div
+                className="grid max-w-2xl grid-cols-3 gap-2 sm:gap-3 pt-1 lg:pt-2"
+                role="list"
+                aria-label="Gallery stats"
+              >
+                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                  <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{photos.length}</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
+                    Photos
+                  </p>
                 </div>
-                <div className="border-l border-white/20 pl-4">
-                  <p className="text-3xl font-bold text-white">{videos.length}</p>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-white/55">Videos</p>
+                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                  <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{videos.length}</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
+                    Videos
+                  </p>
                 </div>
-                <div className="border-l border-white/20 pl-4">
-                  <p className="text-3xl font-bold text-white">{media.length}</p>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-white/55">Moments</p>
+                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                  <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{media.length}</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
+                    Moments
+                  </p>
                 </div>
               </div>
             </div>

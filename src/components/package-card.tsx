@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice } from "@/lib/booking-utils";
-import { getFallbackPackageImage } from "@/lib/packages";
+import { resolvePackageImageUrl } from "@/lib/packages";
 
 interface PackageCardProps {
   pkg: {
@@ -29,8 +29,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
     private: "🥂",
   };
 
-  const imageSrc =
-    pkg.imageUrl && pkg.imageUrl.length > 0 ? pkg.imageUrl : getFallbackPackageImage(pkg.slug);
+  const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
 
   return (
     <div className="group relative h-full rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden card-hover light-card">

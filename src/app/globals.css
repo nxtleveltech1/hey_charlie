@@ -1,75 +1,127 @@
 @import "tailwindcss";
 
+/* ============================================================ *
+ *  Hey Charlie Charters — premium marine-charter design system
+ *  Deep Atlantic navy · golden-hour amber · coral · seafoam
+ *  Backward-compatible: legacy `--theme-*` and brand vars are
+ *  re-mapped to this palette (names unchanged) so existing
+ *  components keep rendering while new ones use `@theme` tokens.
+ * ============================================================ */
+
+/* --- Tailwind v4 theme tokens (expose utilities) ------------- */
+@theme {
+  /* Brand palette */
+  --color-carbon: #070d16; /* deepest surface / edges */
+  --color-navy-deep: #0a1628; /* base background */
+  --color-navy: #0c1b2e; /* primary navy */
+  --color-navy-600: #11283f; /* raised surface */
+  --color-navy-500: #16314c; /* hover surface */
+
+  --color-amber: #f5a524; /* golden-hour primary accent */
+  --color-amber-deep: #cf8a25; /* hover / darker amber */
+  --color-coral: #ff7a66; /* secondary accent */
+  --color-coral-deep: #e85d4a; /* hover coral */
+  --color-seafoam: #5fd4c4; /* highlight */
+  --color-seafoam-deep: #3fb8a8; /* hover seafoam */
+
+  --color-cream: #f7f4ee; /* warm parchment surface + dark-mode text */
+  --color-cream-dim: #f4efe6; /* dimmer cream */
+  --color-cream-muted: #c9c3b6; /* secondary text on dark */
+
+  --color-ink: #0a1628; /* near-black navy for text-on-accent */
+  --color-snow: #ffffff;
+
+  /* Fonts (token name differs from next/font var → no self-reference) */
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ============================================================ *
+ *  Dark theme (default) — navy base, carbon surfaces, cream text
+ * ============================================================ */
 :root {
-  /* Font */
-  --font-display: "Playfair Display", serif;
-  
-  /* Brand colors */
-  --color-sunset-orange: #f97316;
-  --color-sunset-pink: #ec4899;
-  --color-ocean-blue: #0ea5e9;
-  --color-ocean-deep: #0369a1;
-  --color-coral: #fb7185;
-  
-  /* Dark theme (default) */
-  --theme-bg: #0c1222;
-  --theme-bg-secondary: #111827;
-  --theme-surface: rgba(255, 255, 255, 0.02);
-  --theme-surface-hover: rgba(255, 255, 255, 0.05);
-  --theme-border: rgba(255, 255, 255, 0.05);
-  --theme-border-hover: rgba(255, 255, 255, 0.1);
-  --theme-text: #ffffff;
-  --theme-text-secondary: rgba(255, 255, 255, 0.7);
-  --theme-text-muted: rgba(255, 255, 255, 0.4);
-  --theme-nav-bg: rgba(12, 18, 34, 0.8);
-  --theme-nav-bg-transparent: rgba(12, 18, 34, 0.25);
-  --theme-card-bg: rgba(255, 255, 255, 0.02);
-  --theme-card-hover: rgba(255, 255, 255, 0.04);
-  --theme-gradient-start: #0c1222;
-  --theme-gradient-mid: #0c1830;
-  --theme-wave-opacity: 0.3;
-  --theme-glow-orange: rgba(249, 115, 22, 0.05);
-  --theme-glow-pink: rgba(236, 72, 153, 0.05);
-  --theme-glow-cyan: rgba(14, 165, 233, 0.2);
-  --theme-glass-bg: rgba(255, 255, 255, 0.08);
-  --theme-glass-border: rgba(255, 255, 255, 0.12);
-  --theme-accent-glow: rgba(14, 165, 233, 0.15);
+  /* Font fallbacks (next/font Playfair overrides --font-display on <body>) */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* Legacy brand color aliases → re-mapped to premium palette */
+  --color-sunset-orange: #f5a524;
+  --color-sunset-pink: #ff7a66;
+  --color-ocean-blue: #5fd4c4;
+  --color-ocean-deep: #0c1b2e;
+  --color-coral: #ff7a66;
+
+  /* Fluid type scale (mobile → 4K) */
+  --text-display: clamp(2.75rem, 1.6rem + 4.6vw, 5.25rem);
+  --text-h1: clamp(2.25rem, 1.5rem + 2.8vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
+  --text-h3: clamp(1.375rem, 1.15rem + 0.9vw, 1.875rem);
+  --text-body-lg: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+  --text-body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --text-small: clamp(0.8125rem, 0.78rem + 0.12vw, 0.875rem);
+  --text-eyebrow: 0.75rem;
+
+  /* Surfaces / text — confident solid navy, no template aurora */
+  --theme-bg: #0a1628;
+  --theme-bg-secondary: #0c1b2e;
+  --theme-surface: #0f2236;
+  --theme-surface-hover: #142d46;
+  --theme-border: rgba(247, 244, 238, 0.08);
+  --theme-border-hover: rgba(247, 244, 238, 0.16);
+  --theme-text: #f7f4ee;
+  --theme-text-secondary: rgba(247, 244, 238, 0.74);
+  --theme-text-muted: rgba(247, 244, 238, 0.48);
+  --theme-nav-bg: rgba(10, 22, 40, 0.82);
+  --theme-nav-bg-transparent: rgba(10, 22, 40, 0.3);
+  --theme-card-bg: #0e1f33;
+  --theme-card-hover: #122a44;
+  --theme-gradient-start: #0a1628;
+  --theme-gradient-mid: #0c1b2e;
+  --theme-wave-opacity: 0.18;
+
+  /* Glows dialed WAY back (restrained accents, not neon aurora) */
+  --theme-glow-orange: rgba(245, 165, 36, 0.045);
+  --theme-glow-pink: rgba(255, 122, 102, 0.04);
+  --theme-glow-cyan: rgba(95, 212, 196, 0.05);
+  --theme-accent-glow: rgba(245, 165, 36, 0.06);
+
+  /* Glass: opaque frosted-on-photo, not the signature identity */
+  --theme-glass-bg: rgba(12, 27, 46, 0.72);
+  --theme-glass-border: rgba(247, 244, 238, 0.1);
 }
 
+/* ============================================================ *
+ *  Light theme — cream parchment, navy text, amber/coral accents
+ * ============================================================ */
 [data-theme="light"] {
-  --theme-bg: #f8fafc;
-  --theme-bg-secondary: #f1f5f9;
-  --theme-surface: rgba(0, 0, 0, 0.02);
-  --theme-surface-hover: rgba(0, 0, 0, 0.05);
-  --theme-border: rgba(0, 0, 0, 0.08);
-  --theme-border-hover: rgba(0, 0, 0, 0.15);
-  --theme-text: #0f172a;
-  --theme-text-secondary: rgba(15, 23, 42, 0.8);
-  --theme-text-muted: rgba(15, 23, 42, 0.5);
-  --theme-nav-bg: rgba(248, 250, 252, 0.9);
-  --theme-nav-bg-transparent: rgba(248, 250, 252, 0.4);
+  --theme-bg: #f7f4ee;
+  --theme-bg-secondary: #f4efe6;
+  --theme-surface: #ffffff;
+  --theme-surface-hover: #fbf9f4;
+  --theme-border: rgba(10, 22, 40, 0.1);
+  --theme-border-hover: rgba(10, 22, 40, 0.2);
+  --theme-text: #0a1628;
+  --theme-text-secondary: rgba(10, 22, 40, 0.72);
+  --theme-text-muted: rgba(10, 22, 40, 0.52);
+  --theme-nav-bg: rgba(247, 244, 238, 0.85);
+  --theme-nav-bg-transparent: rgba(247, 244, 238, 0.45);
   --theme-card-bg: #ffffff;
-  --theme-card-hover: #ffffff;
-  --theme-gradient-start: #f8fafc;
-  --theme-gradient-mid: #e0f2fe;
-  --theme-wave-opacity: 0.15;
-  --theme-glow-orange: rgba(249, 115, 22, 0.08);
-  --theme-glow-pink: rgba(236, 72, 153, 0.08);
-  --theme-glow-cyan: rgba(14, 165, 233, 0.1);
-  --theme-glass-bg: rgba(255, 255, 255, 0.65);
-  --theme-glass-border: rgba(0, 0, 0, 0.08);
-  --theme-accent-glow: rgba(14, 165, 233, 0.08);
-}
+  --theme-card-hover: #fbf9f4;
+  --theme-gradient-start: #f7f4ee;
+  --theme-gradient-mid: #f4efe6;
+  --theme-wave-opacity: 0.12;
 
-@font-face {
-  font-family: "Playfair Display";
-  src: url("https://fonts.gstatic.com/s/playfairdisplay/v37/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKd3vXDXbtM.woff2") format("woff2");
-  font-weight: 400 900;
-  font-display: swap;
+  --theme-glow-orange: rgba(207, 138, 37, 0.06);
+  --theme-glow-pink: rgba(232, 93, 74, 0.05);
+  --theme-glow-cyan: rgba(63, 184, 168, 0.06);
+  --theme-accent-glow: rgba(207, 138, 37, 0.1);
+
+  --theme-glass-bg: rgba(255, 255, 255, 0.72);
+  --theme-glass-border: rgba(10, 22, 40, 0.08);
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -77,6 +129,7 @@ body {
   color: var(--theme-text);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: clip;
 }
 
 img,
@@ -86,7 +139,68 @@ canvas {
   max-width: 100%;
 }
 
-/* Layout primitives */
+/* ============================================================ *
+ *  Type scale utilities
+ * ============================================================ */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-display {
+  font-size: var(--text-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.text-h1 {
+  font-size: var(--text-h1);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.text-h2 {
+  font-size: var(--text-h2);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.text-h3 {
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+}
+
+.text-body {
+  font-size: var(--text-body);
+  line-height: 1.65;
+}
+
+.text-small {
+  font-size: var(--text-small);
+  line-height: 1.5;
+}
+
+.text-eyebrow {
+  font-size: var(--text-eyebrow);
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Safe-area helpers */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ============================================================ *
+ *  Layout primitives (preserved)
+ * ============================================================ */
 .wide-shell {
   width: calc(100% - 2rem);
   margin-inline: auto;
@@ -120,8 +234,10 @@ canvas {
   gap: clamp(1rem, 2vw, 1.5rem);
 }
 
-.mobile-bottom-safe {
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+@media (max-width: 1023px) {
+  .mobile-bottom-safe {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
 }
 
 .full-bleed-band {
@@ -129,30 +245,33 @@ canvas {
   padding-inline: max(1rem, calc((100vw - 118rem) / 2));
 }
 
-.mobile-scroll-strip {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(240px, 42vw);
-  gap: 1rem;
-  margin-inline: -1rem;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  padding-inline: 1rem;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 1rem;
-  scrollbar-width: none;
-  align-items: stretch;
-}
+@media (max-width: 1023px) {
+  .mobile-scroll-strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 42vw);
+    gap: 1rem;
+    margin-inline: -1rem;
+    max-width: 100vw;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-inline: 1rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+    align-items: stretch;
+  }
 
-.mobile-scroll-strip > * {
-  scroll-snap-align: start;
-  height: auto;
-  min-height: 0;
-  align-self: start;
-}
+  .mobile-scroll-strip > * {
+    scroll-snap-align: start;
+    height: auto;
+    min-height: 0;
+    align-self: start;
+  }
 
-.mobile-scroll-strip::-webkit-scrollbar {
-  display: none;
+  .mobile-scroll-strip::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (min-width: 640px) {
@@ -179,19 +298,11 @@ canvas {
   .section-pad {
     padding-block: clamp(2.75rem, 3.5vw, 4rem);
   }
-
-  .mobile-scroll-strip {
-    display: grid;
-    grid-auto-flow: initial;
-    grid-auto-columns: initial;
-    margin-inline: 0;
-    overflow: visible;
-    padding-inline: 0;
-    scroll-snap-type: none;
-  }
 }
 
-/* Theme utility classes */
+/* ============================================================ *
+ *  Theme utility classes (preserved names)
+ * ============================================================ */
 .bg-theme-bg { background-color: var(--theme-bg); }
 .bg-theme-secondary { background-color: var(--theme-bg-secondary); }
 .bg-theme-surface { background-color: var(--theme-surface); }
@@ -206,32 +317,33 @@ canvas {
 .text-theme-secondary { color: var(--theme-text-secondary); }
 .text-theme-muted { color: var(--theme-text-muted); }
 
-/* Gradients */
+/* Gradients — premium amber→coral and seafoam (used sparingly) */
 .text-gradient-sunset {
   display: inline;
-  background: linear-gradient(135deg, #f97316, #ec4899, #f43f5e);
+  background: linear-gradient(120deg, #f5a524 0%, #ff7a66 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+/* Seafoam two-tone (avoids navy endpoint so text stays legible on dark) */
 .text-gradient-ocean {
   display: inline;
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4, #14b8a6);
+  background: linear-gradient(120deg, #7ee8da 0%, #5fd4c4 55%, #3fb8a8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .bg-gradient-sunset {
-  background: linear-gradient(135deg, #f97316, #ec4899);
+  background: linear-gradient(135deg, #f5a524, #ff7a66);
 }
 
 .bg-gradient-ocean {
-  background: linear-gradient(135deg, #0369a1, #0ea5e9);
+  background: linear-gradient(135deg, #0c1b2e, #0a1628);
 }
 
-/* Animations */
+/* Animations (preserved; restrained) */
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -265,23 +377,23 @@ canvas {
 }
 
 [data-theme="dark"] .card-hover:hover {
-  box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(245, 165, 36, 0.2);
 }
 
 [data-theme="light"] .card-hover:hover {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 25px 50px -12px rgba(10, 22, 40, 0.15);
 }
 
 /* Light theme specific card styles */
 [data-theme="light"] .light-card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(10, 22, 40, 0.08);
+  box-shadow: 0 1px 3px rgba(10, 22, 40, 0.05);
 }
 
 [data-theme="light"] .light-card:hover {
-  border-color: rgba(249, 115, 22, 0.3);
-  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.1);
+  border-color: rgba(245, 165, 36, 0.35);
+  box-shadow: 0 10px 40px rgba(245, 165, 36, 0.1);
 }
 
 /* Shimmer effect */
@@ -289,7 +401,7 @@ canvas {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.1) 50%,
+    rgba(247, 244, 238, 0.08) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -301,36 +413,37 @@ canvas {
   100% { background-position: 200% 0; }
 }
 
-/* Light mode button styles */
+/* Primary button shadow (premium amber) */
 [data-theme="light"] .btn-primary {
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 4px 14px rgba(245, 165, 36, 0.35);
 }
 
 [data-theme="light"] .btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+  box-shadow: 0 6px 20px rgba(245, 165, 36, 0.45);
 }
 
-/* Glass surfaces */
+/* Glass surfaces — opaque, frosted-on-photo only */
 .glass-panel {
   background: var(--theme-glass-bg);
   border: 1px solid var(--theme-glass-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
+/* Eyebrow chips — amber (premium), not consumer orange */
 .section-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.375rem 1rem;
   border-radius: 9999px;
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(245, 165, 36, 0.3);
+  background: rgba(245, 165, 36, 0.1);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-sunset-orange);
+  color: var(--color-amber);
 }
 
 .section-eyebrow-hero {
@@ -339,14 +452,14 @@ canvas {
   gap: 0.5rem;
   padding: 0.375rem 0.875rem;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(247, 244, 238, 0.2);
+  background: rgba(247, 244, 238, 0.08);
   backdrop-filter: blur(8px);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(247, 244, 238, 0.9);
 }
 
 @media (min-width: 640px) {
@@ -357,9 +470,10 @@ canvas {
 }
 
 [data-theme="light"] .section-eyebrow {
-  color: #ea580c;
+  color: #cf8a25;
 }
 
+/* Secondary glass button — repurposed, more opaque/subtle */
 .btn-secondary-glass {
   display: inline-flex;
   align-items: center;
@@ -368,17 +482,17 @@ canvas {
   min-height: 3rem;
   padding: 0.75rem 1.5rem;
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(247, 244, 238, 0.22);
+  background: rgba(247, 244, 238, 0.08);
   color: #ffffff;
   font-weight: 600;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-secondary-glass:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(247, 244, 238, 0.14);
+  border-color: rgba(247, 244, 238, 0.35);
 }
 
 /* Skip link */
@@ -389,8 +503,8 @@ canvas {
   z-index: 100;
   padding: 0.75rem 1.25rem;
   border-radius: 0.5rem;
-  background: var(--color-sunset-orange);
-  color: #ffffff;
+  background: var(--color-amber);
+  color: var(--color-ink);
   font-weight: 600;
   text-decoration: none;
   transition: top 0.2s ease;
@@ -400,9 +514,9 @@ canvas {
   top: 1rem;
 }
 
-/* Focus visible */
+/* Focus visible — strong amber ring */
 :focus-visible {
-  outline: 2px solid var(--color-ocean-blue);
+  outline: 2px solid var(--color-amber);
   outline-offset: 2px;
 }
 
@@ -443,13 +557,13 @@ canvas {
   50% { transform: translateY(8px); opacity: 1; }
 }
 
-/* Section divider glow */
+/* Section divider — subtle hairline (was a glow line) */
 .section-glow-divider {
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    var(--theme-accent-glow),
+    var(--theme-border-hover),
     transparent
   );
 }

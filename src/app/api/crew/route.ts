@@ -18,13 +18,44 @@ const crewMemberSchema = z.object({
   displayOrder: z.number().int().optional().default(0),
 });
 
-// GET - List all crew members
+// GET - List crew members.
+// Admins receive the full record set (active + inactive) for management tools.
+// Anonymous / non-admin callers receive ONLY active crew mapped to a
+// public-safe shape with PII (email, phone) stripped.
 export async function GET() {
   try {
+    const { userId } = await auth();
+    let isAdmin = false;
+    if (userId) {
+      const user = await db.query.users.findFirst({
+        where: eq(users.clerkId, userId),
+      });
+      isAdmin = user?.role === "admin";
+    }
+
     const crew = await db.query.crewMembers.findMany({
+      where: isAdmin ? undefined : eq(crewMembers.isActive, true),
       orderBy: [asc(crewMembers.displayOrder)],
     });
-    return NextResponse.json(crew);
+
+    if (isAdmin) {
+      return NextResponse.json(crew);
+    }
+
+    // Public: expose display-safe fields only. `email` and `phone` are never
+    // surfaced to anonymous callers.
+    const publicCrew = crew.map((member) => ({
+      id: member.id,
+      name: member.name,
+      role: member.role,
+      bio: member.bio,
+      yearsExperience: member.yearsExperience,
+      certifications: member.certifications,
+      order: member.displayOrder,
+      image: member.imageUrl,
+    }));
+
+    return NextResponse.json(publicCrew);
   } catch (error) {
     console.error("Failed to fetch crew members:", error);
     return NextResponse.json(

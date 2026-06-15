@@ -12,6 +12,10 @@ function getInitials(name: string) {
 }
 
 export function TestimonialsSection() {
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="section-pad" aria-labelledby="testimonials-heading">
       <div className="wide-shell">
@@ -29,7 +33,7 @@ export function TestimonialsSection() {
               subtitle="Real experiences from real adventurers"
             />
 
-            <div className="mobile-scroll-strip lg:grid lg:grid-cols-3 lg:gap-5 2xl:gap-6">
+            <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-3 lg:gap-5 2xl:gap-6">
               {testimonials.map((t) => (
                 <article
                   key={t.author}

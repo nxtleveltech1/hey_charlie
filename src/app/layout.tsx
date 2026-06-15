@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnalyticsProvider } from "@/components/analytics-provider";
+import { PwaProvider } from "@/components/pwa/pwa-provider";
+import { siteConfig } from "@/lib/content/site-config";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,10 +17,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const playfairDisplay = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  preload: true,
+});
+
+const siteUrl = siteConfig.canonicalUrl;
+
 export const metadata: Metadata = {
-  title: "Hey Charlie Charters | Cape Town Boat Charters",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Hey Charlie Charters | Private Boat Charters in Cape Town",
+    template: "%s | Hey Charlie Charters",
+  },
   description:
-    "Experience Cape Town's stunning coastline with Hey Charlie Charters. Sundowner cruises, whale watching, fishing trips, crayfish diving, and private charters.",
+    "Private boat charters from the V&A Waterfront, Cape Town. Sundowner cruises, whale watching, deep-sea fishing, crayfish diving and coastal day trips along the Atlantic Seaboard and Cape Peninsula.",
   keywords: [
     "Cape Town boat charter",
     "whale watching Cape Town",
@@ -26,6 +43,24 @@ export const metadata: Metadata = {
     "crayfish diving",
     "private yacht hire",
   ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Hey Charlie Charters",
+    locale: "en_ZA",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Hey Charlie",
+  },
 };
 
 export default function RootLayout({
@@ -50,9 +85,14 @@ export default function RootLayout({
           />
         </head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
         >
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <AnalyticsProvider>
+              {children}
+              <PwaProvider />
+            </AnalyticsProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

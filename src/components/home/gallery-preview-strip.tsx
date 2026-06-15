@@ -28,13 +28,13 @@ export function GalleryPreviewStrip({ images }: GalleryPreviewStripProps) {
               subtitle="Glimpse the adventures waiting for you — sundowners, wildlife encounters, and unforgettable Cape Town sunsets."
             />
 
-            <div className="mobile-scroll-strip lg:grid lg:grid-cols-4 lg:grid-rows-2 lg:gap-2.5">
+            <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-4 lg:grid-rows-2 lg:gap-2.5 lg:auto-rows-fr">
               {images.map((item, i) => (
                 <div
                   key={item.id}
                   className={`relative overflow-hidden rounded-xl lg:rounded-2xl border border-[var(--theme-border)] ${
                     i === 0
-                      ? "aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto lg:min-h-[240px]"
+                      ? "aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:min-h-[240px]"
                       : "aspect-[4/3] lg:min-h-[116px]"
                   }`}
                 >

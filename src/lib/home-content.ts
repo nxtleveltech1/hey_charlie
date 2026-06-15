@@ -112,3 +112,39 @@ export const categoryLabels: Record<string, string> = {
   landmark: "Landmark",
   "departure-hub": "Departure Hub",
 };
+
+/** Homepage packages grid: core charter lineup (featured spotlight is picked from this set). */
+export const HOME_PACKAGE_PREVIEW_CORE = 6;
+
+/** New catalogue packages — appended to fill the second grid row when not in the core six. */
+export const HOME_PACKAGE_NEW_SLUGS = [
+  "shipwreck-tour",
+  "mobile-refreshment-station",
+  "custom-services",
+] as const;
+
+/** Pick the homepage preview: top packages by DB order, plus any new slugs not already shown. */
+export function selectHomePreviewPackages<T extends { slug: string }>(
+  packages: T[],
+): T[] {
+  const bySlug = new Map(packages.map((p) => [p.slug, p]));
+  const seen = new Set<string>();
+  const picked: T[] = [];
+
+  for (const pkg of packages) {
+    if (picked.length >= HOME_PACKAGE_PREVIEW_CORE) break;
+    picked.push(pkg);
+    seen.add(pkg.slug);
+  }
+
+  for (const slug of HOME_PACKAGE_NEW_SLUGS) {
+    if (seen.has(slug)) continue;
+    const pkg = bySlug.get(slug);
+    if (pkg) {
+      picked.push(pkg);
+      seen.add(slug);
+    }
+  }
+
+  return picked;
+}

@@ -38,7 +38,7 @@ export function SectionHeader({
       )}
       <h2
         id={id}
-        className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-2 lg:mb-2.5 text-balance"
+        className="mb-2 text-balance text-2xl font-bold text-[var(--theme-text)] sm:text-3xl lg:mb-2.5 lg:text-5xl"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {title}

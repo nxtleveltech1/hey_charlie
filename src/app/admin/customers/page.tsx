@@ -1,20 +1,30 @@
 import { db } from "@/db";
 import { users, bookings } from "@/db/schema";
-import { desc, eq, count, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { formatPrice, formatShortDate } from "@/lib/booking-utils";
+import { ResponsiveDataList } from "@/components/ui/responsive-data-list";
+
+type CustomerRow = {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+  imageUrl: string | null;
+  createdAt: Date;
+  bookingCount: number;
+  totalSpent: string;
+};
 
 export default async function AdminCustomersPage() {
-  // Get all users with their booking stats
-  const allUsers = await db
+  const allUsers = (await db
     .select({
       id: users.id,
-      clerkId: users.clerkId,
       email: users.email,
       firstName: users.firstName,
       lastName: users.lastName,
       phone: users.phone,
       imageUrl: users.imageUrl,
-      role: users.role,
       createdAt: users.createdAt,
       bookingCount: sql<number>`CAST(COUNT(${bookings.id}) AS INT)`,
       totalSpent: sql<string>`COALESCE(SUM(CAST(${bookings.totalPrice} AS DECIMAL)), 0)`,
@@ -23,104 +33,118 @@ export default async function AdminCustomersPage() {
     .leftJoin(bookings, eq(users.id, bookings.userId))
     .where(eq(users.role, "user"))
     .groupBy(users.id)
-    .orderBy(desc(users.createdAt));
+    .orderBy(desc(users.createdAt))) as CustomerRow[];
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold" style={{ fontFamily: "var(--font-display)" }}>
-            Customers
-          </h1>
-          <p className="text-[var(--theme-text-muted)]">
-            {allUsers.length} registered customers
-          </p>
-        </div>
+      <div className="mb-8">
+        <h1
+          className="text-2xl font-bold sm:text-3xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Customers
+        </h1>
+        <p className="text-[var(--theme-text-muted)]">
+          {allUsers.length} registered customers
+        </p>
       </div>
 
-      {/* Customers Table */}
-      <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-[var(--theme-surface)]">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Customer
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Phone
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Bookings
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Total Spent
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider">
-                  Joined
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--theme-border)]">
-              {allUsers.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-[var(--theme-text-muted)]">
-                    No customers yet
-                  </td>
-                </tr>
+      <ResponsiveDataList
+        data={allUsers}
+        rowKey={(u) => u.id}
+        emptyTitle="No customers yet"
+        emptyMessage="Registered customers will appear here."
+        columns={[
+          {
+            key: "customer",
+            header: "Customer",
+            cell: (u) => (
+              <div className="flex items-center gap-3">
+                {u.imageUrl ? (
+                  <img
+                    src={u.imageUrl}
+                    alt=""
+                    className="h-10 w-10 rounded-full"
+                  />
+                ) : (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber/20 font-medium text-amber">
+                    {(u.firstName?.[0] || u.email[0]).toUpperCase()}
+                  </div>
+                )}
+                <p className="font-medium">
+                  {u.firstName && u.lastName
+                    ? `${u.firstName} ${u.lastName}`
+                    : "—"}
+                </p>
+              </div>
+            ),
+          },
+          { key: "email", header: "Email", cell: (u) => u.email },
+          { key: "phone", header: "Phone", cell: (u) => u.phone || "—" },
+          {
+            key: "bookings",
+            header: "Bookings",
+            cell: (u) => (
+              <span
+                className={`rounded-full px-2 py-1 text-xs font-medium ${
+                  u.bookingCount > 0
+                    ? "bg-green-500/10 text-green-500"
+                    : "bg-[var(--theme-surface)] text-[var(--theme-text-muted)]"
+                }`}
+              >
+                {u.bookingCount}
+              </span>
+            ),
+          },
+          {
+            key: "spent",
+            header: "Total Spent",
+            cell: (u) => formatPrice(parseFloat(u.totalSpent || "0")),
+          },
+          {
+            key: "joined",
+            header: "Joined",
+            cell: (u) => formatShortDate(u.createdAt),
+          },
+        ]}
+        renderMobileCard={(u) => (
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              {u.imageUrl ? (
+                <img src={u.imageUrl} alt="" className="h-12 w-12 rounded-full" />
               ) : (
-                allUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-[var(--theme-surface)] transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {user.imageUrl ? (
-                          <img
-                            src={user.imageUrl}
-                            alt=""
-                            className="w-10 h-10 rounded-full"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-white font-medium">
-                            {(user.firstName?.[0] || user.email[0]).toUpperCase()}
-                          </div>
-                        )}
-                        <div>
-                          <p className="font-medium">
-                            {user.firstName && user.lastName
-                              ? `${user.firstName} ${user.lastName}`
-                              : "—"}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm">{user.email}</td>
-                    <td className="px-6 py-4 text-sm">{user.phone || "—"}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        user.bookingCount > 0
-                          ? "bg-green-500/10 text-green-500"
-                          : "bg-[var(--theme-surface)] text-[var(--theme-text-muted)]"
-                      }`}>
-                        {user.bookingCount}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium">
-                      {formatPrice(parseFloat(user.totalSpent || "0"))}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[var(--theme-text-muted)]">
-                      {formatShortDate(user.createdAt)}
-                    </td>
-                  </tr>
-                ))
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber/20 text-lg font-medium text-amber">
+                  {(u.firstName?.[0] || u.email[0]).toUpperCase()}
+                </div>
               )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              <div className="min-w-0">
+                <p className="truncate font-medium">
+                  {u.firstName && u.lastName
+                    ? `${u.firstName} ${u.lastName}`
+                    : u.email}
+                </p>
+                <p className="truncate text-sm text-[var(--theme-text-muted)]">
+                  {u.email}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 text-sm">
+              {u.phone && (
+                <a href={`tel:${u.phone}`} className="text-amber">
+                  {u.phone}
+                </a>
+              )}
+              <span>{u.bookingCount} bookings</span>
+              <span className="font-medium">
+                {formatPrice(parseFloat(u.totalSpent || "0"))}
+              </span>
+            </div>
+            <p className="text-xs text-[var(--theme-text-muted)]">
+              Joined {formatShortDate(u.createdAt)}
+            </p>
+          </div>
+        )}
+      />
     </div>
   );
 }
-
