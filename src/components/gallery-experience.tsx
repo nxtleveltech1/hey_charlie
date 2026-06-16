@@ -231,29 +231,30 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
               className="scale-105"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/50 lg:to-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/92 lg:via-black/70 lg:to-black/30" />
+          <div
+            className="absolute inset-y-0 left-0 w-full max-w-4xl bg-gradient-to-r from-black/80 via-black/50 to-transparent"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="wide-shell relative flex min-h-[calc(88svh-5rem)] items-end pb-16 sm:pb-20 lg:min-h-[calc(100vh-7rem)] lg:items-center lg:pb-0">
           <div className="grid w-full items-end gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(24rem,0.52fr)] lg:items-end lg:gap-10">
             <div className="max-w-4xl space-y-4 sm:space-y-5 lg:space-y-6">
               <div className="section-eyebrow-hero">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" aria-hidden="true" />
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
                 Real charters, real Cape water
               </div>
 
               <h1
                 id="gallery-hero-heading"
-                className="max-w-[95%] text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.05] text-white text-balance sm:max-w-4xl lg:max-w-none lg:text-7xl 2xl:text-8xl"
+                className="max-w-[95%] text-[clamp(1.75rem,7.5vw,4.5rem)] font-bold leading-[1.08] text-white text-balance [text-shadow:0_2px_28px_rgba(0,0,0,0.9)] sm:max-w-4xl lg:max-w-none lg:text-7xl 2xl:text-8xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span className="block">
-                  The <span className="text-gradient-sunset">Hey Charlie</span>
-                </span>
-                <span className="text-gradient-ocean block">Gallery</span>
+                The <span className="text-gradient-sunset">Hey Charlie</span> Gallery
               </h1>
 
-              <p className="max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg lg:text-xl">
+              <p className="max-w-2xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.85)] sm:text-lg lg:text-xl">
                 Salt spray, open decks, big smiles, fish on the line, and Cape Town doing that outrageous Cape Town thing.
               </p>
 
