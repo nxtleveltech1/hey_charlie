@@ -39,6 +39,7 @@ export async function GET(
       with: {
         package: true,
         user: true,
+        bookingAddons: true,
       },
     });
 

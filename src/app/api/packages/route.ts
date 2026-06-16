@@ -16,7 +16,7 @@ const createPackageSchema = z.object({
   maxGuests: z.number().min(1).default(12),
   category: z.string(),
   highlights: z.array(z.string()).optional(),
-  imageUrl: z.string().url().optional(),
+  imageUrl: z.string().url().optional().nullable().or(z.literal("")),
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
 });
@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
     const [newPackage] = await db.insert(packages).values({
       ...validatedData,
       pricePerPerson: validatedData.pricePerPerson.toString(),
+      imageUrl: validatedData.imageUrl === "" ? null : validatedData.imageUrl,
     }).returning();
 
     return NextResponse.json({ package: newPackage }, { status: 201 });

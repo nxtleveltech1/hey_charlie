@@ -8,7 +8,7 @@ import { z } from "zod";
  *  - The owner/operator is the real captain (Gareth Bew).
  *  - Certification NUMBERS are not fabricated: items default to `verified: false`
  *    and a REQUIRED note where a number/confirmation is pending.
- *  - Photos are REQUIRED markers pending real assets.
+ *  - Crew headshots live under `/public/images/` (see README there).
  *  - Crew contact numbers are the real mobile numbers (used by the DB seed / admin).
  */
 
@@ -71,7 +71,7 @@ const crew: CrewMember[] = [
         note: "REQUIRED: certificate currency pending verification.",
       },
     ],
-    image: CREW_IMAGE_REQUIRED,
+    image: "/images/Gareth 2.png",
     phone: "+27 60 314 4873",
     order: 1,
     active: true,
@@ -80,8 +80,8 @@ const crew: CrewMember[] = [
     id: "justin-profer",
     name: "Justin Profer",
     role: "Owner & Operations",
-    bio: "Justin co-owns Hey Charlie Charters and looks after the day-to-day running of the operation. From bookings and logistics to making sure every charter comes together smoothly, he keeps the business side watertight so the crew can focus on guests.",
-    yearsExperience: 10,
+    bio: "Justin has two years of experience in the marine industry and over 20 years in marketing, sales and customer service. He brings critical operational and customer-engagement experience to our operation, ensuring we offer not only quality but a guaranteed, professional customer experience on every charter.",
+    yearsExperience: 2,
     certifications: [
       {
         label: "Sea Safety Certificate",
@@ -96,7 +96,7 @@ const crew: CrewMember[] = [
         note: "REQUIRED: certificate currency pending verification.",
       },
     ],
-    image: CREW_IMAGE_REQUIRED,
+    image: "/images/Justin.png",
     phone: "+27 83 397 0407",
     order: 2,
     active: true,
@@ -105,8 +105,8 @@ const crew: CrewMember[] = [
     id: "wayne-laufs",
     name: "Wayne Laufs",
     role: "First Hand / Deckhand",
-    bio: "Wayne is our first hand and a fixture on deck. He handles rigging, fishing setups, safety gear and guest experience — making sure everyone on board gets the most out of the day, whether cruising, fishing or swimming.",
-    yearsExperience: 8,
+    bio: "Wayne is our first hand and a fixture on deck. He handles rigging, fishing setups, safety gear and guest experience — making sure everyone on board gets the most out of the day. A 4th-generation commercial fishing professional with over 30 years on the ocean, Wayne has been involved in almost every aspect of ocean adventures and deep-sea fishing, and brings an incredible knowledge of our oceans and getting the best out of a day on the water.",
+    yearsExperience: 30,
     certifications: [
       {
         label: "SAMSA Deckhand Certificate",
@@ -127,7 +127,7 @@ const crew: CrewMember[] = [
         note: "REQUIRED: certificate currency pending verification.",
       },
     ],
-    image: CREW_IMAGE_REQUIRED,
+    image: "/images/wayne.png",
     phone: "+27 72 799 7341",
     order: 3,
     active: true,

@@ -6,20 +6,24 @@ import Link from "next/link";
 import {
   formatPrice,
   formatDate,
-  TIME_SLOTS,
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
 } from "@/lib/booking-utils";
+import { formatTimeSlotSummary, resolveBookingTimeSlots } from "@/lib/time-slot-pricing";
+import { formatDepartureLocation } from "@/lib/departure-locations";
 import { CancelBookingButton } from "./cancel-booking-button";
+import { CompletePaymentButton } from "./complete-payment-button";
+import { isOnlinePaymentsEnabled } from "@/lib/payments";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export default async function DashboardPage() {
   const user = await requireUser();
+  const onlinePayments = isOnlinePaymentsEnabled();
 
   const userBookings = await db.query.bookings.findMany({
     where: eq(bookings.userId, user.id),
-    with: { package: true },
+    with: { package: true, bookingAddons: true },
     orderBy: [desc(bookings.createdAt)],
   });
 
@@ -74,7 +78,9 @@ export default async function DashboardPage() {
         ) : (
           <div className="space-y-4">
             {upcomingBookings.map((booking) => {
-              const timeSlot = TIME_SLOTS.find((s) => s.id === booking.timeSlot);
+              const slotSummary = formatTimeSlotSummary(
+                resolveBookingTimeSlots(booking),
+              );
               return (
                 <div
                   key={booking.id}
@@ -100,9 +106,8 @@ export default async function DashboardPage() {
                       </p>
                       <div className="flex flex-wrap gap-4 text-sm">
                         <span>📅 {formatDate(booking.date)}</span>
-                        <span>
-                          ⏰ {timeSlot?.name} ({timeSlot?.startTime})
-                        </span>
+                        <span>⏰ {slotSummary}</span>
+                        <span>📍 {formatDepartureLocation(booking.departureLocation)}</span>
                         <span>👥 {booking.guestCount} guests</span>
                       </div>
                     </div>
@@ -111,6 +116,22 @@ export default async function DashboardPage() {
                         {formatPrice(booking.totalPrice)}
                       </span>
                       <div className="grid gap-2 sm:grid-flow-col">
+                        {onlinePayments &&
+                          booking.paymentStatus === "unpaid" &&
+                          booking.status !== "cancelled" && (
+                            <CompletePaymentButton bookingId={booking.id} />
+                          )}
+                        {!onlinePayments &&
+                          booking.paymentStatus === "unpaid" &&
+                          booking.status !== "cancelled" && (
+                            <Button
+                              href={`/booking/confirmation/${booking.id}`}
+                              variant="primary"
+                              size="sm"
+                            >
+                              EFT Details
+                            </Button>
+                          )}
                         <Button
                           href={`/booking/confirmation/${booking.id}`}
                           variant="secondary"

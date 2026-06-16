@@ -2,71 +2,71 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import type { Package } from "@/db/schema";
-import { formatPrice } from "@/lib/booking-utils";
+import type { Addon } from "@/db/schema";
+import { formatAddonPriceLabel } from "@/lib/addon-pricing";
 
-export default function AdminPackagesPage() {
-  const [allPackages, setAllPackages] = useState<Package[]>([]);
+export default function AdminPackageAddonsPage() {
+  const [allAddons, setAllAddons] = useState<Addon[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchPackages();
+    fetchAddons();
   }, []);
 
-  const fetchPackages = async () => {
+  const fetchAddons = async () => {
     try {
-      const res = await fetch("/api/packages?includeInactive=true");
-      if (!res.ok) throw new Error("Failed to fetch packages");
+      const res = await fetch("/api/package-addons?includeInactive=true");
+      if (!res.ok) throw new Error("Failed to fetch addons");
       const data = await res.json();
-      setAllPackages(data.packages);
+      setAllAddons(data.addons);
     } catch (err) {
-      setError("Failed to load packages");
+      setError("Failed to load add-ons");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const removePackage = async (pkg: Package) => {
+  const removeAddon = async (addon: Addon) => {
     if (
       !confirm(
-        `Remove "${pkg.name}"? Packages with bookings will be deactivated instead of deleted.`,
+        `Remove "${addon.name}"? Add-ons with bookings will be deactivated instead of deleted.`,
       )
     ) {
       return;
     }
 
     try {
-      const deleteRes = await fetch(`/api/packages/${pkg.id}`, {
+      const deleteRes = await fetch(`/api/package-addons/${addon.id}`, {
         method: "DELETE",
       });
 
       if (deleteRes.ok) {
-        setAllPackages(allPackages.filter((p) => p.id !== pkg.id));
+        setAllAddons(allAddons.filter((a) => a.id !== addon.id));
         return;
       }
 
-      const deactivateRes = await fetch(`/api/packages/${pkg.id}`, {
+      const deactivateRes = await fetch(`/api/package-addons/${addon.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isActive: false }),
       });
 
       if (!deactivateRes.ok) {
-        throw new Error("Failed to remove package");
+        throw new Error("Failed to remove add-on");
       }
 
-      setAllPackages(
-        allPackages.map((p) =>
-          p.id === pkg.id ? { ...p, isActive: false } : p,
+      setAllAddons(
+        allAddons.map((a) =>
+          a.id === addon.id ? { ...a, isActive: false } : a,
         ),
       );
       alert(
-        `"${pkg.name}" has existing bookings and was deactivated instead of deleted.`,
+        `"${addon.name}" has existing bookings and was deactivated instead of deleted.`,
       );
     } catch (err) {
-      setError("Failed to remove package");
+      setError("Failed to remove add-on");
       console.error(err);
     }
   };
@@ -87,17 +87,17 @@ export default function AdminPackagesPage() {
             className="text-3xl font-bold"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Packages
+            Package Add-ons
           </h1>
           <p className="text-[var(--theme-text-muted)]">
-            Manage your charter packages
+            Manage optional services customers can add to bookings
           </p>
         </div>
         <Link
-          href="/admin/packages/new"
+          href="/admin/package-addons/new"
           className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
         >
-          + Add Package
+          + Add Add-on
         </Link>
       </div>
 
@@ -108,43 +108,36 @@ export default function AdminPackagesPage() {
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {allPackages.length === 0 ? (
+        {allAddons.length === 0 ? (
           <div className="col-span-full p-12 text-center rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
-            <div className="text-4xl mb-4">📦</div>
-            <h3 className="text-lg font-semibold mb-2">No packages yet</h3>
+            <div className="text-4xl mb-4">➕</div>
+            <h3 className="text-lg font-semibold mb-2">No add-ons yet</h3>
             <p className="text-[var(--theme-text-muted)] mb-4">
-              Create your first charter package to start accepting bookings.
+              Create optional services like shuttle, catering, or jetski hire.
             </p>
             <Link
-              href="/admin/packages/new"
+              href="/admin/package-addons/new"
               className="inline-flex px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity"
             >
-              Create Package
+              Create Add-on
             </Link>
           </div>
         ) : (
-          allPackages.map((pkg) => (
+          allAddons.map((addon) => (
             <div
-              key={pkg.id}
+              key={addon.id}
               className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:border-orange-500/30 transition-colors"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold">{pkg.name}</h3>
-                    {pkg.isFeatured && (
-                      <span className="px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500 text-xs">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-[var(--theme-text-muted)]">
-                    {pkg.tagline}
+                  <h3 className="font-semibold mb-1">{addon.name}</h3>
+                  <p className="text-sm text-[var(--theme-text-muted)] line-clamp-2">
+                    {addon.description}
                   </p>
                 </div>
                 <span
-                  className={`w-3 h-3 rounded-full ${pkg.isActive ? "bg-green-500" : "bg-red-500"}`}
-                  title={pkg.isActive ? "Active" : "Inactive"}
+                  className={`w-3 h-3 rounded-full shrink-0 ml-2 ${addon.isActive ? "bg-green-500" : "bg-red-500"}`}
+                  title={addon.isActive ? "Active" : "Inactive"}
                 />
               </div>
 
@@ -152,41 +145,30 @@ export default function AdminPackagesPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-[var(--theme-text-muted)]">Price</span>
                   <span className="font-medium">
-                    {formatPrice(pkg.pricePerPerson)}/person
+                    {formatAddonPriceLabel(addon)}
                   </span>
                 </div>
+                {addon.selectionGroup && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-[var(--theme-text-muted)]">Group</span>
+                    <span className="capitalize">{addon.selectionGroup}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
-                  <span className="text-[var(--theme-text-muted)]">Duration</span>
-                  <span>{pkg.duration}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-[var(--theme-text-muted)]">Capacity</span>
-                  <span>
-                    {pkg.minGuests} - {pkg.maxGuests} guests
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-[var(--theme-text-muted)]">Category</span>
-                  <span className="capitalize">{pkg.category}</span>
+                  <span className="text-[var(--theme-text-muted)]">Order</span>
+                  <span>{addon.displayOrder}</span>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <Link
-                  href={`/admin/packages/${pkg.id}`}
+                  href={`/admin/package-addons/${addon.id}`}
                   className="flex-1 py-2 text-center rounded-lg border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm"
                 >
                   Edit
                 </Link>
-                <Link
-                  href={`/booking/${pkg.slug}`}
-                  target="_blank"
-                  className="flex-1 py-2 text-center rounded-lg bg-orange-500/10 text-orange-500 hover:bg-orange-500/20 transition-colors text-sm"
-                >
-                  View
-                </Link>
                 <button
-                  onClick={() => removePackage(pkg)}
+                  onClick={() => removeAddon(addon)}
                   className="px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                 >
                   Delete

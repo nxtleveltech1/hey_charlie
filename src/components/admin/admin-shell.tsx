@@ -12,6 +12,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: "📊" },
   { href: "/admin/bookings", label: "Bookings", icon: "📅" },
   { href: "/admin/packages", label: "Packages", icon: "📦" },
+  { href: "/admin/package-addons", label: "Add-ons", icon: "➕" },
   { href: "/admin/crew", label: "Crew", icon: "👨‍✈️" },
   { href: "/admin/news", label: "News", icon: "📰" },
   { href: "/admin/weather-alerts", label: "Weather Alerts", icon: "🌊" },

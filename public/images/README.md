@@ -5,7 +5,7 @@
 Pulled from **Cape Marine Charters** `public/images/`:
 
 - `gareth.png`, `wayne.png`, `Myles.png` (legacy filename, optional to delete)
-- `justin-profer.png` — copied from `Myles.png` as a placeholder until a photo of Justin Profer is added; replace the file when ready.
+- `justin-profer.png` — Justin Profer headshot
 
 These paths match `crew_members.image_url` after `bun run db:seed`.
 

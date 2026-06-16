@@ -3,7 +3,9 @@ import { bookings } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { formatPrice, formatDate, TIME_SLOTS, BOOKING_STATUS_COLORS, BOOKING_STATUS_LABELS } from "@/lib/booking-utils";
+import { formatPrice, formatDate, BOOKING_STATUS_COLORS, BOOKING_STATUS_LABELS, PAYMENT_STATUS_LABELS, PAYMENT_STATUS_COLORS } from "@/lib/booking-utils";
+import { formatTimeSlotSummary, resolveBookingTimeSlots } from "@/lib/time-slot-pricing";
+import { formatDepartureLocation } from "@/lib/departure-locations";
 import { BookingStatusForm } from "./booking-status-form";
 
 export default async function AdminBookingDetailPage({
@@ -15,16 +17,17 @@ export default async function AdminBookingDetailPage({
 
   const booking = await db.query.bookings.findFirst({
     where: eq(bookings.id, id),
-    with: { package: true, user: true },
+    with: { package: true, user: true, bookingAddons: true },
   });
 
   if (!booking) {
     notFound();
   }
 
-  const timeSlot = TIME_SLOTS.find((s) => s.id === booking.timeSlot);
+  const slotSummary = formatTimeSlotSummary(resolveBookingTimeSlots(booking));
   const statusColor = BOOKING_STATUS_COLORS[booking.status];
   const statusLabel = BOOKING_STATUS_LABELS[booking.status];
+  const packageSubtotal = parseFloat(booking.pricePerPerson) * booking.guestCount;
 
   return (
     <div>
@@ -65,14 +68,18 @@ export default async function AdminBookingDetailPage({
                 <p className="font-medium">{formatDate(booking.date)}</p>
               </div>
               <div>
-                <p className="text-sm text-[var(--theme-text-muted)]">Time Slot</p>
-                <p className="font-medium">
-                  {timeSlot?.name} ({timeSlot?.startTime} - {timeSlot?.endTime})
-                </p>
+                <p className="text-sm text-[var(--theme-text-muted)]">Time Slots</p>
+                <p className="font-medium">{slotSummary}</p>
               </div>
               <div>
                 <p className="text-sm text-[var(--theme-text-muted)]">Guests</p>
                 <p className="font-medium">{booking.guestCount} people</p>
+              </div>
+              <div>
+                <p className="text-sm text-[var(--theme-text-muted)]">Departure</p>
+                <p className="font-medium">
+                  {formatDepartureLocation(booking.departureLocation)}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-[var(--theme-text-muted)]">Duration</p>
@@ -161,15 +168,34 @@ export default async function AdminBookingDetailPage({
           {/* Price Summary */}
           <div className="p-6 rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/10 to-pink-500/10">
             <h2 className="text-lg font-semibold mb-4">Payment Summary</h2>
+            <div className="mb-3">
+              <span className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${PAYMENT_STATUS_COLORS[booking.paymentStatus]}`}>
+                {PAYMENT_STATUS_LABELS[booking.paymentStatus]}
+              </span>
+            </div>
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-[var(--theme-text-muted)]">Price per person</span>
-                <span>{formatPrice(booking.pricePerPerson)}</span>
+                <span className="text-[var(--theme-text-muted)]">Package subtotal</span>
+                <span>{formatPrice(packageSubtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-[var(--theme-text-muted)]">Guests</span>
                 <span>× {booking.guestCount}</span>
               </div>
+              {booking.bookingAddons.map((addon) => (
+                <div key={addon.id} className="flex justify-between text-sm">
+                  <span className="text-[var(--theme-text-muted)] truncate pr-2">
+                    {addon.name}
+                  </span>
+                  <span>{formatPrice(addon.lineTotal)}</span>
+                </div>
+              ))}
+              {parseFloat(booking.addonsTotal) > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-[var(--theme-text-muted)]">Add-ons total</span>
+                  <span>{formatPrice(booking.addonsTotal)}</span>
+                </div>
+              )}
               <div className="pt-3 border-t border-orange-500/20 flex justify-between">
                 <span className="font-semibold">Total</span>
                 <span className="text-2xl font-bold text-orange-500">

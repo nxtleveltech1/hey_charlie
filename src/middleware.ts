@@ -41,6 +41,10 @@ const isPublicRoute = createRouteMatcher([
   "/api/crew",
 ]);
 
+function isApiRoute(pathname: string): boolean {
+  return pathname.startsWith("/api/");
+}
+
 export default clerkMiddleware(async (auth, request) => {
   // 1) Canonical host redirect (308 permanent). Preserve pathname + search.
   const hostHeader =
@@ -59,12 +63,20 @@ export default clerkMiddleware(async (auth, request) => {
     return NextResponse.redirect(url, 308);
   }
 
-  // 2) Auth gate — protect everything that isn't a public marketing/read route.
-  // `/booking(.*)`, `/dashboard(.*)`, `/admin(.*)` and write/mutation APIs
-  // remain protected because they are not in the public matcher above.
-  if (!isPublicRoute(request)) {
-    await auth.protect();
+  // 2) Auth gate — protect pages; API routes return JSON 401 (never HTML redirects).
+  if (isPublicRoute(request)) {
+    return;
   }
+
+  if (isApiRoute(request.nextUrl.pathname)) {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return;
+  }
+
+  await auth.protect();
 });
 
 export const config = {

@@ -48,6 +48,18 @@ export const alertTypeEnum = pgEnum("alert_type", [
   "fishing-conditions",
 ]);
 
+export const addonPriceUnitEnum = pgEnum("addon_price_unit", [
+  "flat",
+  "per_person",
+]);
+
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "unpaid",
+  "paid",
+  "failed",
+  "refunded",
+]);
+
 // Users table - synced from Clerk
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -92,11 +104,20 @@ export const bookings = pgTable("bookings", {
   // Booking details
   date: timestamp("date").notNull(),
   timeSlot: text("time_slot").notNull(),
+  timeSlots: text("time_slots").array().notNull().default([]),
   guestCount: integer("guest_count").notNull(),
+  departureLocation: text("departure_location").notNull().default("va-waterfront"),
   
   // Pricing
   pricePerPerson: decimal("price_per_person", { precision: 10, scale: 2 }).notNull(),
+  addonsTotal: decimal("addons_total", { precision: 10, scale: 2 }).default("0").notNull(),
   totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+
+  // Payment
+  paymentStatus: paymentStatusEnum("payment_status").default("unpaid").notNull(),
+  stripeCheckoutSessionId: text("stripe_checkout_session_id"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  paidAt: timestamp("paid_at"),
   
   // Contact info (snapshot at time of booking)
   contactName: text("contact_name").notNull(),
@@ -118,6 +139,36 @@ export const bookings = pgTable("bookings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   confirmedAt: timestamp("confirmed_at"),
   cancelledAt: timestamp("cancelled_at"),
+});
+
+// Package add-ons catalog (global, shown on every booking form)
+export const addons = pgTable("addons", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  priceUnit: addonPriceUnitEnum("price_unit").notNull(),
+  selectionGroup: text("selection_group"),
+  allowQuantity: boolean("allow_quantity").default(false).notNull(),
+  maxQuantity: integer("max_quantity").default(4).notNull(),
+  displayOrder: integer("display_order").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Snapshotted add-on line items on a booking
+export const bookingAddons = pgTable("booking_addons", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  bookingId: uuid("booking_id").references(() => bookings.id).notNull(),
+  addonId: uuid("addon_id").references(() => addons.id, { onDelete: "set null" }),
+  name: text("name").notNull(),
+  priceUnit: addonPriceUnitEnum("price_unit").notNull(),
+  unitPrice: decimal("unit_price", { precision: 10, scale: 2 }).notNull(),
+  quantity: integer("quantity").notNull(),
+  lineTotal: decimal("line_total", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // Blocked dates table (for admin to block off dates)
@@ -213,7 +264,7 @@ export const packagesRelations = relations(packages, ({ many }) => ({
   blockedDates: many(blockedDates),
 }));
 
-export const bookingsRelations = relations(bookings, ({ one }) => ({
+export const bookingsRelations = relations(bookings, ({ one, many }) => ({
   user: one(users, {
     fields: [bookings.userId],
     references: [users.id],
@@ -221,6 +272,22 @@ export const bookingsRelations = relations(bookings, ({ one }) => ({
   package: one(packages, {
     fields: [bookings.packageId],
     references: [packages.id],
+  }),
+  bookingAddons: many(bookingAddons),
+}));
+
+export const addonsRelations = relations(addons, ({ many }) => ({
+  bookingAddons: many(bookingAddons),
+}));
+
+export const bookingAddonsRelations = relations(bookingAddons, ({ one }) => ({
+  booking: one(bookings, {
+    fields: [bookingAddons.bookingId],
+    references: [bookings.id],
+  }),
+  addon: one(addons, {
+    fields: [bookingAddons.addonId],
+    references: [addons.id],
   }),
 }));
 
@@ -279,3 +346,9 @@ export type NewWeatherAlert = typeof weatherAlerts.$inferInsert;
 
 export type UserAlertPreference = typeof userAlertPreferences.$inferSelect;
 export type NewUserAlertPreference = typeof userAlertPreferences.$inferInsert;
+
+export type Addon = typeof addons.$inferSelect;
+export type NewAddon = typeof addons.$inferInsert;
+
+export type BookingAddon = typeof bookingAddons.$inferSelect;
+export type NewBookingAddon = typeof bookingAddons.$inferInsert;

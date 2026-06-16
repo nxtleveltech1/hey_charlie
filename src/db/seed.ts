@@ -26,9 +26,8 @@ const db = drizzle(sql, { schema });
  *    they live in the content module only. DB = booking/admin source;
  *    content module = marketing source.
  *  - Required DB columns are always satisfied. Crew phones are the real numbers
- *    from the content module; crew photos are NOT seeded (no owned assets yet —
- *    in particular the missing justin-profer.png is never inserted) and are
- *    stored as NULL with a loud warning until real assets are supplied.
+ *    from the content module; crew photos are seeded from `/public/images/`
+ *    paths in `@/lib/content/crew.ts`.
  */
 
 // Map canonical content categories onto the legacy booking/admin category
@@ -83,12 +82,83 @@ const crewMembersToSeed = getCrew().map((member) => ({
   certifications: member.certifications.map((c) => c.label),
   email: null, // REQUIRED: individual crew emails pending confirmation.
   phone: member.phone, // Real crew number from the content module.
-  // REQUIRED: real owned crew photo pending (do NOT seed the missing
-  // justin-profer.png or any other unowned asset). NULL until supplied.
+  // Photo paths from the content module (e.g. /images/gareth.png).
   imageUrl: member.image === CREW_IMAGE_REQUIRED ? null : member.image,
   isActive: member.active,
   displayOrder: member.order,
 }));
+
+const addonsToSeed = [
+  {
+    slug: "shuttle-pickup",
+    name: "Shuttle service — Pickup",
+    description:
+      "Collection from any hotel and brought to the launch location of the boat, up to 6 people.",
+    price: "1500.00",
+    priceUnit: "flat" as const,
+    selectionGroup: null,
+    displayOrder: 1,
+    isActive: true,
+  },
+  {
+    slug: "shuttle-dropoff",
+    name: "Shuttle service — Drop-off",
+    description:
+      "Drop-off after the day is done from the launch location back to your hotel, up to 6 people.",
+    price: "1500.00",
+    priceUnit: "flat" as const,
+    selectionGroup: null,
+    displayOrder: 2,
+    isActive: true,
+  },
+  {
+    slug: "jetski-2-hours",
+    name: "Jetski — 2 hours",
+    description:
+      "Book a jetski to accompany the boat for 2 hours. Play in the ocean with the safety of having the boat nearby.",
+    price: "3000.00",
+    priceUnit: "flat" as const,
+    selectionGroup: "jetski",
+    allowQuantity: true,
+    maxQuantity: 4,
+    displayOrder: 3,
+    isActive: true,
+  },
+  {
+    slug: "jetski-full-day",
+    name: "Jetski — Full day",
+    description:
+      "Jetskis accompany the boat for the entire day. Amazing play time on the ocean with the safety of the boat nearby.",
+    price: "6000.00",
+    priceUnit: "flat" as const,
+    selectionGroup: "jetski",
+    allowQuantity: true,
+    maxQuantity: 4,
+    displayOrder: 4,
+    isActive: true,
+  },
+  {
+    slug: "catering",
+    name: "Catering (breakfast + lunch)",
+    description: "Full catering including breakfast and lunch for your charter.",
+    price: "750.00",
+    priceUnit: "per_person" as const,
+    selectionGroup: null,
+    displayOrder: 5,
+    isActive: true,
+  },
+  {
+    slug: "refreshments",
+    name: "Refreshments",
+    description:
+      "A range of alcoholic refreshments on board for the entire day — beers, wines and coolers.",
+    price: "1000.00",
+    priceUnit: "per_person" as const,
+    selectionGroup: null,
+    displayOrder: 6,
+    isActive: true,
+  },
+];
 
 async function seed() {
   console.log("🌱 Seeding database...");
@@ -118,6 +188,12 @@ async function seed() {
     for (const member of crewMembersToSeed) {
       await db.insert(schema.crewMembers).values(member);
       console.log(`  ✓ Crew: ${member.name}`);
+    }
+
+    console.log("\n  Seeding package add-ons...");
+    for (const addon of addonsToSeed) {
+      await db.insert(schema.addons).values(addon).onConflictDoNothing();
+      console.log(`  ✓ Add-on: ${addon.name}`);
     }
 
     console.log("\n✅ Seeding complete!");

@@ -4,18 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  PackageFormFields,
-  emptyPackageFormData,
-  packageFormToPayload,
-  type PackageFormData,
-} from "@/components/admin/package-form";
+  AddonFormFields,
+  emptyAddonFormData,
+  addonFormToPayload,
+  type AddonFormData,
+} from "@/components/admin/package-addon-form";
+import { readApiError } from "@/lib/api-client";
 
-export default function NewPackagePage() {
+export default function NewPackageAddonPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [highlights, setHighlights] = useState<string[]>([""]);
-  const [formData, setFormData] = useState<PackageFormData>(emptyPackageFormData);
+  const [formData, setFormData] = useState<AddonFormData>(emptyAddonFormData);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,18 +23,17 @@ export default function NewPackagePage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/packages", {
+      const response = await fetch("/api/package-addons", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(packageFormToPayload(formData, highlights)),
+        body: JSON.stringify(addonFormToPayload(formData)),
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to create package");
+        throw new Error(await readApiError(response, "Failed to create add-on"));
       }
 
-      router.push("/admin/packages");
+      router.push("/admin/package-addons");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -46,16 +45,16 @@ export default function NewPackagePage() {
     <div>
       <div className="mb-8">
         <Link
-          href="/admin/packages"
+          href="/admin/package-addons"
           className="text-sm text-[var(--theme-text-muted)] hover:text-[var(--theme-text)] transition-colors mb-2 inline-block"
         >
-          ← Back to Packages
+          ← Back to Add-ons
         </Link>
         <h1
           className="text-3xl font-bold"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Create New Package
+          Create Add-on
         </h1>
       </div>
 
@@ -66,11 +65,9 @@ export default function NewPackagePage() {
           </div>
         )}
 
-        <PackageFormFields
+        <AddonFormFields
           formData={formData}
-          highlights={highlights}
           onFormDataChange={setFormData}
-          onHighlightsChange={setHighlights}
         />
 
         <div className="mt-6 flex gap-4">
@@ -79,10 +76,10 @@ export default function NewPackagePage() {
             disabled={isLoading}
             className="px-8 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
-            {isLoading ? "Creating..." : "Create Package"}
+            {isLoading ? "Creating..." : "Create Add-on"}
           </button>
           <Link
-            href="/admin/packages"
+            href="/admin/package-addons"
             className="px-8 py-3 rounded-xl border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors"
           >
             Cancel
