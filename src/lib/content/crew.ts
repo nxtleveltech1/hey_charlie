@@ -71,7 +71,7 @@ const crew: CrewMember[] = [
         note: "REQUIRED: certificate currency pending verification.",
       },
     ],
-    image: "/images/Gareth 2.png",
+    image: "/Gallery/HC%201%20(38).jpeg",
     phone: "+27 60 314 4873",
     order: 1,
     active: true,

@@ -164,9 +164,29 @@ async function seed() {
   console.log("🌱 Seeding database...");
 
   try {
-    // Insert packages (idempotent on slug).
+    // Insert packages — upsert on slug so content price/name changes sync to DB.
     for (const pkg of packagesToSeed) {
-      await db.insert(schema.packages).values(pkg).onConflictDoNothing();
+      await db
+        .insert(schema.packages)
+        .values(pkg)
+        .onConflictDoUpdate({
+          target: schema.packages.slug,
+          set: {
+            name: pkg.name,
+            tagline: pkg.tagline,
+            description: pkg.description,
+            duration: pkg.duration,
+            pricePerPerson: pkg.pricePerPerson,
+            minGuests: pkg.minGuests,
+            maxGuests: pkg.maxGuests,
+            category: pkg.category,
+            highlights: pkg.highlights,
+            imageUrl: pkg.imageUrl,
+            isActive: pkg.isActive,
+            isFeatured: pkg.isFeatured,
+            updatedAt: new Date(),
+          },
+        });
       console.log(`  ✓ Package: ${pkg.name}`);
     }
 
