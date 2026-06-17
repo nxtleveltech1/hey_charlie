@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { crewMembers, users } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { z } from "zod";
+import { resolveCrewImageUrl } from "@/lib/content/crew";
 
 const crewMemberSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -52,7 +53,7 @@ export async function GET() {
       yearsExperience: member.yearsExperience,
       certifications: member.certifications,
       order: member.displayOrder,
-      image: member.imageUrl,
+      image: resolveCrewImageUrl(member.name, member.imageUrl),
     }));
 
     return NextResponse.json(publicCrew);

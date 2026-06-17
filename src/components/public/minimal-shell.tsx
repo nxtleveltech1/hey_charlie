@@ -16,7 +16,7 @@ export function MinimalShell({ children, title }: MinimalShellProps) {
   const emailHref = `mailto:${siteConfig.email}`;
 
   return (
-    <>
+    <div data-theme="dark" className="bg-navy text-cream">
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
@@ -99,6 +99,6 @@ export function MinimalShell({ children, title }: MinimalShellProps) {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

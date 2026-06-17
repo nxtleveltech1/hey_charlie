@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { siteConfig, trustStats } from "@/lib/site";
 import { HeroLogoShowcase } from "./hero-logo-showcase";
-import { HeroVideoPlayer } from "./hero-video-background";
+import { HeroMediaCarousel } from "./hero-media-carousel";
 
 export function HomeHero() {
   return (
@@ -14,7 +14,7 @@ export function HomeHero() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${siteConfig.heroPoster})` }}
         />
-        <HeroVideoPlayer poster={siteConfig.heroPoster} videoSrc={siteConfig.heroVideo} />
+        <HeroMediaCarousel poster={siteConfig.heroPoster} />
       </div>
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/25" />
 
@@ -66,7 +66,7 @@ export function HomeHero() {
               <div
                 key={stat.label}
                 role="listitem"
-                className="glass-panel rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center"
+                className="glass-panel-media rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center"
               >
                 <div className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-300">{stat.value}</div>
                 <div className="text-[9px] sm:text-[10px] lg:text-xs text-white/75 uppercase tracking-wider leading-tight">

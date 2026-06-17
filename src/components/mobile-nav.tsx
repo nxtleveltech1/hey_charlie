@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/crew", label: "Crew" },
   { href: "/news", label: "News" },
   { href: "/weather", label: "Weather" },
-  { href: "/#about", label: "About" },
+  { href: "/about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];
 

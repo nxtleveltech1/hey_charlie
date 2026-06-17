@@ -68,7 +68,7 @@ export default function WeatherPage() {
       try {
         const [currentRes, forecastRes] = await Promise.all([
           fetch("/api/weather?type=current"),
-          fetch("/api/weather?type=forecast&days=7"),
+          fetch("/api/weather?type=forecast&days=14"),
         ]);
 
         if (!currentRes.ok || !forecastRes.ok) {
@@ -192,7 +192,7 @@ export default function WeatherPage() {
             Marine <span className="text-orange-500">Weather</span>
           </h1>
           <p className="text-center text-[var(--theme-text-muted)]">
-            7-day marine forecast for Cape Town — select a date to plan your trip
+            14-day marine forecast for Cape Town — select a date to plan your trip
           </p>
         </div>
       </section>

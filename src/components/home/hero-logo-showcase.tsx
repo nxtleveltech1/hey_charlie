@@ -10,13 +10,13 @@ type ShowcaseSlide =
 const SHOWCASE_SLIDES: ShowcaseSlide[] = [
   {
     kind: "image",
-    src: "/Gallery/HC%201%20(42).jpeg",
-    alt: "Guests enjoying a Hey Charlie Charters cruise along the Cape Town coastline",
+    src: "/Gallery/Hero%201.png",
+    alt: "Hey Charlie Charters boat cruising the Cape Town coastline",
   },
   {
     kind: "image",
-    src: "/Gallery/HC%201%20(41).jpeg",
-    alt: "Adventure on the water with Hey Charlie Charters",
+    src: "/Gallery/Hero2.png",
+    alt: "Hey Charlie Charters branded vessel on the water",
   },
   {
     kind: "image",

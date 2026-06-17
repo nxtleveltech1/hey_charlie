@@ -77,10 +77,10 @@ const crew: CrewMember[] = [
     active: true,
   },
   {
-    id: "justin-profer",
-    name: "Justin Profer",
+    id: "jay-profe",
+    name: "Jay Profe",
     role: "Owner & Operations",
-    bio: "Justin has two years of experience in the marine industry and over 20 years in marketing, sales and customer service. He brings critical operational and customer-engagement experience to our operation, ensuring we offer not only quality but a guaranteed, professional customer experience on every charter.",
+    bio: "Jay has two years of experience in the marine industry and over 20 years in marketing, sales and customer service. He brings critical operational and customer-engagement experience to our operation, ensuring we offer not only quality but a guaranteed, professional customer experience on every charter.",
     yearsExperience: 2,
     certifications: [
       {
@@ -96,7 +96,7 @@ const crew: CrewMember[] = [
         note: "REQUIRED: certificate currency pending verification.",
       },
     ],
-    image: "/images/Justin.png",
+    image: "/images/Jay.png",
     phone: "+27 83 397 0407",
     order: 2,
     active: true,
@@ -143,6 +143,24 @@ export function getCrew(): CrewMember[] {
 
 export function getCrewMemberById(id: string): CrewMember | undefined {
   return crew.find((c) => c.id === id);
+}
+
+/** Placeholder sentinel in content — never pass to next/image. */
+export function isValidCrewImage(
+  src: string | null | undefined,
+): src is string {
+  return !!src && src.length > 0 && !src.startsWith("REQUIRED");
+}
+
+/** Content module photo wins over stale DB values (see crew page + public API). */
+export function resolveCrewImageUrl(
+  name: string,
+  imageUrl: string | null | undefined,
+): string | null {
+  const fromContent = getCrew().find((c) => c.name === name)?.image;
+  if (isValidCrewImage(fromContent)) return fromContent;
+  if (isValidCrewImage(imageUrl)) return imageUrl;
+  return null;
 }
 
 export { crew as crewRoster };

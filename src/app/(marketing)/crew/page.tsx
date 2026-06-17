@@ -2,7 +2,8 @@ import { db } from "@/db";
 import { crewMembers } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { Metadata } from "next";
-import { CrewCard, crewImagePositions, crewImageScales } from "@/components/crew/crew-card";
+import { CrewCard, crewImageFocalPoints } from "@/components/crew/crew-card";
+import { resolveCrewImageUrl } from "@/lib/content/crew";
 
 export const metadata: Metadata = {
   title: "Meet the Crew | Hey Charlie Charters",
@@ -51,9 +52,8 @@ export default async function CrewPage() {
                   role={member.role}
                   bio={member.bio}
                   certifications={member.certifications}
-                  imageUrl={member.imageUrl}
-                  imagePosition={crewImagePositions[member.name] ?? "object-center"}
-                  imageScale={crewImageScales[member.name] ?? 1}
+                  imageUrl={resolveCrewImageUrl(member.name, member.imageUrl)}
+                  imageFocalPoint={crewImageFocalPoints[member.name] ?? "50% 40%"}
                 />
               </li>
             ))}

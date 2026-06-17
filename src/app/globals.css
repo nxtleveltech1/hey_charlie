@@ -38,8 +38,12 @@
 
 /* ============================================================ *
  *  Dark theme (default) — navy base, carbon surfaces, cream text
+ *  Scoped to both :root and [data-theme="dark"] so a forced-dark
+ *  subtree (e.g. MinimalShell legal/404 pages) re-applies these
+ *  tokens even when <html> is in light mode.
  * ============================================================ */
-:root {
+:root,
+[data-theme="dark"] {
   /* Font fallbacks (next/font Playfair overrides --font-display on <body>) */
   --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
 
@@ -426,6 +430,16 @@ canvas {
 .glass-panel {
   background: var(--theme-glass-bg);
   border: 1px solid var(--theme-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Glass over media (photo/video heroes) — ALWAYS dark, theme-independent,
+   so white / amber text stays legible in both light and dark mode. Use this
+   instead of .glass-panel for chips & stat tiles that sit on a hero image. */
+.glass-panel-media {
+  background: rgba(10, 22, 40, 0.5);
+  border: 1px solid rgba(247, 244, 238, 0.18);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }

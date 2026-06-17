@@ -1,0 +1,722 @@
+[
+  {
+    "name": "home",
+    "path": "/",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "animate-wave absolute bottom-0 left-0 w-[200%] h-24 bg-gradient-to-r from-cyan-5",
+        "right": 770,
+        "width": 824
+      },
+      {
+        "tag": "div",
+        "cls": "animate-wave absolute bottom-8 left-0 w-[200%] h-16 bg-gradient-to-r from-blue-5",
+        "right": 667,
+        "width": 824
+      },
+      {
+        "tag": "div",
+        "cls": "absolute top-40 left-10 w-[400px] h-[400px] rounded-full blur-3xl animate-float-",
+        "right": 440,
+        "width": 400
+      },
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "packages",
+    "path": "/packages",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "destinations",
+    "path": "/destinations",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "destination-detail",
+    "path": "/destinations/robben-island",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "crew",
+    "path": "/crew",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "gallery",
+    "path": "/gallery",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "news",
+    "path": "/news",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "weather",
+    "path": "/weather",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "fixed top-0 right-0 h-full w-[min(100vw,24rem)] bg-[var(--theme-bg)] border-l bo",
+        "right": 796,
+        "width": 384
+      },
+      {
+        "tag": "div",
+        "cls": "h-full flex flex-col p-5 pt-24 pb-[calc(1.25rem+env(safe-area-inset-bottom))]",
+        "right": 796,
+        "width": 383
+      },
+      {
+        "tag": "div",
+        "cls": "mb-6",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "text-xs font-semibold uppercase tracking-wider text-orange-400",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "p",
+        "cls": "mt-1 text-sm text-[var(--theme-text-muted)]",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "nav",
+        "cls": "space-y-2 flex-1",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      },
+      {
+        "tag": "a",
+        "cls": "block min-h-12 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-c",
+        "right": 776,
+        "width": 343
+      }
+    ]
+  },
+  {
+    "name": "terms",
+    "path": "/terms",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "flex-1 flex items-center justify-center p-8",
+        "right": 436,
+        "width": 436
+      }
+    ]
+  },
+  {
+    "name": "safety",
+    "path": "/safety",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "flex-1 flex items-center justify-center p-8",
+        "right": 436,
+        "width": 436
+      }
+    ]
+  },
+  {
+    "name": "privacy",
+    "path": "/privacy",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "flex-1 flex items-center justify-center p-8",
+        "right": 436,
+        "width": 436
+      }
+    ]
+  },
+  {
+    "name": "cancellations",
+    "path": "/cancellations",
+    "status": 200,
+    "docW": 412,
+    "vw": 412,
+    "overflowsBody": false,
+    "offenders": [
+      {
+        "tag": "div",
+        "cls": "flex-1 flex items-center justify-center p-8",
+        "right": 436,
+        "width": 436
+      }
+    ]
+  }
+]

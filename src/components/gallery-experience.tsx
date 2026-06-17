@@ -251,7 +251,7 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
                 className="max-w-[95%] text-[clamp(1.75rem,7.5vw,4.5rem)] font-bold leading-[1.08] text-white text-balance [text-shadow:0_2px_28px_rgba(0,0,0,0.9)] sm:max-w-4xl lg:max-w-none lg:text-7xl 2xl:text-8xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                The <span className="text-gradient-sunset">Hey Charlie</span> Gallery
+                The <span className="text-gradient-sunset whitespace-nowrap">Hey Charlie</span> Gallery
               </h1>
 
               <p className="max-w-2xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.85)] sm:text-lg lg:text-xl">
@@ -263,19 +263,19 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
                 role="list"
                 aria-label="Gallery stats"
               >
-                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                <div role="listitem" className="glass-panel-media rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
                   <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{photos.length}</p>
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
                     Photos
                   </p>
                 </div>
-                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                <div role="listitem" className="glass-panel-media rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
                   <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{videos.length}</p>
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
                     Videos
                   </p>
                 </div>
-                <div role="listitem" className="glass-panel rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
+                <div role="listitem" className="glass-panel-media rounded-xl p-2.5 text-center sm:rounded-2xl sm:p-3">
                   <p className="text-lg font-bold text-orange-300 sm:text-xl lg:text-2xl">{media.length}</p>
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-white/75 sm:text-[10px] lg:text-xs">
                     Moments

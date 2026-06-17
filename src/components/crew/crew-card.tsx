@@ -6,9 +6,8 @@ interface CrewCardProps {
   bio: string | null;
   certifications: string[] | null;
   imageUrl: string | null;
-  imagePosition?: string;
-  /** Base zoom for the photo so subjects sit at a consistent scale across cards. */
-  imageScale?: number;
+  /** CSS object-position focal point, e.g. "50% 30%". */
+  imageFocalPoint?: string;
 }
 
 export function CrewCard({
@@ -17,20 +16,19 @@ export function CrewCard({
   bio,
   certifications,
   imageUrl,
-  imagePosition = "object-center",
-  imageScale = 1,
+  imageFocalPoint = "50% 50%",
 }: CrewCardProps) {
   return (
     <article className="card-hover group flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] shadow-sm light-card">
       {/* Portrait with name/role overlaid on a scrim */}
-      <div className="relative aspect-[16/11] w-full overflow-hidden bg-[var(--theme-bg-secondary)]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--theme-bg-secondary)]">
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={name}
             fill
-            style={{ "--img-scale": imageScale } as React.CSSProperties}
-            className={`object-cover transition-transform duration-700 [transform:scale(var(--img-scale))] group-hover:[transform:scale(calc(var(--img-scale)*1.04))] ${imagePosition}`}
+            style={{ objectPosition: imageFocalPoint }}
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
@@ -99,16 +97,9 @@ export function CrewCard({
   );
 }
 
-/** Fine-tune cropping per crew member (keyed by display name). */
-export const crewImagePositions: Record<string, string> = {
-  "Gareth Bew": "object-[58%_55%]",
-  "Justin Profer": "object-[center_30%]",
-  "Wayne Laufs": "object-[center_18%]",
-};
-
-/** Per-member zoom so subjects sit at a consistent scale across cards. */
-export const crewImageScales: Record<string, number> = {
-  "Gareth Bew": 1.5,
-  "Justin Profer": 1,
-  "Wayne Laufs": 1.7,
+/** Face focal points per crew member (keyed by display name). */
+export const crewImageFocalPoints: Record<string, string> = {
+  "Gareth Bew": "70% 38%",
+  "Jay Profe": "46% 30%",
+  "Wayne Laufs": "50% 12%",
 };

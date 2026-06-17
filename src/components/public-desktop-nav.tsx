@@ -11,7 +11,8 @@ export type PublicNavActive =
   | "crew"
   | "news"
   | "weather"
-  | "packages";
+  | "packages"
+  | "about";
 
 interface PublicDesktopNavProps {
   active: PublicNavActive;
@@ -37,10 +38,10 @@ export function PublicDesktopNav({
     ? "text-white after:absolute after:bottom-0 after:left-0 after:h-1 after:w-full after:rounded-full after:bg-orange-400"
     : "text-cyan-600 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-full after:rounded-full after:bg-cyan-500";
 
-  const linkClass = (item: PublicNavActive | "experiences" | "about" | "contact") => {
+  const linkClass = (item: PublicNavActive | "experiences" | "contact") => {
     const isActive =
       (item === "experiences" && active === "home") ||
-      (item !== "experiences" && item !== "about" && item !== "contact" && active === item);
+      (item !== "experiences" && item !== "contact" && active === item);
     return `${linkBase} ${isActive ? activeLink : ""}`;
   };
 
@@ -84,7 +85,7 @@ export function PublicDesktopNav({
             <Link href="/weather" className={linkClass("weather")}>
               Weather
             </Link>
-            <Link href={hashHref(isHome, "about")} className={linkClass("about")}>
+            <Link href="/about" className={linkClass("about")}>
               About
             </Link>
             <Link href={hashHref(isHome, "contact")} className={linkClass("contact")}>

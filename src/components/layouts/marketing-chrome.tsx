@@ -14,6 +14,7 @@ function resolveNavActive(pathname: string): PublicNavActive {
   if (pathname.startsWith("/news")) return "news";
   if (pathname.startsWith("/weather")) return "weather";
   if (pathname.startsWith("/packages")) return "packages";
+  if (pathname.startsWith("/about")) return "about";
   return "home";
 }
 
