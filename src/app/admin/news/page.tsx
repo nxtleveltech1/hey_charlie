@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Article } from "@/db/schema";
+import { displayableImageSrc } from "@/lib/images";
 
 const categoryLabels: Record<string, string> = {
   "fishing-reports": "Fishing Reports",
@@ -92,8 +93,8 @@ export default function AdminNewsPage() {
           {articles.map((article) => (
             <div key={article.id} className="flex gap-4 p-4 bg-[var(--theme-surface)] rounded-xl border border-[var(--theme-border)]">
               <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-[var(--theme-bg)] flex-shrink-0">
-                {article.coverImage ? (
-                  <Image src={article.coverImage} alt={article.title} fill className="object-cover" />
+                {displayableImageSrc(article.coverImage) ? (
+                  <Image src={displayableImageSrc(article.coverImage)!} alt={article.title} fill className="object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-2xl">📰</div>
                 )}

@@ -4,11 +4,14 @@ import { eq, desc } from "drizzle-orm";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
+import { displayableImageSrc } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "News & Fishing Reports | Hey Charlie Charters",
   description: "Latest fishing reports, charter updates, and tips from Hey Charlie Charters.",
 };
+
+export const dynamic = "force-dynamic";
 
 const categoryLabels: Record<string, string> = {
   "fishing-reports": "Fishing Reports",
@@ -28,6 +31,7 @@ export default async function NewsPage() {
 
   const featuredArticle = publishedArticles.find((a) => a.isFeatured);
   const regularArticles = publishedArticles.filter((a) => a.id !== featuredArticle?.id);
+  const featuredCover = displayableImageSrc(featuredArticle?.coverImage);
 
   return (
     <>
@@ -54,8 +58,8 @@ export default async function NewsPage() {
             {featuredArticle && (
               <Link href={`/news/${featuredArticle.slug}`} className="block group">
                 <div className="relative min-h-[28rem] rounded-2xl overflow-hidden bg-[var(--theme-surface)] sm:h-[400px]">
-                  {featuredArticle.coverImage ? (
-                    <Image src={featuredArticle.coverImage} alt={featuredArticle.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  {featuredCover ? (
+                    <Image src={featuredCover} alt={featuredArticle.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-8xl">📰</div>
                   )}
@@ -75,12 +79,14 @@ export default async function NewsPage() {
 
             {/* Article Grid */}
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-              {regularArticles.map((article) => (
+              {regularArticles.map((article) => {
+                const cover = displayableImageSrc(article.coverImage);
+                return (
                 <Link key={article.id} href={`/news/${article.slug}`} className="group">
                   <div className="bg-[var(--theme-surface)] rounded-xl border border-[var(--theme-border)] overflow-hidden hover:border-orange-500/50 transition-all">
                     <div className="relative h-48 bg-[var(--theme-bg)]">
-                      {article.coverImage ? (
-                        <Image src={article.coverImage} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                      {cover ? (
+                        <Image src={cover} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-4xl">📰</div>
                       )}
@@ -96,7 +102,8 @@ export default async function NewsPage() {
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

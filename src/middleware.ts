@@ -47,6 +47,9 @@ const isPublicRoute = createRouteMatcher([
   "/api/packages",
   "/api/weather",
   "/api/crew",
+  // Uploaded images (article covers) are shown on public pages. Uploading
+  // (POST /api/media) stays protected — the handler also enforces admin.
+  "/api/media/(.*)",
 ]);
 
 function isApiRoute(pathname: string): boolean {

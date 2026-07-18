@@ -4,6 +4,7 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Article } from "@/db/schema";
+import { CoverImageInput } from "@/components/cover-image-input";
 
 const categories = [
   { value: "fishing-reports", label: "Fishing Reports" },
@@ -143,10 +144,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Cover Image URL</label>
-          <input type="text" value={formData.coverImage} onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })} className="w-full px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg" />
-        </div>
+        <CoverImageInput value={formData.coverImage} onChange={(url) => setFormData({ ...formData, coverImage: url })} />
 
         <div>
           <label className="block text-sm font-medium mb-2">Tags (comma-separated)</label>

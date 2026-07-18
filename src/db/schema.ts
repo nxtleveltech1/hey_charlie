@@ -225,6 +225,33 @@ export const articles = pgTable("articles", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Uploaded media (article cover images etc.), stored as base64 and served
+// from /api/media/[id] so no external storage service is needed
+export const mediaAssets = pgTable("media_assets", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  filename: text("filename").notNull(),
+  mimeType: text("mime_type").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  data: text("data").notNull(),
+  uploadedBy: uuid("uploaded_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Site settings — single-row table (id is always 1) holding admin-editable
+// business details and booking rules
+export const siteSettings = pgTable("site_settings", {
+  id: integer("id").primaryKey().default(1),
+  businessName: text("business_name").notNull().default("Hey Charlie Charters"),
+  contactEmail: text("contact_email").notNull().default("ahoy@heycharliecharters.co.za"),
+  contactPhone: text("contact_phone").notNull().default("060 314 4873"),
+  location: text("location").notNull().default("Hout Bay & V&A Waterfront, Cape Town"),
+  minAdvanceBookingDays: integer("min_advance_booking_days").notNull().default(1),
+  maxAdvanceBookingDays: integer("max_advance_booking_days").notNull().default(90),
+  autoConfirmBookings: boolean("auto_confirm_bookings").notNull().default(false),
+  emailNotifications: boolean("email_notifications").notNull().default(true),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Weather alerts table (admin-created marine warnings)
 export const weatherAlerts = pgTable("weather_alerts", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -352,3 +379,6 @@ export type NewAddon = typeof addons.$inferInsert;
 
 export type BookingAddon = typeof bookingAddons.$inferSelect;
 export type NewBookingAddon = typeof bookingAddons.$inferInsert;
+
+export type SiteSettings = typeof siteSettings.$inferSelect;
+export type NewSiteSettings = typeof siteSettings.$inferInsert;

@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { displayableImageSrc } from "@/lib/images";
+
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -54,8 +57,8 @@ export default async function ArticlePage({ params }: Props) {
     <>
       {/* Hero */}
       <div className="relative h-[50vh] min-h-[400px] pt-20">
-        {article.coverImage ? (
-          <Image src={article.coverImage} alt={article.title} fill className="object-cover" priority />
+        {displayableImageSrc(article.coverImage) ? (
+          <Image src={displayableImageSrc(article.coverImage)!} alt={article.title} fill className="object-cover" priority />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-orange-500/20 to-[var(--theme-surface)] flex items-center justify-center text-8xl">📰</div>
         )}
