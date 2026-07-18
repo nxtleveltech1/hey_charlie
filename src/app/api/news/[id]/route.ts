@@ -80,7 +80,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       publishedAt = null;
     }
 
-    const finalExcerpt = excerpt || content.substring(0, 200).replace(/[#*_\n]/g, "").trim() + "...";
+    const finalExcerpt = excerpt || content.substring(0, 200).replace(/[#*_]/g, "").replace(/\s+/g, " ").trim() + "...";
 
     const [updatedArticle] = await db.update(articles)
       .set({

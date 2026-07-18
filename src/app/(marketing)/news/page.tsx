@@ -57,19 +57,20 @@ export default async function NewsPage() {
             {/* Featured Article */}
             {featuredArticle && (
               <Link href={`/news/${featuredArticle.slug}`} className="block group">
-                <div className="relative min-h-[28rem] rounded-2xl overflow-hidden bg-[var(--theme-surface)] sm:h-[400px]">
-                  {featuredCover ? (
-                    <Image src={featuredCover} alt={featuredArticle.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-8xl">📰</div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <span className="px-3 py-1 bg-orange-500 text-white text-sm rounded-full">Featured</span>
-                    <h2 className="text-3xl font-bold text-white mt-4 group-hover:text-orange-400 transition-colors">{featuredArticle.title}</h2>
-                    <p className="text-white/80 mt-2 line-clamp-2">{featuredArticle.excerpt}</p>
-                    <div className="flex items-center gap-4 mt-4 text-sm text-white/60">
-                      <span>{categoryLabels[featuredArticle.category]}</span>
+                <div className="grid overflow-hidden rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] hover:border-orange-500/50 transition-all lg:grid-cols-2">
+                  <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[26rem]">
+                    {featuredCover ? (
+                      <Image src={featuredCover} alt={featuredArticle.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-8xl bg-[var(--theme-bg)]">📰</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-center p-8 lg:p-12">
+                    <span className="self-start px-3 py-1 bg-orange-500 text-white text-sm rounded-full">Featured</span>
+                    <h2 className="text-3xl lg:text-4xl font-bold mt-5 group-hover:text-orange-400 transition-colors">{featuredArticle.title}</h2>
+                    <p className="text-[var(--theme-text-muted)] mt-4 line-clamp-3 leading-relaxed">{featuredArticle.excerpt}</p>
+                    <div className="flex items-center gap-4 mt-6 text-sm text-[var(--theme-text-muted)]">
+                      <span className="text-orange-400 font-medium">{categoryLabels[featuredArticle.category]}</span>
                       <span>{featuredArticle.publishedAt ? new Date(featuredArticle.publishedAt).toLocaleDateString() : ""}</span>
                     </div>
                   </div>

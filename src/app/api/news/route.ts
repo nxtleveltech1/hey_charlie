@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     }
 
     // Generate excerpt if not provided
-    const finalExcerpt = excerpt || content.substring(0, 200).replace(/[#*_\n]/g, "").trim() + "...";
+    const finalExcerpt = excerpt || content.substring(0, 200).replace(/[#*_]/g, "").replace(/\s+/g, " ").trim() + "...";
 
     // Create article
     const [newArticle] = await db.insert(articles).values({
