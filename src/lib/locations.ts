@@ -50,6 +50,9 @@ export interface Location {
 const LOCATION_IMAGES = {
   clifton: "/images/clifton-beaches.jpg",
   campsBay: "/images/camps-bay.jpg",
+  llandudno: "/images/llandudno.jpg",
+  sandyBay: "/images/sandy-bay.jpg",
+  noordhoek: "/images/noordhoek.jpg",
   houtBay: "/images/hout bay.png",
   falseBay: "/images/false bay.png",
   capePoint: "/images/cape point drop off.png",
@@ -152,6 +155,135 @@ From the water, you'll appreciate the full grandeur of the mountains rising 800 
       "Ask about our dinner cruise + restaurant combo packages",
     ],
     nearbyAttractions: ["Clifton Beaches", "Bakoven beach", "Table Mountain Aerial Cableway", "Lion's Head sunset hike"],
+    category: "beach",
+  },
+  {
+    id: "llandudno",
+    slug: "llandudno",
+    name: "Llandudno",
+    tagline: "A Secluded Cove Between Granite Giants",
+    heroDescription: "A perfect crescent of white sand wrapped in giant granite boulders, with no shops, no streetlights — just mountains, fynbos, and some of the best sunset light on the Atlantic Seaboard.",
+    fullDescription: `Llandudno is the Atlantic Seaboard's best-kept open secret. Tucked into a steep amphitheatre of mountainside between Camps Bay and Hout Bay, this residential-only cove has no shops, no restaurants, and famously no streetlights — which is exactly why locals love it.
+
+The beach itself is a postcard: white sand framed by enormous granite boulders, with Little Lion's Head rising behind. It's a favourite for sunset picnics and, when the swell lines up, one of Cape Town's best-loved surf spots.
+
+Parking on land is notoriously scarce in summer, which makes arriving by boat the ultimate move. From the water you get the full sweep of the amphitheatre — mansions clinging to the slopes, boulders glowing gold in the late light, and the sun dropping straight into the Atlantic.`,
+    heroImage: LOCATION_IMAGES.llandudno,
+    coordinates: { lat: -34.0086, lng: 18.3417 },
+    gallery: [
+      { src: LOCATION_IMAGES.llandudno, alt: "Llandudno beach and granite boulders", caption: "Llandudno's white sand between granite boulders" },
+      { src: LOCATION_IMAGES.llandudno, alt: "Llandudno cove from the water", caption: "The sheltered cove below Little Lion's Head" },
+    ],
+    videos: [
+      { embedUrl: "https://www.youtube.com/embed/whFJwSFmUwk", title: "Atlantic Seaboard Beaches 4K", thumbnail: LOCATION_IMAGES.llandudno },
+    ],
+    highlights: [
+      { title: "Hidden Gem", description: "No shops, no crowds — a locals-only feel year-round", icon: "🤫" },
+      { title: "Boulder Beauty", description: "Giant granite boulders frame the perfect crescent", icon: "🪨" },
+      { title: "Skip the Parking", description: "Parking is near-impossible in summer — boats win", icon: "⛵" },
+      { title: "Sunset Amphitheatre", description: "The mountain bowl glows gold at golden hour", icon: "🌅" },
+    ],
+    experiences: [
+      { name: "Sundowner Cruise", icon: "🌅", description: "Golden-hour cruise past Llandudno's amphitheatre", duration: "2.5 hours", price: 850, packageId: "sundowner-cruise" },
+      { name: "Beach Hopper", icon: "🏖️", description: "Llandudno plus Clifton and secret coves in one day", duration: "5 hours", price: 1500, packageId: "beach-hopper" },
+      { name: "Private Charter", icon: "🥂", description: "A private anchorage off one of Cape Town's quietest beaches", duration: "Custom", price: 12000, packageId: "private-charter" },
+    ],
+    bestTimeToVisit: "December to March for beach weather; autumn mornings are glassy and quiet",
+    weatherNote: "Atlantic water at 13-17°C. The cove offers some shelter, but a big swell brings dramatic surf.",
+    accessInfo: "About 20 minutes by boat from the V&A Waterfront, between Camps Bay and Hout Bay. We anchor off the beach — no stairs, no parking wars.",
+    tips: [
+      "Bring your own everything — there are no shops or kiosks",
+      "Surf's up? Watch the local riders from the best seat in the house",
+      "Golden hour here is special — time your cruise for sunset",
+      "Combine with Sandy Bay next door for a two-cove afternoon",
+    ],
+    nearbyAttractions: ["Sandy Bay (next cove south)", "Little Lion's Head hike", "Hout Bay harbor", "Camps Bay strip"],
+    category: "beach",
+  },
+  {
+    id: "sandy-bay",
+    slug: "sandy-bay",
+    name: "Sandy Bay",
+    tagline: "Cape Town's Wildest, Most Secluded Beach",
+    heroDescription: "No road, no buildings, no crowds. Reachable only by footpath or boat, Sandy Bay is a wild stretch of white sand, dunes, and fynbos — Cape Town's ultimate escape.",
+    fullDescription: `Sandy Bay is as wild as the Atlantic Seaboard gets. There's no road to it, no buildings on it, and no development behind it — just a long ribbon of white sand backed by dunes and fynbos, hemmed in by granite boulders at either end.
+
+On land, the only way in is a 20-minute footpath from Llandudno. By boat, you simply arrive — which is exactly how this beach is best experienced. Sandy Bay has also long been known as Cape Town's unofficial naturist beach, with a live-and-let-live culture and plenty of space for everyone.
+
+Because it faces away from the city with zero light or noise around it, Sandy Bay feels genuinely remote — seals and dolphins often cruise past, and on a still day the anchorage feels like your own private bay.`,
+    heroImage: LOCATION_IMAGES.sandyBay,
+    coordinates: { lat: -34.0226, lng: 18.3358 },
+    gallery: [
+      { src: LOCATION_IMAGES.sandyBay, alt: "Sandy Bay's secluded white sand beach", caption: "Sandy Bay's undeveloped shoreline below the mountain" },
+      { src: LOCATION_IMAGES.sandyBay, alt: "Sandy Bay dunes and fynbos", caption: "Dunes, fynbos and granite — and not a building in sight" },
+    ],
+    videos: [
+      { embedUrl: "https://www.youtube.com/embed/hho0kiwXOaI", title: "Cape Town's Hidden Beaches", thumbnail: LOCATION_IMAGES.sandyBay },
+    ],
+    highlights: [
+      { title: "Boat-Access Bliss", description: "No road in — arriving by sea beats the long footpath", icon: "⛵" },
+      { title: "Totally Undeveloped", description: "No buildings, no kiosks, no light pollution", icon: "🌿" },
+      { title: "True Seclusion", description: "Often near-empty even in peak season", icon: "🏝️" },
+      { title: "Wild Atlantic", description: "Seals and dolphins regularly pass the bay", icon: "🦭" },
+    ],
+    experiences: [
+      { name: "Beach Hopper", icon: "🏖️", description: "Drop anchor at the beach most visitors never reach", duration: "5 hours", price: 1500, packageId: "beach-hopper" },
+      { name: "Coastline Explorer", icon: "🧭", description: "Sandy Bay as part of the full Atlantic Seaboard run", duration: "7 hours", price: 2200, packageId: "coastline-explorer" },
+      { name: "Private Charter", icon: "🥂", description: "Your own private bay for the afternoon", duration: "Custom", price: 12000, packageId: "private-charter" },
+    ],
+    bestTimeToVisit: "December to March for the calmest, warmest days; windless winter days are magic",
+    weatherNote: "Exposed to the open Atlantic — best on calm days. Water 13-17°C.",
+    accessInfo: "About 25 minutes by boat from the V&A Waterfront, just south of Llandudno. On land it's a 20-minute footpath — by boat it's effortless.",
+    tips: [
+      "It's Cape Town's unofficial naturist beach — clothing optional, respect expected",
+      "There are zero facilities — we bring everything you need on board",
+      "Calm-day anchorages here feel completely private",
+      "Great snorkeling around the boulders at the northern end",
+    ],
+    nearbyAttractions: ["Llandudno (next cove north)", "Duiker Island seal colony", "Hout Bay harbor", "Karbonkelberg hiking trails"],
+    category: "beach",
+  },
+  {
+    id: "noordhoek",
+    slug: "noordhoek",
+    name: "Noordhoek",
+    tagline: "Eight Kilometres of Wild, Open Sand",
+    heroDescription: "The longest beach on the peninsula — a vast white expanse below Chapman's Peak where horses gallop the shoreline and the Kakapo shipwreck rusts in the dunes.",
+    fullDescription: `Noordhoek's Long Beach is the Cape Peninsula at its most cinematic: eight kilometres of wide, white sand stretching from the foot of Chapman's Peak all the way to Kommetjie. It's so vast that even on a busy day it feels empty.
+
+This is the beach of famous images — horse riders galloping through the shallows at sunset, kite surfers carving the wind line, and the rusting bones of the Kakapo, a steamship that ran aground here in 1900 and never left.
+
+From the water, the view is even better: the full face of Chapman's Peak rising sheer above the sand, with the famous drive cut impossibly into the cliffs. We cruise this stretch on the way south from Hout Bay — a front-row seat to one of the great coastal panoramas anywhere.`,
+    heroImage: LOCATION_IMAGES.noordhoek,
+    coordinates: { lat: -34.1036, lng: 18.3565 },
+    gallery: [
+      { src: LOCATION_IMAGES.noordhoek, alt: "Noordhoek Long Beach from above", caption: "Eight kilometres of sand curving toward Kommetjie" },
+      { src: LOCATION_IMAGES.noordhoek, alt: "Noordhoek beach below Chapman's Peak", caption: "The vast beach below Chapman's Peak" },
+    ],
+    videos: [
+      { embedUrl: "https://www.youtube.com/embed/Sg7r5jHtsCo", title: "Chapman's Peak & Noordhoek Coastline", thumbnail: LOCATION_IMAGES.noordhoek },
+    ],
+    highlights: [
+      { title: "Endless Sand", description: "The peninsula's longest beach — 8km of open space", icon: "🏖️" },
+      { title: "Chapman's Peak", description: "The famous cliffside drive seen from sea level", icon: "🛣️" },
+      { title: "Shipwreck Story", description: "The Kakapo has rested in the dunes since 1900", icon: "🚢" },
+      { title: "Horses & Kites", description: "Riders and kite surfers own this windswept expanse", icon: "🐎" },
+    ],
+    experiences: [
+      { name: "Coastline Explorer", icon: "🧭", description: "Cruise the full length of Long Beach below Chapman's Peak", duration: "7 hours", price: 2200, packageId: "coastline-explorer" },
+      { name: "Beach Hopper", icon: "🏖️", description: "The wild southern leg of a beach-hopping day", duration: "5 hours", price: 1500, packageId: "beach-hopper" },
+      { name: "Private Charter", icon: "🥂", description: "A private cruise along the peninsula's grandest beach", duration: "Custom", price: 12000, packageId: "private-charter" },
+    ],
+    bestTimeToVisit: "October to April; early mornings before the southeaster for the calmest water",
+    weatherNote: "Open and exposed — the beach catches wind and swell. We cruise it on calm days and mornings.",
+    accessInfo: "About 40 minutes by boat from the V&A Waterfront, just south of Hout Bay past Chapman's Peak. Viewed from the water — surf landing is not practical here.",
+    tips: [
+      "Bring a long lens — horse riders on the beach make iconic photos",
+      "Look for the Kakapo wreck in the dunes at the northern end",
+      "The view of Chapman's Peak Drive from the sea is one of a kind",
+      "Whales pass this stretch in season (June to November)",
+    ],
+    nearbyAttractions: ["Chapman's Peak Drive", "Kommetjie and Slangkop Lighthouse", "Hout Bay harbor", "Cape Point Nature Reserve"],
     category: "beach",
   },
   {

@@ -30,6 +30,8 @@ interface GalleryExperienceProps {
   media: GalleryMediaItem[];
 }
 
+const heroVideoSrc = "/Gallery/JUNE%2026/WhatsApp%20Video%202026-06-10%20at%2016.49.24.mp4";
+
 const filterOptions: Array<{ id: GalleryFilter; label: string }> = [
   { id: "all", label: "All" },
   { id: "image", label: "Photos" },
@@ -146,7 +148,8 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
 
     return seen;
   }, [media]);
-  const featuredMedia = videos[0] ?? photos[0];
+  const featuredMedia =
+    media.find((item) => item.src === heroVideoSrc) ?? videos[0] ?? photos[0];
   const heroStrip = useMemo(
     () => [photos[7], videos[0], photos[14], photos[24], videos[3], photos[35]].filter(Boolean) as GalleryMediaItem[],
     [photos, videos],
