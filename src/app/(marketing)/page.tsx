@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { db } from "@/db";
-import { packages as pkgTable } from "@/db/schema";
+import { packages as pkgTable, articles } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { getGalleryPreviewImages } from "@/lib/gallery";
 import { siteConfig } from "@/lib/site";
@@ -10,6 +10,7 @@ import { ExperienceGrid } from "@/components/home/experience-grid";
 import { OffersCarousel } from "@/components/home/offers-carousel";
 import { HomePackagesSection } from "@/components/home/home-packages-section";
 import { DestinationsPreview } from "@/components/home/destinations-preview";
+import { NewsPreview } from "@/components/home/news-preview";
 import { GalleryPreviewStrip } from "@/components/home/gallery-preview-strip";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
@@ -28,12 +29,26 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [dbPackages, galleryImages] = await Promise.all([
+  const [dbPackages, galleryImages, latestArticles] = await Promise.all([
     db.query.packages.findMany({
       where: eq(pkgTable.isActive, true),
       orderBy: [desc(pkgTable.isFeatured), desc(pkgTable.createdAt)],
     }),
     getGalleryPreviewImages(8),
+    db.query.articles.findMany({
+      where: eq(articles.status, "published"),
+      orderBy: [desc(articles.publishedAt)],
+      limit: 3,
+      columns: {
+        id: true,
+        slug: true,
+        title: true,
+        excerpt: true,
+        coverImage: true,
+        category: true,
+        publishedAt: true,
+      },
+    }),
   ]);
 
   const displayPackages = dbPackages.map((pkg) => ({
@@ -57,6 +72,7 @@ export default async function Home() {
       <OffersCarousel />
       <HomePackagesSection packages={displayPackages} totalCount={dbPackages.length} />
       <DestinationsPreview />
+      <NewsPreview articles={latestArticles} />
       <GalleryPreviewStrip images={galleryImages} />
       <HowItWorks />
       <TestimonialsSection />

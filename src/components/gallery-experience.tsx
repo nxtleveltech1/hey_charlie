@@ -150,10 +150,6 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
   }, [media]);
   const featuredMedia =
     media.find((item) => item.src === heroVideoSrc) ?? videos[0] ?? photos[0];
-  const heroStrip = useMemo(
-    () => [photos[7], videos[0], photos[14], photos[24], videos[3], photos[35]].filter(Boolean) as GalleryMediaItem[],
-    [photos, videos],
-  );
 
   const filteredMedia = useMemo(
     () =>
@@ -265,7 +261,7 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
         </div>
 
         <div className="wide-shell relative flex min-h-[calc(88svh-5rem)] items-end pb-16 sm:pb-20 lg:min-h-[calc(100vh-7rem)] lg:items-center lg:pb-0">
-          <div className="grid w-full items-end gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(24rem,0.52fr)] lg:items-end lg:gap-10">
+          <div className="w-full">
             <div className="max-w-4xl space-y-4 sm:space-y-5 lg:space-y-6">
               <div className="section-eyebrow-hero">
                 <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
@@ -307,33 +303,6 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
                     Moments
                   </p>
                 </div>
-              </div>
-            </div>
-
-            <div className="hidden lg:block">
-              <div className="grid grid-cols-2 gap-3">
-                {heroStrip.slice(0, 4).map((item, index) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => {
-                      const targetIndex = filteredMedia.findIndex((mediaItem) => mediaItem.id === item.id);
-                      openMedia(targetIndex >= 0 ? targetIndex : 0);
-                    }}
-                    className={`group relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 text-left shadow-2xl shadow-black/20 ${
-                      index === 0 ? "col-span-2 aspect-[16/9]" : "aspect-[4/3]"
-                    }`}
-                    aria-label={`Open ${item.title}`}
-                  >
-                    <MediaPreview item={item} sizes="(min-width: 1024px) 26vw, 50vw" playPreview />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-60" />
-                    {item.type === "video" && (
-                      <span className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md transition-transform group-hover:scale-110">
-                        <PlayIcon />
-                      </span>
-                    )}
-                  </button>
-                ))}
               </div>
             </div>
           </div>
