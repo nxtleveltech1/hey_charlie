@@ -14,7 +14,7 @@ const crewMemberSchema = z.object({
   certifications: z.array(z.string()).optional(),
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional(),
-  imageUrl: z.string().url().optional().or(z.literal("")),
+  imageUrl: z.string().regex(/^(https?:\/\/|\/)/, "Must be a full URL or a path starting with /").optional().or(z.literal("")),
   isActive: z.boolean().optional().default(true),
   displayOrder: z.number().int().optional().default(0),
 });

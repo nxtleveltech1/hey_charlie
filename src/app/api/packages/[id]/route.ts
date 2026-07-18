@@ -16,7 +16,7 @@ const packageUpdateSchema = z.object({
   maxGuests: z.number().int().min(1).optional(),
   category: z.string().optional(),
   highlights: z.array(z.string()).optional().nullable(),
-  imageUrl: z.string().url().optional().nullable().or(z.literal("")),
+  imageUrl: z.string().regex(/^(https?:\/\/|\/)/, "Must be a full URL or a path starting with /").optional().nullable().or(z.literal("")),
   isActive: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
 });

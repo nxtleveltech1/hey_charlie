@@ -13,7 +13,7 @@ const crewMemberUpdateSchema = z.object({
   certifications: z.array(z.string()).optional().nullable(),
   email: z.string().email().optional().nullable().or(z.literal("")),
   phone: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable().or(z.literal("")),
+  imageUrl: z.string().regex(/^(https?:\/\/|\/)/, "Must be a full URL or a path starting with /").optional().nullable().or(z.literal("")),
   isActive: z.boolean().optional(),
   displayOrder: z.number().int().optional(),
 });
