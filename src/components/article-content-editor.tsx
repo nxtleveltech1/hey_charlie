@@ -24,23 +24,28 @@ export function ArticleContentEditor({ value, onChange }: ArticleContentEditorPr
     onChange(before + lead + snippet + trail + after);
   };
 
-  const handleFile = async (file: File) => {
+  const handleFiles = async (files: File[]) => {
     setUploading(true);
     setError("");
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/media", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
-      const alt = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
-      insertAtCursor(`![${alt}](${data.url})`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
+    const snippets: string[] = [];
+    const failures: string[] = [];
+    for (const file of files) {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await fetch("/api/media", { method: "POST", body: formData });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Upload failed");
+        const alt = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+        snippets.push(`![${alt}](${data.url})`);
+      } catch (err) {
+        failures.push(`${file.name}: ${err instanceof Error ? err.message : "Upload failed"}`);
+      }
     }
+    if (snippets.length > 0) insertAtCursor(snippets.join("\n\n"));
+    if (failures.length > 0) setError(failures.join(" · "));
+    setUploading(false);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   return (
@@ -53,7 +58,7 @@ export function ArticleContentEditor({ value, onChange }: ArticleContentEditorPr
           disabled={uploading}
           className="px-3 py-1.5 text-sm bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg hover:border-orange-500/50 transition-colors disabled:opacity-50"
         >
-          {uploading ? "Uploading..." : "📷 Insert Image"}
+          {uploading ? "Uploading..." : "📷 Insert Images"}
         </button>
       </div>
       <textarea
@@ -68,15 +73,16 @@ export function ArticleContentEditor({ value, onChange }: ArticleContentEditorPr
       <input
         ref={fileRef}
         type="file"
+        multiple
         accept="image/jpeg,image/png,image/webp,image/gif"
         className="hidden"
         onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFile(file);
+          const files = Array.from(e.target.files ?? []);
+          if (files.length > 0) handleFiles(files);
         }}
       />
       <p className="mt-1 text-xs text-[var(--theme-text-muted)]">
-        Click Insert Image to upload a photo — it is placed at your cursor position in the text.
+        Click Insert Images to upload one or more photos — they are placed at your cursor position in the text.
       </p>
       {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
     </div>

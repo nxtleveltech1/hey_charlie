@@ -47,6 +47,11 @@ const isPublicRoute = createRouteMatcher([
   "/api/packages",
   "/api/weather",
   "/api/crew",
+  // Site settings read (booking form uses the advance-booking window on
+  // public package pages). Exact path only — /api/settings/export and
+  // /api/settings/cancelled-bookings stay protected. PUT is admin-checked
+  // in the handler itself.
+  "/api/settings",
   // Uploaded images (article covers) are shown on public pages. Uploading
   // (POST /api/media) stays protected — the handler also enforces admin.
   "/api/media/(.*)",
