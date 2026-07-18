@@ -1,6 +1,30 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+export interface ArticleImage {
+  alt: string;
+  src: string;
+}
+
+// Pull standalone image lines out of the content so the page can lay them out
+// alongside the text (side rails on desktop, grid on mobile). Images embedded
+// mid-paragraph are left in place.
+const STANDALONE_IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/;
+
+export function extractArticleImages(content: string): { images: ArticleImage[]; text: string } {
+  const images: ArticleImage[] = [];
+  const lines = content.replace(/\r\n/g, "\n").split("\n");
+  const kept = lines.filter((line) => {
+    const m = line.trim().match(STANDALONE_IMAGE_RE);
+    if (m && (m[2].startsWith("/") || m[2].startsWith("https://"))) {
+      images.push({ alt: m[1], src: m[2] });
+      return false;
+    }
+    return true;
+  });
+  return { images, text: kept.join("\n") };
+}
+
 // Articles are often pasted as plain text with no markdown markers. When no
 // headings exist, promote short standalone lines without ending punctuation
 // to section headings so the piece still reads like a structured blog post.
