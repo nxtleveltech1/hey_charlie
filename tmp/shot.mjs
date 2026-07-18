@@ -9,6 +9,7 @@ await page.goto(base + "/destinations", { waitUntil: "networkidle", timeout: 900
 const map = page.locator('svg[aria-label*="Cape Peninsula"]');
 await map.waitFor({ timeout: 30000 });
 await map.scrollIntoViewIfNeeded();
+await page.addStyleTag({ content: "header, nav { display: none !important; }" });
 await page.waitForTimeout(1000);
 const container = page.locator('svg[aria-label*="Cape Peninsula"]').locator("..");
 await container.screenshot({ path: out });

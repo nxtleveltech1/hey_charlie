@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { packages, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -107,6 +108,10 @@ export async function PUT(
       .where(eq(packages.id, id))
       .returning();
 
+    revalidatePath("/");
+    revalidatePath("/packages");
+    revalidatePath("/booking/[packageSlug]", "page");
+
     return NextResponse.json(updatedPackage);
   } catch (error) {
     console.error("Failed to update package:", error);
@@ -156,6 +161,10 @@ export async function DELETE(
     }
 
     await db.delete(packages).where(eq(packages.id, id));
+
+    revalidatePath("/");
+    revalidatePath("/packages");
+    revalidatePath("/booking/[packageSlug]", "page");
 
     return NextResponse.json({ success: true });
   } catch (error) {

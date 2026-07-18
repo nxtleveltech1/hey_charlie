@@ -209,12 +209,17 @@ export function RouteMap() {
 
         {/* Destination labels (hidden on small screens) */}
         {markers.map(({ location, x, y }) => {
-          const anchorLeft = x > W * 0.55;
+          // Simon's Town and Boulders Beach sit close together — anchor
+          // their labels away from each other to avoid overlap
+          const anchorLeft =
+            location.slug === "simons-town" ||
+            (location.slug !== "boulders-beach" && x > W * 0.55);
+          const dy = location.slug === "boulders-beach" ? 12 : location.slug === "simons-town" ? -4 : 5;
           return (
             <text
               key={location.slug}
               x={anchorLeft ? x - 16 : x + 16}
-              y={y + 5}
+              y={y + dy}
               textAnchor={anchorLeft ? "end" : "start"}
               fill="rgba(255,255,255,0.85)"
               fontSize="16"

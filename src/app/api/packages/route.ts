@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { packages, users } from "@/db/schema";
@@ -76,6 +77,10 @@ export async function POST(request: NextRequest) {
       pricePerPerson: validatedData.pricePerPerson.toString(),
       imageUrl: validatedData.imageUrl === "" ? null : validatedData.imageUrl,
     }).returning();
+
+    revalidatePath("/");
+    revalidatePath("/packages");
+    revalidatePath("/booking/[packageSlug]", "page");
 
     return NextResponse.json({ package: newPackage }, { status: 201 });
   } catch (error) {

@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { crewMembers, users } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
@@ -101,6 +102,8 @@ export async function POST(request: NextRequest) {
         displayOrder: validatedData.displayOrder,
       })
       .returning();
+
+    revalidatePath("/crew");
 
     return NextResponse.json(newCrewMember, { status: 201 });
   } catch (error) {

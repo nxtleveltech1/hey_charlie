@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { crewMembers, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -82,6 +83,8 @@ export async function PUT(
       .where(eq(crewMembers.id, id))
       .returning();
 
+    revalidatePath("/crew");
+
     return NextResponse.json(updatedCrewMember);
   } catch (error) {
     console.error("Failed to update crew member:", error);
@@ -121,6 +124,7 @@ export async function DELETE(
     }
 
     await db.delete(crewMembers).where(eq(crewMembers.id, id));
+    revalidatePath("/crew");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete crew member:", error);
