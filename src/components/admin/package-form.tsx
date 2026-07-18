@@ -146,13 +146,13 @@ export function PackageFormFields({
       <div>
         <label className="block text-sm font-medium mb-2">Image URL</label>
         <input
-          type="url"
+          type="text"
           value={formData.imageUrl}
           onChange={(e) =>
             onFormDataChange({ ...formData, imageUrl: e.target.value })
           }
           className={inputClassName}
-          placeholder="https://example.com/package-image.jpg"
+          placeholder="/images/package-image.jpg or https://..."
         />
       </div>
 

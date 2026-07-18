@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { locations } from "@/lib/locations";
+import { RouteMap } from "@/components/destinations/route-map";
 
 export const metadata: Metadata = {
   title: "Destinations | Hey Charlie Charters",
@@ -320,25 +321,7 @@ export default function DestinationsPage() {
             </p>
           </div>
 
-          {/* Stylized route visualization */}
-          <div className="relative aspect-[16/9] lg:aspect-[21/9] rounded-3xl overflow-hidden bg-gradient-to-br from-cyan-900/30 via-blue-900/30 to-slate-900/30 border border-[var(--theme-border)]">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">🗺️</div>
-                <p className="text-[var(--theme-text-muted)]">Interactive map coming soon</p>
-                <p className="text-sm text-[var(--theme-text-muted)] mt-2">
-                  Contact us to plan your custom route
-                </p>
-              </div>
-            </div>
-            
-            {/* Location markers */}
-            <div className="absolute top-[20%] left-[30%] w-4 h-4 rounded-full bg-orange-500 animate-pulse" title="Clifton" />
-            <div className="absolute top-[25%] left-[35%] w-4 h-4 rounded-full bg-cyan-500 animate-pulse" style={{ animationDelay: "0.5s" }} title="Camps Bay" />
-            <div className="absolute top-[40%] left-[25%] w-4 h-4 rounded-full bg-pink-500 animate-pulse" style={{ animationDelay: "1s" }} title="Hout Bay" />
-            <div className="absolute top-[60%] left-[60%] w-4 h-4 rounded-full bg-green-500 animate-pulse" style={{ animationDelay: "1.5s" }} title="Simon's Town" />
-            <div className="absolute top-[75%] left-[55%] w-4 h-4 rounded-full bg-purple-500 animate-pulse" style={{ animationDelay: "2s" }} title="Cape Point" />
-          </div>
+          <RouteMap />
         </div>
       </section>
 

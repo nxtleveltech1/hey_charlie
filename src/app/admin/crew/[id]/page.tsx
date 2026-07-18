@@ -152,7 +152,7 @@ export default function EditCrewMemberPage({ params }: { params: Promise<{ id: s
 
         <div>
           <label className="block text-sm font-medium mb-2">Image URL</label>
-          <input type="url" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} className="w-full px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" />
+          <input type="text" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} className="w-full px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" />
         </div>
 
         <div className="flex items-center gap-2">
