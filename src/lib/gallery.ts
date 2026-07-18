@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -116,6 +117,35 @@ async function getMediaDimensions(fileName: string, posterFileName?: string) {
   return fallbackDimensions;
 }
 
+/** File size plus a hash of the first 64KB — enough to identify re-uploaded copies of the same file. */
+async function contentSignature(fileName: string): Promise<string> {
+  const filePath = path.join(galleryDir, fileName);
+  const { size } = await fs.stat(filePath);
+  const handle = await fs.open(filePath, "r");
+
+  try {
+    const length = Math.min(size, 64 * 1024);
+    const buffer = Buffer.alloc(length);
+    await handle.read(buffer, 0, length, 0);
+    return `${size}:${createHash("md5").update(buffer).digest("hex")}`;
+  } finally {
+    await handle.close();
+  }
+}
+
+async function dedupeFiles(files: string[], seenSignatures: Set<string>): Promise<string[]> {
+  const signatures = await Promise.all(files.map(contentSignature));
+
+  return files.filter((_, index) => {
+    if (seenSignatures.has(signatures[index])) {
+      return false;
+    }
+
+    seenSignatures.add(signatures[index]);
+    return true;
+  });
+}
+
 interface MediaGroup {
   month: string | null;
   files: string[];
@@ -159,22 +189,38 @@ async function listMediaGroups(): Promise<MediaGroup[]> {
 
 export async function getGalleryMedia(): Promise<GalleryMediaItem[]> {
   const groups = await listMediaGroups();
+  const seenSignatures = new Set<string>();
   const items: Array<Promise<GalleryMediaItem>> = [];
   let index = 0;
 
   for (const group of groups) {
+    const files = await dedupeFiles(group.files, seenSignatures);
+
     const imageByBaseName = new Map(
-      group.files
+      files
         .filter((fileName) => imageExtensions.has(path.extname(fileName).toLowerCase()))
         .map((fileName) => [path.basename(fileName, path.extname(fileName)), fileName]),
     );
 
-    for (const fileName of group.files) {
+    // Live-photo stills double as their video's poster; skip them as standalone items.
+    const posterFiles = new Set(
+      files
+        .filter((fileName) => videoExtensions.has(path.extname(fileName).toLowerCase()))
+        .map((fileName) => imageByBaseName.get(path.basename(fileName, path.extname(fileName))))
+        .filter((fileName): fileName is string => Boolean(fileName)),
+    );
+
+    for (const fileName of files) {
+      const extension = path.extname(fileName).toLowerCase();
+      const type = videoExtensions.has(extension) ? "video" : "image";
+
+      if (type === "image" && posterFiles.has(fileName)) {
+        continue;
+      }
+
       const itemIndex = index;
       index += 1;
 
-      const extension = path.extname(fileName).toLowerCase();
-      const type = videoExtensions.has(extension) ? "video" : "image";
       const baseName = path.basename(fileName, extension);
       const poster = type === "video" ? imageByBaseName.get(baseName) : undefined;
 
@@ -203,7 +249,15 @@ export async function getGalleryMedia(): Promise<GalleryMediaItem[]> {
   return Promise.all(items);
 }
 
+/** Sample images evenly across the collection so the preview shows varied moments, not one burst of shots. */
 export async function getGalleryPreviewImages(limit = 8): Promise<GalleryMediaItem[]> {
   const media = await getGalleryMedia();
-  return media.filter((item) => item.type === "image").slice(0, limit);
+  const images = media.filter((item) => item.type === "image");
+
+  if (images.length <= limit) {
+    return images;
+  }
+
+  const step = images.length / limit;
+  return Array.from({ length: limit }, (_, index) => images[Math.floor(index * step)]);
 }

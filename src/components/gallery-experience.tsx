@@ -415,13 +415,13 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
             {activeMonth === "all" ? " this view" : ` ${formatMonthLabel(activeMonth)}`} yet.
           </p>
         )}
-        <div className="columns-1 gap-2 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
+        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 xl:columns-4">
           {filteredMedia.map((item, index) => (
             <button
               key={item.id}
               type="button"
               onClick={() => openMedia(index)}
-              className="group relative mb-2 block w-full break-inside-avoid overflow-hidden rounded-xl border border-[var(--theme-border)] bg-black text-left shadow-lg shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-cyan-500/10"
+              className="group relative mb-3 block w-full break-inside-avoid overflow-hidden rounded-xl border border-[var(--theme-border)] bg-black text-left shadow-lg shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-cyan-500/10"
               aria-label={`Open ${item.title}`}
               style={{ aspectRatio: `${item.width} / ${item.height}` }}
             >

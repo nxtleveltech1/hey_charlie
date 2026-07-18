@@ -9,6 +9,14 @@ Pulled from **Cape Marine Charters** `public/images/`:
 
 These paths match `crew_members.image_url` after `bun run db:seed`.
 
+## Licensed stock images
+
+- `whale-watching.jpg` — "Southern right whale breaching, South Africa" by Olga Ernst,
+  CC BY-SA 4.0, via Wikimedia Commons
+  (https://commons.wikimedia.org/wiki/File:Southern_right_whale_breaching,_South_Africa.jpg).
+  Attribution must be retained while this image is in use; replace with an own
+  photo when one is available.
+
 ---
 
 Place the following images here for the full experience:

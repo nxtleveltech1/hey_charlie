@@ -20,15 +20,6 @@ interface PackageCardProps {
 }
 
 export function PackageCard({ pkg }: PackageCardProps) {
-  const categoryIcons: Record<string, string> = {
-    adventure: "⛵",
-    relaxation: "🌅",
-    culinary: "🦞",
-    wildlife: "🐋",
-    fishing: "🎣",
-    private: "🥂",
-  };
-
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
 
   return (
@@ -49,9 +40,6 @@ export function PackageCard({ pkg }: PackageCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
-        <div className="absolute inset-0 flex items-center justify-center text-4xl lg:text-6xl opacity-20 pointer-events-none">
-          {categoryIcons[pkg.category] || "⛵"}
-        </div>
       </div>
 
       <div className="flex flex-col gap-3 p-4 lg:p-5">

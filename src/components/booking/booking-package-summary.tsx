@@ -16,15 +16,6 @@ interface BookingPackageSummaryProps {
   category?: string | null;
 }
 
-const categoryIcons: Record<string, string> = {
-  adventure: "⛵",
-  relaxation: "🌅",
-  culinary: "🦞",
-  wildlife: "🐋",
-  fishing: "🎣",
-  private: "🥂",
-};
-
 export function BookingPackageSummary({
   name,
   slug,
@@ -36,7 +27,6 @@ export function BookingPackageSummary({
   maxGuests,
   highlights,
   imageUrl,
-  category,
 }: BookingPackageSummaryProps) {
   const imageSrc = resolvePackageImageUrl(imageUrl, slug);
 
@@ -51,9 +41,6 @@ export function BookingPackageSummary({
           sizes="(max-width: 1024px) 100vw, 320px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-4xl opacity-20">
-          {categoryIcons[category ?? ""] || "⛵"}
-        </div>
       </div>
 
       <div className="p-5 lg:p-6">

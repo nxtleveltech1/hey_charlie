@@ -3,7 +3,6 @@ import { db } from "@/db";
 import { packages as pkgTable } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { getGalleryPreviewImages } from "@/lib/gallery";
-import { selectHomePreviewPackages } from "@/lib/home-content";
 import { siteConfig } from "@/lib/site";
 import { HomePageShell } from "@/components/home/home-page-shell";
 import { HomeHero } from "@/components/home/home-hero";
@@ -37,7 +36,7 @@ export default async function Home() {
     getGalleryPreviewImages(8),
   ]);
 
-  const displayPackages = selectHomePreviewPackages(dbPackages).map((pkg) => ({
+  const displayPackages = dbPackages.map((pkg) => ({
     id: pkg.id,
     slug: pkg.slug,
     name: pkg.name,

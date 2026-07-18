@@ -29,34 +29,34 @@ export const experiences: ExperienceCategory[] = [
     icon: "whale",
     count: "Jun–Nov season",
     href: "/booking/whale-watching",
-    image: "/images/seal-island.jpg",
+    image: "/images/whale-watching.jpg",
   },
   {
     name: "Fishing Charters",
     icon: "fishing",
     count: "Year-round",
     href: "/booking/deep-sea-fishing",
-    image: "/images/catch-cook-crayfish.jpg",
+    image: "/images/Yellowfin Tuna Hunt.jpg",
   },
   {
     name: "Beach Hopping",
     icon: "beach",
     count: "Atlantic coves",
-    href: "/destinations/clifton-beaches",
+    href: "/booking/beach-hopper",
     image: "/images/clifton-beaches.jpg",
   },
   {
-    name: "Crayfish Diving",
+    name: "Seafood Feasts",
     icon: "crayfish",
-    count: "In season",
-    href: "/booking/crayfish-experience",
-    image: "/images/catch-cook-crayfish.jpg",
+    count: "Beach braai & feasts",
+    href: "/booking/seafood-beach-feast",
+    image: "/images/seafood-feast.jpg",
   },
   {
     name: "Private Events",
     icon: "champagne",
     count: "Up to 12 guests",
-    href: "/booking/private-charter",
+    href: "/booking/private-celebration",
     image: "/images/private-charter-guests.jpeg",
   },
 ];
@@ -113,38 +113,3 @@ export const categoryLabels: Record<string, string> = {
   "departure-hub": "Departure Hub",
 };
 
-/** Homepage packages grid: core charter lineup (featured spotlight is picked from this set). */
-export const HOME_PACKAGE_PREVIEW_CORE = 6;
-
-/** New catalogue packages — appended to fill the second grid row when not in the core six. */
-export const HOME_PACKAGE_NEW_SLUGS = [
-  "shipwreck-tour",
-  "mobile-refreshment-station",
-  "custom-services",
-] as const;
-
-/** Pick the homepage preview: top packages by DB order, plus any new slugs not already shown. */
-export function selectHomePreviewPackages<T extends { slug: string }>(
-  packages: T[],
-): T[] {
-  const bySlug = new Map(packages.map((p) => [p.slug, p]));
-  const seen = new Set<string>();
-  const picked: T[] = [];
-
-  for (const pkg of packages) {
-    if (picked.length >= HOME_PACKAGE_PREVIEW_CORE) break;
-    picked.push(pkg);
-    seen.add(pkg.slug);
-  }
-
-  for (const slug of HOME_PACKAGE_NEW_SLUGS) {
-    if (seen.has(slug)) continue;
-    const pkg = bySlug.get(slug);
-    if (pkg) {
-      picked.push(pkg);
-      seen.add(slug);
-    }
-  }
-
-  return picked;
-}

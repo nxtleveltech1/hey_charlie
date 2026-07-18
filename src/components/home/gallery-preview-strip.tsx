@@ -28,26 +28,34 @@ export function GalleryPreviewStrip({ images }: GalleryPreviewStripProps) {
               subtitle="Glimpse the adventures waiting for you — sundowners, wildlife encounters, and unforgettable Cape Town sunsets."
             />
 
-            <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-4 lg:grid-rows-2 lg:gap-2.5 lg:auto-rows-fr">
-              {images.map((item, i) => (
-                <div
-                  key={item.id}
-                  className={`relative overflow-hidden rounded-xl lg:rounded-2xl border border-[var(--theme-border)] ${
-                    i === 0
-                      ? "aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:min-h-[240px]"
-                      : "aspect-[4/3] lg:min-h-[116px]"
-                  }`}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                    sizes={i === 0 ? "(max-width: 1024px) 80vw, 40vw" : "(max-width: 1024px) 40vw, 20vw"}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+            <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-4 lg:auto-rows-[10.5rem] lg:gap-3">
+              {images.map((item, i) => {
+                const isFeature = i === 0;
+                const isWide = i === 5;
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`group relative overflow-hidden rounded-xl lg:rounded-2xl border border-[var(--theme-border)] aspect-[4/3] lg:aspect-auto ${
+                      isFeature ? "lg:col-span-2 lg:row-span-2" : isWide ? "lg:col-span-2" : ""
+                    }`}
+                  >
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes={
+                        isFeature || isWide
+                          ? "(max-width: 1024px) 80vw, 40vw"
+                          : "(max-width: 1024px) 40vw, 20vw"
+                      }
+                      loading="lazy"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </RevealOnScroll>

@@ -84,7 +84,7 @@ export type Package = z.infer<typeof packageSchema>;
 export const PACKAGE_IMAGES = {
   sundowner: "/images/sundown-cruise-hero.png",
   crayfish: "/images/catch-cook-crayfish.jpg",
-  whale: "/images/seal-island.jpg",
+  whale: "/images/whale-watching.jpg",
   beachHopper: "/images/clifton-beaches.jpg",
   seafoodFeast: "/images/seafood-feast.jpg",
   deepSeaFishing: "/images/Yellowfin Tuna Hunt.jpg",
