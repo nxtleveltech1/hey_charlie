@@ -4,14 +4,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 type HeroSlide = { type: "video"; src: string; poster?: string };
 
-const encode = (file: string) => `/Gallery/${encodeURIComponent(file)}`;
+const encode = (file: string) => `/Gallery/JUNE%2026/${encodeURIComponent(file)}`;
 
 /**
  * Ordered rotation of hero video. Leads with the original hero clip, then
  * cycles through the new gallery videos so the background keeps moving.
  */
 const slides: HeroSlide[] = [
-  { type: "video", src: "/Gallery/HC%201%20(2).mp4", poster: "/Gallery/HC%201%20(2).jpeg" },
+  { type: "video", src: "/Gallery/JUNE%2026/HC%201%20(2).mp4", poster: "/Gallery/JUNE%2026/HC%201%20(2).jpeg" },
   { type: "video", src: encode("WhatsApp Video 2026-06-10 at 16.20.08.mp4") },
   { type: "video", src: encode("WhatsApp Video 2026-06-10 at 16.49.24.mp4") },
 ];

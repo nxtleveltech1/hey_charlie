@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "About Us | Hey Charlie Charters",
     description:
       "More than a boat ride. Discover who we are, how we run our charters, and why the Cape coast feels different from our deck.",
-    images: ["/Gallery/HC%201%20(31).jpeg"],
+    images: ["/Gallery/JUNE%2026/HC%201%20(31).jpeg"],
   },
 };
 
@@ -90,7 +90,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative flex min-h-[88svh] items-end overflow-hidden">
         <Image
-          src="/Gallery/WhatsApp%20Image%202026-06-10%20at%2016.50.02.jpeg"
+          src="/Gallery/JUNE%2026/WhatsApp%20Image%202026-06-10%20at%2016.50.02.jpeg"
           alt="Hey Charlie Charters out on the Atlantic off Cape Town"
           fill
           priority
@@ -172,7 +172,7 @@ export default function AboutPage() {
           {/* Feature image */}
           <div className="relative mt-12 aspect-[16/10] overflow-hidden rounded-3xl border border-[var(--theme-border)] shadow-sm sm:aspect-[21/9] lg:mt-16">
             <Image
-              src="/Gallery/HC%201%20(2).jpeg"
+              src="/Gallery/JUNE%2026/HC%201%20(2).jpeg"
               alt="The Hey Charlie crew out on the Atlantic off Cape Town"
               fill
               className="object-cover"
@@ -537,7 +537,7 @@ export default function AboutPage() {
         <div className="wide-shell">
           <div className="relative overflow-hidden rounded-3xl">
             <Image
-              src="/Gallery/HC%201%20(17).jpeg"
+              src="/Gallery/JUNE%2026/HC%201%20(17).jpeg"
               alt="A Hey Charlie Charters sunset on the Atlantic"
               fill
               className="object-cover"

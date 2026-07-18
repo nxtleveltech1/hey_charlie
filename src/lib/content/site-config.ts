@@ -294,7 +294,7 @@ export const siteConfig: SiteConfig = siteConfigSchema.parse({
     },
   ],
   heroPoster: "/images/sundown-cruise-hero.png",
-  heroVideo: "/Gallery/HC%201%20(2).mp4",
+  heroVideo: "/Gallery/JUNE%2026/HC%201%20(2).mp4",
   url: canonicalUrl,
 });
 

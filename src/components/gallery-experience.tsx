@@ -13,9 +13,18 @@ export interface GalleryMediaItem {
   title: string;
   width: number;
   height: number;
+  month: string | null;
 }
 
 type GalleryFilter = "all" | "image" | "video";
+
+function formatMonthLabel(month: string) {
+  return month
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 interface GalleryExperienceProps {
   media: GalleryMediaItem[];
@@ -121,23 +130,37 @@ function MediaPreview({
 
 export function GalleryExperience({ media }: GalleryExperienceProps) {
   const [activeFilter, setActiveFilter] = useState<GalleryFilter>("all");
+  const [activeMonth, setActiveMonth] = useState<string>("all");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const photos = useMemo(() => media.filter((item) => item.type === "image"), [media]);
   const videos = useMemo(() => media.filter((item) => item.type === "video"), [media]);
+  const months = useMemo(() => {
+    const seen: string[] = [];
+
+    for (const item of media) {
+      if (item.month && !seen.includes(item.month)) {
+        seen.push(item.month);
+      }
+    }
+
+    return seen;
+  }, [media]);
   const featuredMedia = videos[0] ?? photos[0];
   const heroStrip = useMemo(
     () => [photos[7], videos[0], photos[14], photos[24], videos[3], photos[35]].filter(Boolean) as GalleryMediaItem[],
     [photos, videos],
   );
 
-  const filteredMedia = useMemo(() => {
-    if (activeFilter === "all") {
-      return media;
-    }
-
-    return media.filter((item) => item.type === activeFilter);
-  }, [activeFilter, media]);
+  const filteredMedia = useMemo(
+    () =>
+      media.filter(
+        (item) =>
+          (activeFilter === "all" || item.type === activeFilter) &&
+          (activeMonth === "all" || item.month === activeMonth),
+      ),
+    [activeFilter, activeMonth, media],
+  );
 
   const selectedItem = selectedIndex === null ? null : filteredMedia[selectedIndex];
 
@@ -316,45 +339,82 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
 
       <section className="section-pad-sm">
         <div className="wide-shell">
-          <div className="flex flex-col gap-5 border-y border-[var(--theme-border)] py-5 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">Sea stories</p>
-              <h2
-                className="mt-1 text-2xl font-bold sm:text-3xl lg:text-5xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Photos and films from the water
-              </h2>
+          <div className="flex flex-col gap-5 border-y border-[var(--theme-border)] py-5">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">Sea stories</p>
+                <h2
+                  className="mt-1 text-2xl font-bold sm:text-3xl lg:text-5xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  Photos and films from the water
+                </h2>
+              </div>
+
+              <div className="inline-grid w-full grid-cols-3 rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] p-1 sm:w-auto">
+                {filterOptions.map((option) => {
+                  const isActive = activeFilter === option.id;
+
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => {
+                        setActiveFilter(option.id);
+                        setSelectedIndex(null);
+                      }}
+                      className={`min-h-11 rounded-full px-4 text-sm font-semibold transition-all ${
+                        isActive
+                          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/20"
+                          : "text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]"
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="inline-grid w-full grid-cols-3 rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] p-1 sm:w-auto">
-              {filterOptions.map((option) => {
-                const isActive = activeFilter === option.id;
+            {months.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by month">
+                <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-[var(--theme-text-muted)]">
+                  Date
+                </span>
+                {["all", ...months].map((month) => {
+                  const isActive = activeMonth === month;
 
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveFilter(option.id);
-                      setSelectedIndex(null);
-                    }}
-                    className={`min-h-11 rounded-full px-4 text-sm font-semibold transition-all ${
-                      isActive
-                        ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/20"
-                        : "text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
-            </div>
+                  return (
+                    <button
+                      key={month}
+                      type="button"
+                      onClick={() => {
+                        setActiveMonth(month);
+                        setSelectedIndex(null);
+                      }}
+                      className={`min-h-10 rounded-full border px-4 text-sm font-semibold transition-all ${
+                        isActive
+                          ? "border-transparent bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/20"
+                          : "border-[var(--theme-border)] bg-[var(--theme-surface)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]"
+                      }`}
+                    >
+                      {month === "all" ? "All dates" : formatMonthLabel(month)}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       <section className="wide-shell pb-20">
+        {filteredMedia.length === 0 && (
+          <p className="py-16 text-center text-[var(--theme-text-muted)]">
+            No {activeFilter === "video" ? "videos" : activeFilter === "image" ? "photos" : "media"} in
+            {activeMonth === "all" ? " this view" : ` ${formatMonthLabel(activeMonth)}`} yet.
+          </p>
+        )}
         <div className="columns-1 gap-2 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
           {filteredMedia.map((item, index) => (
             <button
@@ -374,6 +434,7 @@ export function GalleryExperience({ media }: GalleryExperienceProps) {
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-white/55">
                     {item.type === "video" ? "Video" : "Photo"}
+                    {item.month ? ` · ${item.month}` : ""}
                   </p>
                   <p className="mt-1 text-base font-semibold text-white">{item.title}</p>
                 </div>

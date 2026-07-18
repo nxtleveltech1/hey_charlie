@@ -6,7 +6,7 @@ import { StepIcon } from "./experience-icons";
 import { RevealOnScroll } from "./reveal-on-scroll";
 
 const ABOUT_HERO = {
-  src: "/Gallery/HC%201%20(31).jpeg",
+  src: "/Gallery/JUNE%2026/HC%201%20(31).jpeg",
   alt: "Hey Charlie Charters boat on the water with branded hull artwork",
 };
 

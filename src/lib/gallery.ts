@@ -6,6 +6,21 @@ const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 const videoExtensions = new Set([".mp4", ".webm", ".mov"]);
 const fallbackDimensions = { width: 16, height: 9 };
 
+const monthNames = [
+  "JANUARY",
+  "FEBRUARY",
+  "MARCH",
+  "APRIL",
+  "MAY",
+  "JUNE",
+  "JULY",
+  "AUGUST",
+  "SEPTEMBER",
+  "OCTOBER",
+  "NOVEMBER",
+  "DECEMBER",
+];
+
 export interface GalleryMediaItem {
   id: string;
   type: "image" | "video";
@@ -15,6 +30,8 @@ export interface GalleryMediaItem {
   title: string;
   width: number;
   height: number;
+  /** Month folder the file lives in, e.g. "JUNE 26"; null for files in the Gallery root. */
+  month: string | null;
 }
 
 export function mediaUrl(fileName: string) {
@@ -22,6 +39,29 @@ export function mediaUrl(fileName: string) {
     .split("/")
     .map((part) => encodeURIComponent(part))
     .join("/")}`;
+}
+
+/** Folder names like "JUNE 26" or "MAY 2026" become a sortable month index; anything else is ignored. */
+function monthFolderSortKey(folderName: string): number | null {
+  const match = folderName.trim().toUpperCase().match(/^([A-Z]+)\s+'?(\d{2}|\d{4})$/);
+
+  if (!match) {
+    return null;
+  }
+
+  const monthIndex = monthNames.indexOf(match[1]);
+
+  if (monthIndex === -1) {
+    return null;
+  }
+
+  const year = match[2].length === 2 ? 2000 + Number(match[2]) : Number(match[2]);
+  return year * 12 + monthIndex;
+}
+
+function isMediaFile(fileName: string) {
+  const extension = path.extname(fileName).toLowerCase();
+  return imageExtensions.has(extension) || videoExtensions.has(extension);
 }
 
 function sortByGalleryNumber(a: string, b: string) {
@@ -76,47 +116,91 @@ async function getMediaDimensions(fileName: string, posterFileName?: string) {
   return fallbackDimensions;
 }
 
-export async function getGalleryMedia(): Promise<GalleryMediaItem[]> {
-  const files = await fs.readdir(galleryDir);
-  const mediaFiles = files
-    .filter((fileName) => {
-      const extension = path.extname(fileName).toLowerCase();
-      return imageExtensions.has(extension) || videoExtensions.has(extension);
-    })
+interface MediaGroup {
+  month: string | null;
+  files: string[];
+}
+
+/** Month folders newest-first, then any loose files left in the Gallery root. */
+async function listMediaGroups(): Promise<MediaGroup[]> {
+  const entries = await fs.readdir(galleryDir, { withFileTypes: true });
+
+  const monthFolders = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => ({ name: entry.name, sortKey: monthFolderSortKey(entry.name) }))
+    .filter((folder): folder is { name: string; sortKey: number } => folder.sortKey !== null)
+    .sort((a, b) => b.sortKey - a.sortKey);
+
+  const groups: MediaGroup[] = [];
+
+  for (const folder of monthFolders) {
+    const files = (await fs.readdir(path.join(galleryDir, folder.name)))
+      .filter(isMediaFile)
+      .sort(sortByGalleryNumber)
+      .map((fileName) => `${folder.name}/${fileName}`);
+
+    if (files.length > 0) {
+      groups.push({ month: folder.name, files });
+    }
+  }
+
+  const rootFiles = entries
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .filter(isMediaFile)
     .sort(sortByGalleryNumber);
 
-  const imageByBaseName = new Map(
-    mediaFiles
-      .filter((fileName) => imageExtensions.has(path.extname(fileName).toLowerCase()))
-      .map((fileName) => [path.basename(fileName, path.extname(fileName)), fileName]),
-  );
+  if (rootFiles.length > 0) {
+    groups.push({ month: null, files: rootFiles });
+  }
 
-  return Promise.all(
-    mediaFiles.map(async (fileName, index) => {
+  return groups;
+}
+
+export async function getGalleryMedia(): Promise<GalleryMediaItem[]> {
+  const groups = await listMediaGroups();
+  const items: Array<Promise<GalleryMediaItem>> = [];
+  let index = 0;
+
+  for (const group of groups) {
+    const imageByBaseName = new Map(
+      group.files
+        .filter((fileName) => imageExtensions.has(path.extname(fileName).toLowerCase()))
+        .map((fileName) => [path.basename(fileName, path.extname(fileName)), fileName]),
+    );
+
+    for (const fileName of group.files) {
+      const itemIndex = index;
+      index += 1;
+
       const extension = path.extname(fileName).toLowerCase();
       const type = videoExtensions.has(extension) ? "video" : "image";
       const baseName = path.basename(fileName, extension);
       const poster = type === "video" ? imageByBaseName.get(baseName) : undefined;
-      const dimensions = await getMediaDimensions(fileName, poster);
 
-      return {
-        id: `${baseName}-${type}-${index}`,
-        type,
-        src: mediaUrl(fileName),
-        poster: poster ? mediaUrl(poster) : undefined,
-        alt:
-          type === "video"
-            ? `Hey Charlie Charters video ${index + 1}`
-            : `Hey Charlie Charters gallery photo ${index + 1}`,
-        title:
-          type === "video"
-            ? `On-water video ${index + 1}`
-            : `Cape charter moment ${index + 1}`,
-        width: dimensions.width,
-        height: dimensions.height,
-      };
-    }),
-  );
+      items.push(
+        getMediaDimensions(fileName, poster).then((dimensions) => ({
+          id: `${baseName}-${type}-${itemIndex}`,
+          type,
+          src: mediaUrl(fileName),
+          poster: poster ? mediaUrl(poster) : undefined,
+          alt:
+            type === "video"
+              ? `Hey Charlie Charters video ${itemIndex + 1}`
+              : `Hey Charlie Charters gallery photo ${itemIndex + 1}`,
+          title:
+            type === "video"
+              ? `On-water video ${itemIndex + 1}`
+              : `Cape charter moment ${itemIndex + 1}`,
+          width: dimensions.width,
+          height: dimensions.height,
+          month: group.month,
+        })),
+      );
+    }
+  }
+
+  return Promise.all(items);
 }
 
 export async function getGalleryPreviewImages(limit = 8): Promise<GalleryMediaItem[]> {
