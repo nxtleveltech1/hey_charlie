@@ -12,6 +12,7 @@ const ABOUT_HERO = {
 
 const ABOUT_PILLARS = [
   {
+    emoji: "🥂",
     title: "More Than a Charter",
     accent: "sunset",
     paragraphs: [
@@ -22,6 +23,7 @@ const ABOUT_PILLARS = [
     ],
   },
   {
+    emoji: "🛟",
     title: "Experience You Can Trust",
     accent: "ocean",
     paragraphs: [
@@ -32,6 +34,7 @@ const ABOUT_PILLARS = [
     ],
   },
   {
+    emoji: "🌅",
     title: "Cape Town, Seen Properly",
     accent: "sunset",
     paragraphs: [
@@ -139,10 +142,19 @@ export function AboutCaptain() {
           </RevealOnScroll>
         </div>
 
-        <div className="mt-10 grid gap-5 md:mt-14 lg:grid-cols-3 lg:gap-6">
+        <div className="mt-10 grid items-start gap-5 md:mt-14 lg:grid-cols-3 lg:gap-6">
           {ABOUT_PILLARS.map((pillar, i) => (
-            <RevealOnScroll key={pillar.title} className="h-full" delay={i * 100}>
-              <div className="h-full rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] p-6 light-card lg:p-8">
+            <RevealOnScroll key={pillar.title} delay={i * 100}>
+              <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] p-6 light-card lg:p-8">
+                <div
+                  className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br text-2xl ${
+                    pillar.accent === "ocean"
+                      ? "from-cyan-500/15 to-blue-500/15"
+                      : "from-orange-500/15 to-pink-500/15"
+                  }`}
+                >
+                  {pillar.emoji}
+                </div>
                 <h3
                   className="mb-3 text-xl font-bold lg:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
@@ -166,7 +178,7 @@ export function AboutCaptain() {
         </div>
 
         <RevealOnScroll>
-          <div className="mx-auto mt-10 max-w-3xl text-center md:mt-14">
+          <div className="mx-auto mt-10 max-w-2xl text-center md:mt-14">
             <h3
               className="mb-4 text-2xl font-bold lg:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
