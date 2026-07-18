@@ -149,11 +149,34 @@ export function BookingForm({ packageData }: BookingFormProps) {
     slotPricing,
   ]);
 
-  const tomorrow = useMemo(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split("T")[0];
+  // Advance-booking window from admin settings; defaults until loaded
+  const [advanceWindow, setAdvanceWindow] = useState({ min: 1, max: 90 });
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.settings) {
+          setAdvanceWindow({
+            min: data.settings.minAdvanceBookingDays,
+            max: data.settings.maxAdvanceBookingDays,
+          });
+        }
+      })
+      .catch(() => {});
   }, []);
+
+  const dateBounds = useMemo(() => {
+    const toDateString = (daysFromNow: number) => {
+      const d = new Date();
+      d.setDate(d.getDate() + daysFromNow);
+      return d.toISOString().split("T")[0];
+    };
+    return {
+      min: toDateString(advanceWindow.min),
+      max: toDateString(advanceWindow.max),
+    };
+  }, [advanceWindow]);
 
   const canProceedStep1 =
     Boolean(formData.date && formData.timeSlots.length > 0 && formData.departureLocation) &&
@@ -288,7 +311,8 @@ export function BookingForm({ packageData }: BookingFormProps) {
               id="booking-date"
               type="date"
               required
-              min={tomorrow}
+              min={dateBounds.min}
+              max={dateBounds.max}
               value={formData.date}
               onChange={(e) =>
                 setFormData({ ...formData, date: e.target.value })

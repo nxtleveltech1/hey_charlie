@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Article } from "@/db/schema";
 import { CoverImageInput } from "@/components/cover-image-input";
+import { ArticleContentEditor } from "@/components/article-content-editor";
 
 const categories = [
   { value: "fishing-reports", label: "Fishing Reports" },
@@ -122,10 +123,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
           <textarea rows={2} value={formData.excerpt} onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })} className="w-full px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Content * (Markdown)</label>
-          <textarea rows={15} required value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} className="w-full px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent font-mono text-sm" />
-        </div>
+        <ArticleContentEditor value={formData.content} onChange={(content) => setFormData({ ...formData, content })} />
 
         <div className="grid grid-cols-2 gap-4">
           <div>

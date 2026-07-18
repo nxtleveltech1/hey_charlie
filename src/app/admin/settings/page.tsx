@@ -1,4 +1,184 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import type { SiteSettings, TimeSlot } from "@/db/schema";
+
+const inputClass =
+  "w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors";
+
+function Toggle({
+  on,
+  onChange,
+  label,
+}: {
+  on: boolean;
+  onChange: (next: boolean) => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={() => onChange(!on)}
+      className={`w-12 h-6 rounded-full relative transition-colors ${
+        on ? "bg-orange-500" : "bg-[var(--theme-border)]"
+      }`}
+    >
+      <span
+        className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+          on ? "left-7" : "left-1"
+        }`}
+      />
+    </button>
+  );
+}
+
 export default function AdminSettingsPage() {
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [slots, setSlots] = useState<TimeSlot[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [busy, setBusy] = useState<"export" | "delete" | null>(null);
+  const [message, setMessage] = useState<{ kind: "success" | "error"; text: string } | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (!res.ok) throw new Error("Failed to fetch settings");
+        const data = await res.json();
+        setSettings(data.settings);
+        setSlots(data.timeSlots);
+      } catch (err) {
+        console.error(err);
+        setMessage({ kind: "error", text: "Failed to load settings. Refresh to try again." });
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const update = (patch: Partial<SiteSettings>) =>
+    setSettings((prev) => (prev ? { ...prev, ...patch } : prev));
+
+  const saveSettings = async () => {
+    if (!settings) return;
+    setSaving(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          businessName: settings.businessName,
+          contactEmail: settings.contactEmail,
+          contactPhone: settings.contactPhone,
+          location: settings.location,
+          minAdvanceBookingDays: settings.minAdvanceBookingDays,
+          maxAdvanceBookingDays: settings.maxAdvanceBookingDays,
+          autoConfirmBookings: settings.autoConfirmBookings,
+          emailNotifications: settings.emailNotifications,
+          timeSlots: slots.map((s) => ({ id: s.id, isActive: s.isActive })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        const detail = Array.isArray(data.details) && data.details[0]?.message;
+        throw new Error(detail || data.error || "Failed to save settings");
+      }
+      setSettings(data.settings);
+      setSlots(data.timeSlots);
+      setMessage({ kind: "success", text: "Settings saved." });
+    } catch (err) {
+      setMessage({
+        kind: "error",
+        text: err instanceof Error ? err.message : "Failed to save settings",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const exportData = async () => {
+    setBusy("export");
+    setMessage(null);
+    try {
+      const res = await fetch("/api/settings/export");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Failed to export data");
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hey-charlie-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setMessage({ kind: "success", text: "Export downloaded." });
+    } catch (err) {
+      setMessage({
+        kind: "error",
+        text: err instanceof Error ? err.message : "Failed to export data",
+      });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const deleteCancelled = async () => {
+    if (
+      !confirm(
+        "Permanently delete ALL cancelled bookings? This cannot be undone."
+      )
+    )
+      return;
+    setBusy("delete");
+    setMessage(null);
+    try {
+      const res = await fetch("/api/settings/cancelled-bookings", {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to delete cancelled bookings");
+      setMessage({
+        kind: "success",
+        text:
+          data.deleted === 0
+            ? "No cancelled bookings to delete."
+            : `Deleted ${data.deleted} cancelled booking(s).`,
+      });
+    } catch (err) {
+      setMessage({
+        kind: "error",
+        text: err instanceof Error ? err.message : "Failed to delete cancelled bookings",
+      });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
+
+  if (!settings) {
+    return (
+      <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
+        {message?.text ?? "Failed to load settings."}
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -10,6 +190,18 @@ export default function AdminSettingsPage() {
         </p>
       </div>
 
+      {message && (
+        <div
+          className={`mb-6 p-4 rounded-lg border ${
+            message.kind === "success"
+              ? "bg-green-500/10 border-green-500/50 text-green-500"
+              : "bg-red-500/10 border-red-500/50 text-red-400"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
+
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Business Details */}
         <div className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
@@ -19,32 +211,36 @@ export default function AdminSettingsPage() {
               <label className="block text-sm font-medium mb-2">Business Name</label>
               <input
                 type="text"
-                defaultValue="Hey Charlie Charters"
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                value={settings.businessName}
+                onChange={(e) => update({ businessName: e.target.value })}
+                className={inputClass}
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Contact Email</label>
               <input
                 type="email"
-                defaultValue="ahoy@heycharliecharters.co.za"
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                value={settings.contactEmail}
+                onChange={(e) => update({ contactEmail: e.target.value })}
+                className={inputClass}
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Contact Phone</label>
               <input
                 type="tel"
-                defaultValue="+27 12 345 6789"
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                value={settings.contactPhone}
+                onChange={(e) => update({ contactPhone: e.target.value })}
+                className={inputClass}
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Location</label>
               <input
                 type="text"
-                defaultValue="V&A Waterfront, Cape Town"
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                value={settings.location}
+                onChange={(e) => update({ location: e.target.value })}
+                className={inputClass}
               />
             </div>
           </div>
@@ -58,18 +254,24 @@ export default function AdminSettingsPage() {
               <label className="block text-sm font-medium mb-2">Minimum Advance Booking (days)</label>
               <input
                 type="number"
-                defaultValue={1}
+                value={settings.minAdvanceBookingDays}
                 min={0}
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                onChange={(e) =>
+                  update({ minAdvanceBookingDays: parseInt(e.target.value, 10) || 0 })
+                }
+                className={inputClass}
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Maximum Advance Booking (days)</label>
               <input
                 type="number"
-                defaultValue={90}
+                value={settings.maxAdvanceBookingDays}
                 min={1}
-                className="w-full px-4 py-3 rounded-xl bg-[var(--theme-surface)] border border-[var(--theme-border)] focus:border-orange-500 outline-none transition-colors"
+                onChange={(e) =>
+                  update({ maxAdvanceBookingDays: parseInt(e.target.value, 10) || 1 })
+                }
+                className={inputClass}
               />
             </div>
             <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--theme-surface)]">
@@ -77,18 +279,22 @@ export default function AdminSettingsPage() {
                 <p className="font-medium">Auto-confirm Bookings</p>
                 <p className="text-sm text-[var(--theme-text-muted)]">Automatically confirm new bookings</p>
               </div>
-              <button className="w-12 h-6 rounded-full bg-[var(--theme-border)] relative">
-                <span className="absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform" />
-              </button>
+              <Toggle
+                on={settings.autoConfirmBookings}
+                onChange={(v) => update({ autoConfirmBookings: v })}
+                label="Auto-confirm bookings"
+              />
             </div>
             <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--theme-surface)]">
               <div>
                 <p className="font-medium">Email Notifications</p>
                 <p className="text-sm text-[var(--theme-text-muted)]">Receive email for new bookings</p>
               </div>
-              <button className="w-12 h-6 rounded-full bg-orange-500 relative">
-                <span className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white transition-transform" />
-              </button>
+              <Toggle
+                on={settings.emailNotifications}
+                onChange={(v) => update({ emailNotifications: v })}
+                label="Email notifications"
+              />
             </div>
           </div>
         </div>
@@ -97,20 +303,26 @@ export default function AdminSettingsPage() {
         <div className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
           <h2 className="text-lg font-semibold mb-4">Time Slots</h2>
           <div className="space-y-3">
-            {[
-              { name: "Morning", time: "08:00 - 12:00", active: true },
-              { name: "Afternoon", time: "13:00 - 17:00", active: true },
-              { name: "Sunset", time: "17:00 - 20:00", active: true },
-            ].map((slot) => (
+            {slots.map((slot) => (
               <div
-                key={slot.name}
+                key={slot.id}
                 className="flex items-center justify-between p-4 rounded-xl bg-[var(--theme-surface)]"
               >
                 <div>
                   <p className="font-medium">{slot.name}</p>
-                  <p className="text-sm text-[var(--theme-text-muted)]">{slot.time}</p>
+                  <p className="text-sm text-[var(--theme-text-muted)]">
+                    {slot.startTime} - {slot.endTime}
+                  </p>
                 </div>
-                <span className={`w-3 h-3 rounded-full ${slot.active ? "bg-green-500" : "bg-red-500"}`} />
+                <Toggle
+                  on={slot.isActive}
+                  onChange={(v) =>
+                    setSlots((prev) =>
+                      prev.map((s) => (s.id === slot.id ? { ...s, isActive: v } : s))
+                    )
+                  }
+                  label={`${slot.name} time slot`}
+                />
               </div>
             ))}
           </div>
@@ -125,8 +337,12 @@ export default function AdminSettingsPage() {
                 <p className="font-medium">Export All Data</p>
                 <p className="text-sm text-[var(--theme-text-muted)]">Download all bookings and customer data</p>
               </div>
-              <button className="px-4 py-2 rounded-lg border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm">
-                Export
+              <button
+                onClick={exportData}
+                disabled={busy !== null}
+                className="px-4 py-2 rounded-lg border border-[var(--theme-border)] hover:bg-[var(--theme-surface)] transition-colors text-sm disabled:opacity-50"
+              >
+                {busy === "export" ? "Exporting…" : "Export"}
               </button>
             </div>
             <div className="flex items-center justify-between">
@@ -134,8 +350,12 @@ export default function AdminSettingsPage() {
                 <p className="font-medium">Delete All Cancelled Bookings</p>
                 <p className="text-sm text-[var(--theme-text-muted)]">Permanently remove cancelled bookings</p>
               </div>
-              <button className="px-4 py-2 rounded-lg border border-red-500/20 text-red-500 hover:bg-red-500/10 transition-colors text-sm">
-                Delete
+              <button
+                onClick={deleteCancelled}
+                disabled={busy !== null}
+                className="px-4 py-2 rounded-lg border border-red-500/20 text-red-500 hover:bg-red-500/10 transition-colors text-sm disabled:opacity-50"
+              >
+                {busy === "delete" ? "Deleting…" : "Delete"}
               </button>
             </div>
           </div>
@@ -144,11 +364,14 @@ export default function AdminSettingsPage() {
 
       {/* Save Button */}
       <div className="mt-8 flex justify-end">
-        <button className="px-8 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity">
-          Save Settings
+        <button
+          onClick={saveSettings}
+          disabled={saving}
+          className="px-8 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
+          {saving ? "Saving…" : "Save Settings"}
         </button>
       </div>
     </div>
   );
 }
-

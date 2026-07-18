@@ -6,6 +6,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { displayableImageSrc } from "@/lib/images";
+import { ArticleContent } from "@/components/article-content";
 
 export const dynamic = "force-dynamic";
 
@@ -95,20 +96,7 @@ export default async function ArticlePage({ params }: Props) {
           </div>
 
           {/* Content */}
-          <div className="prose prose-invert prose-orange max-w-none prose-headings:text-[var(--theme-text)] prose-p:text-[var(--theme-text-secondary)] prose-a:text-orange-400 prose-strong:text-[var(--theme-text)]">
-            {article.content.split("\n").map((paragraph, idx) => {
-              if (paragraph.startsWith("# ")) {
-                return <h1 key={idx}>{paragraph.slice(2)}</h1>;
-              } else if (paragraph.startsWith("## ")) {
-                return <h2 key={idx}>{paragraph.slice(3)}</h2>;
-              } else if (paragraph.startsWith("### ")) {
-                return <h3 key={idx}>{paragraph.slice(4)}</h3>;
-              } else if (paragraph.trim()) {
-                return <p key={idx}>{paragraph}</p>;
-              }
-              return null;
-            })}
-          </div>
+          <ArticleContent content={article.content} />
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (

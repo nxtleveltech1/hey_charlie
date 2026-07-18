@@ -11,6 +11,7 @@ import {
   validateTimeSlotSelection,
 } from "@/lib/time-slot-pricing";
 import { departureLocationSchema } from "@/lib/departure-locations";
+import { getSiteSettings } from "@/lib/settings";
 
 const createBookingSchema = z.object({
   packageId: z.string().uuid(),
@@ -121,6 +122,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const settings = await getSiteSettings();
+
+    // Enforce the admin-configured advance-booking window (compared by day)
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const bookingDay = new Date(validatedData.date);
+    bookingDay.setHours(0, 0, 0, 0);
+    const daysAhead = Math.round(
+      (bookingDay.getTime() - startOfToday.getTime()) / (24 * 60 * 60 * 1000),
+    );
+
+    if (daysAhead < settings.minAdvanceBookingDays) {
+      return NextResponse.json(
+        {
+          error: `Bookings must be made at least ${settings.minAdvanceBookingDays} day(s) in advance`,
+        },
+        { status: 400 },
+      );
+    }
+
+    if (daysAhead > settings.maxAdvanceBookingDays) {
+      return NextResponse.json(
+        {
+          error: `Bookings can be made at most ${settings.maxAdvanceBookingDays} day(s) in advance`,
+        },
+        { status: 400 },
+      );
+    }
+
     const slotValidation = validateTimeSlotSelection(validatedData.timeSlots);
     if (!slotValidation.valid) {
       return NextResponse.json({ error: slotValidation.error }, { status: 400 });
@@ -192,7 +222,8 @@ export async function POST(request: NextRequest) {
         contactPhone: validatedData.contactPhone,
         specialRequests: validatedData.specialRequests || null,
         dietaryRequirements: validatedData.dietaryRequirements || null,
-        status: "pending",
+        status: settings.autoConfirmBookings ? "confirmed" : "pending",
+        confirmedAt: settings.autoConfirmBookings ? new Date() : null,
         paymentStatus: "unpaid",
       })
       .returning();
