@@ -3,6 +3,7 @@ import { articles, users } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -99,6 +100,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
       .where(eq(articles.id, id))
       .returning();
 
+    revalidatePath("/");
+    revalidatePath("/news");
+
     return NextResponse.json(updatedArticle);
   } catch (error) {
     console.error("Error updating article:", error);
@@ -133,6 +137,9 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     }
 
     await db.delete(articles).where(eq(articles.id, id));
+
+    revalidatePath("/");
+    revalidatePath("/news");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting article:", error);
