@@ -11,12 +11,16 @@ const contentSecurityPolicy = [
   "frame-ancestors 'self'",
   "form-action 'self'",
   "object-src 'none'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://upload.wikimedia.org",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://clerk.com",
+  "img-src 'self' data: blob: https://img.clerk.com https://images.unsplash.com https://upload.wikimedia.org",
+  // clerk.heycharliecharters.com is the production Clerk instance (pk_live);
+  // *.clerk.accounts.dev covers dev/preview instances (pk_test).
+  // challenges.cloudflare.com is Clerk's bot-protection (Turnstile) widget.
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://clerk.heycharliecharters.com https://*.clerk.accounts.dev https://clerk.com https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https://*.clerk.accounts.dev https://clerk.com https://customer-api.open-meteo.com https://api.open-meteo.com https://api.openweathermap.org https://api.stormglass.io",
-  "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com",
+  "connect-src 'self' https://clerk.heycharliecharters.com https://*.clerk.accounts.dev https://clerk.com https://customer-api.open-meteo.com https://customer-marine-api.open-meteo.com https://api.open-meteo.com https://api.openweathermap.org https://api.stormglass.io",
+  "worker-src 'self' blob:",
+  "frame-src 'self' https://challenges.cloudflare.com https://www.youtube-nocookie.com https://www.youtube.com",
 ].join("; ");
 
 const securityHeaders = [

@@ -18,26 +18,33 @@ export type BankDetails = {
   accountType: string;
 };
 
-function bankEnv(key: string, value: string | undefined, fallback: string): string {
+function env(value: string | undefined): string | undefined {
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : fallback;
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
 }
 
-export function getBankDetails(): BankDetails {
+/**
+ * Real banking details from HCC_BANK_* env vars. Returns null unless the bank
+ * name, account number and branch code are all configured — the confirmation
+ * page then tells the guest we'll send details directly, instead of ever
+ * rendering fabricated account numbers.
+ */
+export function getBankDetails(): BankDetails | null {
+  const bankName = env(process.env.HCC_BANK_NAME);
+  const accountNumber = env(process.env.HCC_BANK_ACCOUNT_NUMBER);
+  const branchCode = env(process.env.HCC_BANK_BRANCH_CODE);
+
+  if (!bankName || !accountNumber || !branchCode) {
+    return null;
+  }
+
   return {
-    bankName: bankEnv("HCC_BANK_NAME", process.env.HCC_BANK_NAME, "First National Bank"),
-    accountName: bankEnv(
-      "HCC_BANK_ACCOUNT_NAME",
-      process.env.HCC_BANK_ACCOUNT_NAME,
-      getPublicSiteConfig().legalName,
-    ),
-    accountNumber: bankEnv(
-      "HCC_BANK_ACCOUNT_NUMBER",
-      process.env.HCC_BANK_ACCOUNT_NUMBER,
-      "62812345678",
-    ),
-    branchCode: bankEnv("HCC_BANK_BRANCH_CODE", process.env.HCC_BANK_BRANCH_CODE, "250655"),
-    accountType: bankEnv("HCC_BANK_ACCOUNT_TYPE", process.env.HCC_BANK_ACCOUNT_TYPE, "Cheque"),
+    bankName,
+    accountName:
+      env(process.env.HCC_BANK_ACCOUNT_NAME) ?? getPublicSiteConfig().legalName,
+    accountNumber,
+    branchCode,
+    accountType: env(process.env.HCC_BANK_ACCOUNT_TYPE) ?? "Cheque",
   };
 }
 

@@ -130,10 +130,26 @@ export const legalSections: LegalSection[] = [
   },
 ];
 
+// "REQUIRED: …" lines are internal to-dos for the owner/legal adviser. They
+// stay visible in dev/preview as loud reminders but are never shown to real
+// visitors in production.
+const HIDE_INTERNAL_NOTES = process.env.NODE_ENV === "production";
+
+function forPublic(section: LegalSection): LegalSection {
+  if (!HIDE_INTERNAL_NOTES) return section;
+  const bullets = section.bullets?.filter((b) => !b.startsWith("REQUIRED:"));
+  return {
+    ...section,
+    body: section.body.filter((p) => !p.startsWith("REQUIRED:")),
+    bullets: bullets && bullets.length > 0 ? bullets : undefined,
+  };
+}
+
 export function getLegalSection(id: string): LegalSection | undefined {
-  return legalSections.find((s) => s.id === id);
+  const section = legalSections.find((s) => s.id === id);
+  return section ? forPublic(section) : undefined;
 }
 
 export function getLegalSections(): LegalSection[] {
-  return legalSections;
+  return legalSections.map(forPublic);
 }

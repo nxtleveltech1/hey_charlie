@@ -1,4 +1,5 @@
-import { getDestinations, getActiveOffers } from "@/lib/content";
+import { getActiveOffers } from "@/lib/content";
+import { locations } from "@/lib/locations";
 
 export type ExperienceIcon =
   | "sunset"
@@ -62,26 +63,21 @@ export const experiences: ExperienceCategory[] = [
 ];
 
 /**
- * Home destinations preview, sourced from the content module.
- *
- * Curated to destinations that currently have a valid local hero image, so the
- * homepage never renders a broken/placeholder image. Simon's Town and Boulders
- * Beach are flagged (REQUIRED-ASSET) in the content module and join the preview
- * once their local photos are supplied. Five items fill the destinations grid
- * (one featured 2×2 + four cards).
+ * Home destinations preview, sourced from the locations module — the same
+ * module that backs /destinations/[slug] — so the homepage can never link to a
+ * destination without a live route. Curated to locations with a local hero
+ * image. Five items fill the destinations grid (one featured 2×2 + four cards).
  */
 const HOME_DESTINATION_SLUGS = [
   "clifton-beaches",
   "camps-bay",
   "hout-bay",
-  "seal-island",
+  "llandudno",
   "cape-point",
 ] as const;
 
-const homeDestinationsSource = getDestinations();
-
 export const homeDestinations = HOME_DESTINATION_SLUGS.flatMap((slug) => {
-  const dest = homeDestinationsSource.find((d) => d.slug === slug);
+  const dest = locations.find((d) => d.slug === slug);
   return dest
     ? {
         name: dest.name,

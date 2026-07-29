@@ -155,6 +155,22 @@ export function SiteFooter() {
                   Safety
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/liability"
+                  className="transition-colors hover:text-[var(--theme-text)]"
+                >
+                  Liability
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/permits-and-regulations"
+                  className="transition-colors hover:text-[var(--theme-text)]"
+                >
+                  Permits &amp; Regulations
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

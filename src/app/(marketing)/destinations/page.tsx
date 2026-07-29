@@ -22,7 +22,7 @@ export default function DestinationsPage() {
         <div className="wide-shell text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-sm text-cyan-600 dark:text-cyan-300 mb-6">
             <span>🗺️</span>
-            <span>9 Stunning Locations</span>
+            <span>{locations.length} Stunning Locations</span>
           </div>
 
           <h1 

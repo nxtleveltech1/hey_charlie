@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Browse Hey Charlie Charters photos and videos from real Cape Town boat charter adventures.",
 };
 
-export const dynamic = "force-dynamic";
-
+// Rendered at build time: the Gallery folder only changes via deploy, and
+// Vercel's serverless functions can't read public/ at request time.
 export default async function GalleryPage() {
   const media = await getGalleryMedia();
 

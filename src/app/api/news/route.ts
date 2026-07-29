@@ -3,6 +3,7 @@ import { articles, users } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 // GET all articles (for admin)
 export async function GET() {
@@ -84,6 +85,11 @@ export async function POST(request: Request) {
       isFeatured: isFeatured || false,
       publishedAt: status === "published" ? new Date() : null,
     }).returning();
+
+    // The homepage news preview is statically rendered — refresh it (and the
+    // news index) so published articles appear without a redeploy.
+    revalidatePath("/");
+    revalidatePath("/news");
 
     return NextResponse.json(newArticle, { status: 201 });
   } catch (error) {

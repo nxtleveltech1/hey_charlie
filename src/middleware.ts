@@ -27,6 +27,7 @@ const NON_CANONICAL_HOSTS = new Set([
 
 const isPublicRoute = createRouteMatcher([
   "/",
+  "/about",
   "/gallery(.*)",
   "/packages(.*)",
   "/destinations(.*)",

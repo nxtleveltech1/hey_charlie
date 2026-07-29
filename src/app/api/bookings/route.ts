@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { bookings, users, packages, addons, bookingAddons } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import {
+  bookings,
+  users,
+  packages,
+  addons,
+  bookingAddons,
+  blockedDates,
+} from "@/db/schema";
+import { and, eq, desc, gte, lt, ne, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 import { generateBookingNumber } from "@/lib/booking-utils";
 import { calculateBookingTotal } from "@/lib/addon-pricing";
@@ -12,6 +19,7 @@ import {
 } from "@/lib/time-slot-pricing";
 import { departureLocationSchema } from "@/lib/departure-locations";
 import { getSiteSettings } from "@/lib/settings";
+import { sendBookingNotifications } from "@/lib/booking-notify";
 
 const createBookingSchema = z.object({
   packageId: z.string().uuid(),
@@ -156,6 +164,59 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: slotValidation.error }, { status: 400 });
     }
 
+    // Availability: one boat — reject dates the admin has blocked and time
+    // slots already held by another active booking on the same day.
+    const dayStart = new Date(validatedData.date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+
+    const blocked = await db.query.blockedDates.findFirst({
+      where: and(
+        gte(blockedDates.date, dayStart),
+        lt(blockedDates.date, dayEnd),
+        or(
+          isNull(blockedDates.packageId),
+          eq(blockedDates.packageId, validatedData.packageId),
+        ),
+      ),
+    });
+
+    if (blocked) {
+      return NextResponse.json(
+        { error: "This date is unavailable. Please choose another date." },
+        { status: 409 },
+      );
+    }
+
+    const sameDayBookings = await db.query.bookings.findMany({
+      where: and(
+        gte(bookings.date, dayStart),
+        lt(bookings.date, dayEnd),
+        ne(bookings.status, "cancelled"),
+      ),
+      columns: { timeSlots: true, timeSlot: true },
+    });
+
+    const requestedSlots = new Set(slotValidation.slots);
+    const slotTaken = sameDayBookings.some((existing) => {
+      const existingSlots =
+        existing.timeSlots && existing.timeSlots.length > 0
+          ? existing.timeSlots
+          : (existing.timeSlot ?? "").split(",");
+      return existingSlots.some((slot) => requestedSlots.has(slot.trim()));
+    });
+
+    if (slotTaken) {
+      return NextResponse.json(
+        {
+          error:
+            "One or more of the selected time slots is already booked for this date. Please choose a different time.",
+        },
+        { status: 409 },
+      );
+    }
+
     const basePricePerPerson = parseFloat(pkg.pricePerPerson);
     let slotPricing;
     try {
@@ -241,6 +302,21 @@ export async function POST(request: NextRequest) {
         })),
       );
     }
+
+    // Fire booking emails (owner alert + guest confirmation). Never fails the
+    // booking — sendBookingNotifications swallows and logs its own errors.
+    await sendBookingNotifications({
+      bookingNumber: newBooking.bookingNumber,
+      packageName: pkg.name,
+      date: newBooking.date,
+      timeSlots: slotValidation.slots,
+      guestCount: newBooking.guestCount,
+      totalPrice: newBooking.totalPrice,
+      contactName: newBooking.contactName,
+      contactEmail: newBooking.contactEmail,
+      contactPhone: newBooking.contactPhone,
+      specialRequests: newBooking.specialRequests,
+    });
 
     return NextResponse.json({ booking: newBooking }, { status: 201 });
   } catch (error) {
