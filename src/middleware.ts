@@ -28,6 +28,10 @@ const NON_CANONICAL_HOSTS = new Set([
 const isPublicRoute = createRouteMatcher([
   "/",
   "/about",
+  // SEO endpoints — the matcher only excludes asset extensions, so these must
+  // be listed or crawlers get an auth wall instead of robots/sitemap.
+  "/robots.txt",
+  "/sitemap.xml",
   "/gallery(.*)",
   "/packages(.*)",
   "/destinations(.*)",
