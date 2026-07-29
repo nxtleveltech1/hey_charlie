@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NavWordmark } from "@/components/ui/brand-logo";
 
@@ -94,9 +95,17 @@ export function PublicDesktopNav({
           </div>
 
           <div className={`flex shrink-0 items-center gap-5 border-l pl-7 ${dividerClass}`}>
-            <Link href="/sign-in" className={signInClass}>
-              Sign In
-            </Link>
+            <SignedOut>
+              <Link href="/sign-in" className={signInClass}>
+                Sign In
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <Link href="/dashboard" className={signInClass}>
+                My Bookings
+              </Link>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
             <Link
               href={hashHref(isHome, "packages")}
               className="rounded-[1.65rem] bg-gradient-to-r from-orange-500 to-pink-500 px-7 py-4 text-base font-semibold text-white shadow-lg shadow-orange-500/20 transition-opacity hover:opacity-90 btn-primary"
