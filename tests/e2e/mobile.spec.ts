@@ -8,6 +8,22 @@ test.describe("Mobile smoke tests", () => {
     ).toBeVisible();
   });
 
+  test("homepage hero carousel promotes Cape Courage booking", async ({ page }) => {
+    await page.goto("/");
+
+    const hero = page.getByTestId("home-hero-carousel");
+    await expect(hero).toBeVisible();
+    await hero.getByRole("button", { name: "Show Cape Courage VIP Pass" }).click();
+
+    const eventSlide = page.getByTestId("cape-courage-hero-slide");
+    await expect(eventSlide).toBeVisible();
+    await expect(eventSlide.getByRole("heading", { name: /Cape Courage VIP Pass/ })).toBeVisible();
+    await expect(hero.getByRole("link", { name: "Book Your Spot Now" })).toHaveAttribute(
+      "href",
+      "/booking/cape-courage-vip",
+    );
+  });
+
   test("packages page loads without horizontal scroll", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/packages");
