@@ -683,7 +683,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     shortDescription:
       "A full event day aboard Hey Charlie with premium boat-based viewing, food and drinks, alongside the Cape Courage surfers and media fleet.",
     longDescription:
-      "Watch Cape Courage, Africa's big-wave surf competition, from the water aboard Hey Charlie. Only seven guest places are available for this limited event-day charter, giving you a premium boat-based view alongside the surfers and accredited media fleet. Food and drinks are served on board while the skipper positions the vessel within the event's permitted viewing areas. Cape Courage runs on a July-August 2026 waiting period: the final event day is called by the organisers when the swell, wind and safety conditions align. Book and pay for your spot online now; the crew will send the call-day arrangements when the event is confirmed.",
+      "Watch Cape Courage, Africa's big-wave surf competition, from the water aboard Hey Charlie. Only seven guest places are available for this limited event-day charter, giving you a premium boat-based view alongside the surfers and accredited media fleet. Food and drinks are served on board while the skipper positions the vessel within the event's permitted viewing areas. Cape Courage runs on a July-August 2026 waiting period: the final event day is called by the organisers when the swell, wind and safety conditions align. Reserve your spot now and pay manually by EFT using your booking reference; the crew will send the call-day arrangements when the event is confirmed.",
     price: 3250,
     priceUnit: "per person",
     durationHours: 8,
@@ -749,7 +749,7 @@ const packageData: z.input<typeof packageSchema>[] = [
       },
       {
         q: "How do I book a place?",
-        a: "Choose the number of spots, enter your contact details and pay securely online. Places are R3,250 per person, and your payment confirms your place for the Cape Courage event call.",
+        a: "Choose the number of spots and enter your contact details to reserve them. Places are R3,250 per person; complete the manual EFT using your booking reference to confirm your place for the Cape Courage event call.",
       },
     ],
     relatedSlugs: ["private-charter", "custom-services", "coastline-explorer"],

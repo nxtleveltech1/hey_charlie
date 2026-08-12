@@ -148,7 +148,7 @@ export default async function BookingConfirmationPage({
               }
               subtitle={
                 isProvisional
-                  ? `Your booking number is ${booking.bookingNumber}. Complete an EFT within 24 hours using the banking details below to secure your charter.`
+                  ? `Your booking number is ${booking.bookingNumber}. Complete an EFT within 24 hours using the banking details below to secure ${eventTicket ? "your Cape Courage spot" : "your charter"}.`
                   : booking.paymentStatus === "paid"
                     ? "Your payment was successful and your booking is confirmed. We'll send a confirmation email shortly."
                     : "Your booking is reserved. Complete payment to confirm your charter."
@@ -316,11 +316,11 @@ export default async function BookingConfirmationPage({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="font-semibold text-orange-500">2.</span>
-                    Your date is held for 24 hours until {holdExpiresLabel}
+                    {eventTicket ? "Your place" : "Your date"} is held for 24 hours until {holdExpiresLabel}
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="font-semibold text-orange-500">3.</span>
-                    Once payment clears, we&apos;ll confirm your charter by email
+                    Once payment clears, we&apos;ll confirm {eventTicket ? "your place" : "your charter"} by email
                   </li>
                 </>
               ) : booking.paymentStatus === "paid" ? (

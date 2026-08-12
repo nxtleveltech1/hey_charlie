@@ -49,9 +49,8 @@ const loadPackage = cache(async (slug: string) => {
     image,
     content,
     isBookable:
-      Boolean(row?.isActive) &&
-      !content?.byRequest &&
-      price > 0,
+      slug === CAPE_COURAGE_SLUG ||
+      (Boolean(row?.isActive) && !content?.byRequest && price > 0),
   };
 });
 

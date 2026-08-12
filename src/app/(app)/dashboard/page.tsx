@@ -2,7 +2,6 @@ import { requireUser } from "@/lib/auth";
 import { db } from "@/db";
 import { bookings } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
-import Link from "next/link";
 import {
   formatPrice,
   formatDate,

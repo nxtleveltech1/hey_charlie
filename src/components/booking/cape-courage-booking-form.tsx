@@ -5,7 +5,6 @@ import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/booking-utils";
 import { DEFAULT_DEPARTURE_LOCATION } from "@/lib/departure-locations";
-import { isOnlinePaymentsEnabled } from "@/lib/payments";
 
 interface CapeCourageBookingFormProps {
   packageData: {
@@ -32,16 +31,10 @@ export function CapeCourageBookingForm({ packageData }: CapeCourageBookingFormPr
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const total = Number(packageData.pricePerPerson) * spots;
-  const paymentsEnabled = isOnlinePaymentsEnabled();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-
-    if (!paymentsEnabled) {
-      setError("Online card payments are not configured yet. Please contact Hey Charlie to complete setup.");
-      return;
-    }
 
     setIsLoading(true);
 
@@ -66,20 +59,9 @@ export function CapeCourageBookingForm({ packageData }: CapeCourageBookingFormPr
         throw new Error(bookingData.error || "Unable to reserve your spots");
       }
 
-      const checkoutResponse = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bookingId: bookingData.booking.id }),
-      });
-      const checkoutData = await checkoutResponse.json();
-
-      if (!checkoutResponse.ok || !checkoutData.checkoutUrl) {
-        throw new Error(checkoutData.error || "Unable to start secure payment");
-      }
-
-      window.location.href = checkoutData.checkoutUrl;
+      window.location.href = `/booking/confirmation/${bookingData.booking.id}`;
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Unable to start payment");
+      setError(caught instanceof Error ? caught.message : "Unable to reserve your spots");
       setIsLoading(false);
     }
   }
@@ -151,11 +133,11 @@ export function CapeCourageBookingForm({ packageData }: CapeCourageBookingFormPr
           <span className="font-semibold">Total</span>
           <span className="text-3xl font-bold text-orange-500">{formatPrice(total)}</span>
         </div>
-        <Button type="submit" size="block" variant="coral" disabled={isLoading || !paymentsEnabled}>
-          {isLoading ? "Opening secure payment…" : `Pay ${formatPrice(total)} & book now`}
+        <Button type="submit" size="block" variant="coral" disabled={isLoading}>
+          {isLoading ? "Reserving your spot…" : "Book Your Spot Now"}
         </Button>
         <p className="mt-3 text-center text-xs text-[var(--theme-text-muted)]">
-          Secure card payment. The event date is confirmed when Cape Courage makes the official call.
+          Your booking is reserved immediately. Use the booking reference and manual payment instructions on the next page.
         </p>
       </div>
     </form>

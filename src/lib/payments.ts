@@ -1,11 +1,8 @@
 import { getPublicSiteConfig } from "@/lib/content/site-config";
 
-/** Online card payments via Stripe. Off by default — provisional EFT bookings only. */
+/** Hey Charlie uses manual EFT payments; online card checkout is intentionally disabled. */
 export function isOnlinePaymentsEnabled(): boolean {
-  return (
-    process.env.NEXT_PUBLIC_HCC_ONLINE_PAYMENTS_ENABLED === "true" ||
-    process.env.HCC_ONLINE_PAYMENTS_ENABLED === "true"
-  );
+  return false;
 }
 
 export const PROVISIONAL_HOLD_HOURS = 24;
