@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { packages, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { getPackageRevalidationPaths } from "@/lib/package-revalidation";
 
 const packageUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
@@ -108,9 +109,12 @@ export async function PUT(
       .where(eq(packages.id, id))
       .returning();
 
-    revalidatePath("/");
-    revalidatePath("/packages");
-    revalidatePath("/booking/[packageSlug]", "page");
+    for (const path of getPackageRevalidationPaths([
+      existingPackage.slug,
+      updatedPackage.slug,
+    ])) {
+      revalidatePath(path);
+    }
 
     return NextResponse.json(updatedPackage);
   } catch (error) {
@@ -162,9 +166,9 @@ export async function DELETE(
 
     await db.delete(packages).where(eq(packages.id, id));
 
-    revalidatePath("/");
-    revalidatePath("/packages");
-    revalidatePath("/booking/[packageSlug]", "page");
+    for (const path of getPackageRevalidationPaths([existingPackage.slug])) {
+      revalidatePath(path);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -175,4 +179,3 @@ export async function DELETE(
     );
   }
 }
-

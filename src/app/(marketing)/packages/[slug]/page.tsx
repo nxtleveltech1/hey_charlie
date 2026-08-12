@@ -19,6 +19,10 @@ import { JsonLd, productJsonLd } from "@/lib/seo";
 const CAPE_COURAGE_URL = "https://www.instagram.com/cape.courage/";
 const CAPE_COURAGE_SLUG = "cape-courage-vip";
 
+// Package names, descriptions, prices and imagery are managed in admin.
+// Render at request time so public detail pages always reflect the latest row.
+export const dynamic = "force-dynamic";
+
 const loadPackage = cache(async (slug: string) => {
   const content = getPackageBySlug(slug);
   const row = await db.query.packages.findFirst({

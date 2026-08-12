@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { packages, users } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { z } from "zod";
+import { getPackageRevalidationPaths } from "@/lib/package-revalidation";
 
 const createPackageSchema = z.object({
   slug: z.string().min(2).max(100),
@@ -78,9 +79,9 @@ export async function POST(request: NextRequest) {
       imageUrl: validatedData.imageUrl === "" ? null : validatedData.imageUrl,
     }).returning();
 
-    revalidatePath("/");
-    revalidatePath("/packages");
-    revalidatePath("/booking/[packageSlug]", "page");
+    for (const path of getPackageRevalidationPaths([newPackage.slug])) {
+      revalidatePath(path);
+    }
 
     return NextResponse.json({ package: newPackage }, { status: 201 });
   } catch (error) {
@@ -97,4 +98,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
