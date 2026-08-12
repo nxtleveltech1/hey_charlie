@@ -678,7 +678,7 @@ const packageData: z.input<typeof packageSchema>[] = [
   {
     id: "cape-courage-vip",
     slug: "cape-courage-vip",
-    name: "Cape Courage VIP Pass",
+    name: "The Dungeons Seven Big Wave Invitational",
     tagline: "Seven front-row seats to Cape Town's big-wave invitational",
     shortDescription:
       "A full event day aboard Hey Charlie with premium boat-based viewing, food and drinks, alongside the Cape Courage surfers and media fleet.",

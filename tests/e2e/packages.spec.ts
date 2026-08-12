@@ -33,7 +33,7 @@ test.describe("Package discovery", () => {
     const hero = page.getByTestId("package-detail-hero");
     await expect(hero).toBeVisible();
     await expect(hero.getByRole("heading", { level: 1 })).toHaveText(
-      "The Dungeons Seven",
+      "The Dungeons Seven Big Wave Invitational",
     );
     await expect(hero).toHaveAttribute("data-theme-surface", "true");
     await expect(hero).not.toHaveClass(/bg-navy-deep/);

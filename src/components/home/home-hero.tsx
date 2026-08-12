@@ -218,7 +218,7 @@ export function HomeHero() {
         role="group"
         aria-label="Homepage hero slides"
       >
-        {["Charter adventures", "Cape Courage VIP Pass"].map((label, index) => (
+        {["Charter adventures", "The Dungeons Seven Big Wave Invitational"].map((label, index) => (
           <button
             key={label}
             type="button"

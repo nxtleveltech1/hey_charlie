@@ -13,7 +13,9 @@ test.describe("Mobile smoke tests", () => {
 
     const hero = page.getByTestId("home-hero-carousel");
     await expect(hero).toBeVisible();
-    await hero.getByRole("button", { name: "Show Cape Courage VIP Pass" }).click();
+    await hero
+      .getByRole("button", { name: "Show The Dungeons Seven Big Wave Invitational" })
+      .click();
 
     const eventSlide = page.getByTestId("cape-courage-hero-slide");
     await expect(eventSlide).toBeVisible();
