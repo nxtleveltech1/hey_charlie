@@ -91,6 +91,7 @@ export const PACKAGE_IMAGES = {
   coastlineExplorer: "/images/cape point drop off.png",
   privateCharter: "/images/private-charter-guests.jpeg",
   sealIsland: "/images/seal-island.jpg",
+  capeCourageVip: "/images/cape-courage-vip.png",
 } as const;
 
 const DEPARTURE = "V&A Waterfront, Cape Town";
@@ -673,6 +674,85 @@ const packageData: z.input<typeof packageSchema>[] = [
     relatedSlugs: ["coastline-explorer", "private-charter", "beach-hopper"],
   },
   {
+    id: "cape-courage-vip",
+    slug: "cape-courage-vip",
+    name: "Cape Courage VIP Pass",
+    tagline: "Seven front-row seats to Cape Town's big-wave invitational",
+    shortDescription:
+      "A full event day aboard Hey Charlie with premium boat-based viewing, food and drinks, alongside the Cape Courage surfers and media fleet.",
+    longDescription:
+      "Watch Cape Courage, Africa's big-wave surf competition, from the water aboard Hey Charlie. Only seven guest places are available for this limited event-day charter, giving you a premium boat-based view alongside the surfers and accredited media fleet. Food and drinks are served on board while the skipper positions the vessel within the event's permitted viewing areas. Cape Courage runs on a July-August 2026 waiting period: the final event day is called by the organisers when the swell, wind and safety conditions align. Enquire now to register your interest and receive the call-day arrangements.",
+    price: 3250,
+    priceUnit: "per person",
+    durationHours: 8,
+    durationLabel: "Full event day",
+    minGuests: 1,
+    maxGuests: 7,
+    departurePoint: "Cape Town departure point confirmed on the event call",
+    bestSeason: "Cape Courage waiting period: July-August 2026.",
+    seasonMonths: [7, 8],
+    seasonNote:
+      "There is no fixed event date. Cape Courage is called when organisers confirm a suitable big-wave window; guests must be available at short notice during the waiting period.",
+    category: "event-support",
+    offSeason: true,
+    byRequest: true,
+    bestFor: [
+      "Big-wave surf fans",
+      "Photographers",
+      "Adventure travellers",
+      "Small private groups",
+    ],
+    inclusions: [
+      "One of only seven guest places aboard Hey Charlie",
+      "Premium boat-based viewing from the permitted event zone",
+      "Food, drinks and water for the day",
+      "Licensed skipper, crew and required safety equipment",
+      "Call-day briefing and departure arrangements",
+    ],
+    exclusions: [
+      "Transfers to and from the departure point",
+      "Accommodation and event merchandise",
+      "Guaranteed proximity to competitors or a particular wave break",
+    ],
+    highlights: [
+      "Only 7 guest places",
+      "Front-row boat-based big-wave viewing",
+      "Food and drinks included",
+      "Alongside the surfers and media fleet",
+    ],
+    safetyNotes: [
+      "The event and charter are entirely weather- and sea-condition dependent. Cape Courage organisers may hold, postpone or cancel the event call.",
+      "The skipper and event safety team determine the vessel's route and viewing position. Guests must follow all crew instructions and remain within designated areas on board.",
+      "Big-wave conditions can produce significant vessel movement; this experience may not suit guests who are pregnant, have limited mobility or have certain medical conditions.",
+    ],
+    gallery: [PACKAGE_IMAGES.capeCourageVip],
+    heroImage: PACKAGE_IMAGES.capeCourageVip,
+    featured: false,
+    popular: true,
+    bestValue: false,
+    requiresPermit: false,
+    cancellationPolicyRef: "weather-policy",
+    faqs: [
+      {
+        q: "When is the event?",
+        a: "Cape Courage runs on a July-August 2026 waiting period. The organisers call the event when a suitable swell and safe conditions align, so there is no fixed date yet.",
+      },
+      {
+        q: "What does the VIP pass include?",
+        a: "Your place aboard Hey Charlie, premium boat-based viewing from the permitted event zone, food and drinks, professional crew and the required onboard safety equipment.",
+      },
+      {
+        q: "How many places are available?",
+        a: "Only seven guest places are available aboard Hey Charlie for the event day.",
+      },
+      {
+        q: "How do I reserve a place?",
+        a: "Send an enquiry by WhatsApp. Places are R3,250 per person; we will confirm availability and the call-day requirements before any booking is finalised.",
+      },
+    ],
+    relatedSlugs: ["private-charter", "custom-services", "coastline-explorer"],
+  },
+  {
     id: "mobile-refreshment-station",
     slug: "mobile-refreshment-station",
     name: "Mobile Refreshments & Beach Base",
@@ -896,6 +976,7 @@ export const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
   "coastline-explorer": PACKAGE_IMAGES.coastlineExplorer,
   "private-charter": PACKAGE_IMAGES.privateCharter,
   "seal-island": PACKAGE_IMAGES.sealIsland,
+  "cape-courage-vip": PACKAGE_IMAGES.capeCourageVip,
   "shipwreck-tour": "/images/cape point drop off.png",
   "mobile-refreshment-station": "/images/private-charter-guests.jpeg",
   "custom-services": "/images/private-charter-guests.jpeg",

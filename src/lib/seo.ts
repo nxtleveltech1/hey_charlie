@@ -52,7 +52,7 @@ export function localBusinessJsonLd(): JsonLdObject {
     url: BASE,
     telephone: siteConfig.phone,
     email: siteConfig.email,
-    image: abs(siteConfig.heroPoster),
+    image: abs(siteConfig.socialImage),
     logo: abs("/logo2.png"),
     address: {
       "@type": "PostalAddress",

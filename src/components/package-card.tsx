@@ -21,6 +21,8 @@ interface PackageCardProps {
 
 export function PackageCard({ pkg }: PackageCardProps) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
+  const enquiryOnly = pkg.slug === "cape-courage-vip" || Number(pkg.pricePerPerson) <= 0;
+  const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
     <div className="group relative h-full rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden card-hover light-card">
@@ -77,15 +79,25 @@ export function PackageCard({ pkg }: PackageCardProps) {
         )}
 
         <div className="mt-auto pt-3 lg:pt-4 border-t border-[var(--theme-border)] flex items-center justify-between gap-3">
-          <div>
-            <span className="text-lg lg:text-2xl font-bold">{formatPrice(pkg.pricePerPerson)}</span>
-            <span className="text-[var(--theme-text-muted)] text-[10px] lg:text-sm ml-1">/person</span>
-          </div>
+          {enquiryOnly ? (
+            <div>
+              <span className="text-lg font-bold lg:text-2xl">{formatPrice(pkg.pricePerPerson)}</span>
+              <span className="ml-1 text-[10px] text-[var(--theme-text-muted)] lg:text-sm">/person</span>
+              <span className="block text-[10px] text-[var(--theme-text-muted)] lg:text-xs">
+                Only 7 places
+              </span>
+            </div>
+          ) : (
+            <div>
+              <span className="text-lg lg:text-2xl font-bold">{formatPrice(pkg.pricePerPerson)}</span>
+              <span className="text-[var(--theme-text-muted)] text-[10px] lg:text-sm ml-1">/person</span>
+            </div>
+          )}
           <Link
-            href={`/booking/${pkg.slug}`}
+            href={productHref}
             className="shrink-0 px-4 lg:px-5 py-3 lg:py-2.5 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           >
-            Book Now
+            {enquiryOnly ? "Enquire Now" : "Book Now"}
           </Link>
         </div>
       </div>

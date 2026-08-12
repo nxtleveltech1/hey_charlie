@@ -31,10 +31,12 @@ interface HomePackagesSectionProps {
 
 function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
+  const enquiryOnly = pkg.slug === "cape-courage-vip" || Number(pkg.pricePerPerson) <= 0;
+  const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
     <Link
-      href={`/booking/${pkg.slug}`}
+      href={productHref}
       className="group relative col-span-full grid overflow-hidden rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] lg:grid-cols-2 light-card card-hover"
     >
       <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[280px] overflow-hidden">
@@ -64,11 +66,13 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
         <p className="text-[var(--theme-text-secondary)] mb-3 line-clamp-3">{pkg.description}</p>
         <div className="flex items-center gap-4 mt-auto pt-1 flex-wrap">
           <div>
-            <span className="text-2xl font-bold">{formatPrice(pkg.pricePerPerson)}</span>
+            <span className="text-2xl font-bold">
+              {formatPrice(pkg.pricePerPerson)}
+            </span>
             <span className="text-[var(--theme-text-muted)] text-sm ml-1">/person</span>
           </div>
           <span className="sm:ml-auto rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2.5 text-sm font-semibold text-white">
-            Book Now
+            {enquiryOnly ? "Enquire Now" : "Book Now"}
           </span>
         </div>
       </div>

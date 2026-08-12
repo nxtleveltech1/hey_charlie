@@ -166,6 +166,7 @@ export const siteConfigSchema = z.object({
   howItWorksSteps: z.array(howItWorksStepSchema),
   heroPoster: z.string(),
   heroVideo: z.string(),
+  socialImage: z.string(),
   /** Legacy alias for canonicalUrl (kept for backward compatibility). */
   url: z.string(),
 });
@@ -295,6 +296,7 @@ export const siteConfig: SiteConfig = siteConfigSchema.parse({
   ],
   heroPoster: "/images/sundown-cruise-hero.png",
   heroVideo: "/Gallery/JUNE%2026/HC%201%20(2).mp4",
+  socialImage: "/vessels/edens-hope.png",
   url: canonicalUrl,
 });
 

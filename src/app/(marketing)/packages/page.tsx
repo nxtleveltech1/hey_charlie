@@ -8,6 +8,7 @@ import {
   HomePackagesSection,
   type HomePackage,
 } from "@/components/home/home-packages-section";
+import { withPromotedPackages } from "@/lib/promoted-packages";
 
 export const metadata: Metadata = {
   title: "Charter Packages | Hey Charlie Charters",
@@ -37,7 +38,7 @@ export default async function PackagesPage() {
     orderBy: [desc(pkgTable.isFeatured), desc(pkgTable.createdAt)],
   });
 
-  const packages = rows.map(mapPackageRow);
+  const packages = withPromotedPackages(rows.map(mapPackageRow));
 
   return (
     <>

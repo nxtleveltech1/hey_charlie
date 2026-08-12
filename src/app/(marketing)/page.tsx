@@ -4,6 +4,7 @@ import { packages as pkgTable, articles } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { getGalleryPreviewImages } from "@/lib/gallery";
 import { siteConfig } from "@/lib/site";
+import { withPromotedPackages } from "@/lib/promoted-packages";
 import { HomePageShell } from "@/components/home/home-page-shell";
 import { HomeHero } from "@/components/home/home-hero";
 import { ExperienceGrid } from "@/components/home/experience-grid";
@@ -24,7 +25,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hey Charlie Charters | Cape Town Boat Charters",
     description: siteConfig.description,
-    images: [siteConfig.heroPoster],
+    images: [
+      {
+        url: siteConfig.socialImage,
+        width: 1024,
+        height: 1024,
+        alt: "Edens Hope, the Hey Charlie Charters boat",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hey Charlie Charters | Cape Town Boat Charters",
+    description: siteConfig.description,
+    images: [siteConfig.socialImage],
   },
 };
 
@@ -51,26 +65,28 @@ export default async function Home() {
     }),
   ]);
 
-  const displayPackages = dbPackages.map((pkg) => ({
-    id: pkg.id,
-    slug: pkg.slug,
-    name: pkg.name,
-    tagline: pkg.tagline,
-    description: pkg.description,
-    duration: pkg.duration,
-    pricePerPerson: String(pkg.pricePerPerson),
-    category: pkg.category,
-    highlights: pkg.highlights ?? [],
-    isFeatured: pkg.isFeatured,
-    imageUrl: pkg.imageUrl,
-  }));
+  const displayPackages = withPromotedPackages(
+    dbPackages.map((pkg) => ({
+      id: pkg.id,
+      slug: pkg.slug,
+      name: pkg.name,
+      tagline: pkg.tagline,
+      description: pkg.description,
+      duration: pkg.duration,
+      pricePerPerson: String(pkg.pricePerPerson),
+      category: pkg.category,
+      highlights: pkg.highlights ?? [],
+      isFeatured: pkg.isFeatured,
+      imageUrl: pkg.imageUrl,
+    })),
+  );
 
   return (
     <HomePageShell footer={<SiteFooter />}>
       <HomeHero />
       <ExperienceGrid />
       <OffersCarousel />
-      <HomePackagesSection packages={displayPackages} totalCount={dbPackages.length} />
+      <HomePackagesSection packages={displayPackages} totalCount={displayPackages.length} />
       <DestinationsPreview />
       <NewsPreview articles={latestArticles} />
       <GalleryPreviewStrip images={galleryImages} />

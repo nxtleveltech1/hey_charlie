@@ -53,13 +53,16 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/images/sundown-cruise-hero.png",
+        url: siteConfig.socialImage,
+        width: 1024,
+        height: 1024,
         alt: "Hey Charlie Charters — private boat charters from the V&A Waterfront, Cape Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    images: [siteConfig.socialImage],
   },
   manifest: "/manifest.webmanifest",
   appleWebApp: {

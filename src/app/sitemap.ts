@@ -34,6 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: abs("/"), lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: abs("/about"), lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: abs("/packages"), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    {
+      url: abs("/packages/cape-courage-vip"),
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
     { url: abs("/destinations"), lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: abs("/gallery"), lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: abs("/crew"), lastModified: now, changeFrequency: "monthly", priority: 0.6 },
