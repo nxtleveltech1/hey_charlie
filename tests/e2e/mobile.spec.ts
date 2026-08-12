@@ -17,8 +17,8 @@ test.describe("Mobile smoke tests", () => {
 
     const eventSlide = page.getByTestId("cape-courage-hero-slide");
     await expect(eventSlide).toBeVisible();
-    await expect(eventSlide.getByRole("heading", { name: /Cape Courage VIP Pass/ })).toBeVisible();
-    await expect(hero.getByRole("link", { name: "Book Your Spot Now" })).toHaveAttribute(
+    await expect(eventSlide.getByRole("heading", { name: /Cape Courage, from the water/ })).toBeVisible();
+    await expect(hero.getByRole("link", { name: "Book Your Spot" })).toHaveAttribute(
       "href",
       "/booking/cape-courage-vip",
     );

@@ -9,7 +9,7 @@ import { HeroMediaCarousel } from "./hero-media-carousel";
 
 const HERO_SLIDE_COUNT = 2;
 const HERO_ROTATION_MS = 10_000;
-const CAPE_COURAGE_IMAGE = "/images/cape-courage-vip.png";
+const CAPE_COURAGE_IMAGE = "/images/cape-courage-hero-landscape.png";
 
 function CharterHeroContent() {
   return (
@@ -88,57 +88,48 @@ function CharterHeroContent() {
 
 function CapeCourageHeroContent() {
   return (
-    <>
-      <div className="max-w-3xl space-y-4 text-left sm:space-y-5 lg:space-y-6">
-        <div className="section-eyebrow-hero">
-          <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
-          Limited event experience · July–August 2026
-        </div>
+    <div className="max-w-2xl space-y-5 text-left sm:space-y-6">
+      <div className="section-eyebrow-hero">
+        <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
+        VIP Pass · July–August 2026
+      </div>
 
-        <h1
-          id="hero-heading"
-          className="max-w-[95%] text-[clamp(2rem,8vw,4.75rem)] font-bold leading-[1.02] text-white text-balance sm:max-w-4xl lg:max-w-none lg:text-7xl 2xl:text-8xl"
-          style={{ fontFamily: "var(--font-display)" }}
+      <h1
+        id="hero-heading"
+        className="max-w-xl text-[clamp(2.65rem,7.5vw,4.75rem)] font-bold leading-[0.98] text-white"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        <span className="block">Cape Courage,</span>
+        <span className="block text-gradient-sunset">from the water.</span>
+      </h1>
+
+      <p className="max-w-xl text-base leading-relaxed text-white/85 sm:text-lg lg:text-xl">
+        A full event day aboard Hey Charlie with premium big-wave viewing, food and drinks.
+      </p>
+
+      <div className="flex flex-wrap items-end gap-x-4 gap-y-2 text-white sm:gap-x-5">
+        <div className="whitespace-nowrap">
+          <span className="text-3xl font-bold tracking-tight sm:text-4xl">R3,250</span>
+          <span className="ml-2 text-xs text-white/65 sm:text-sm">per person</span>
+        </div>
+        <span className="mb-1 hidden h-8 w-px bg-white/25 sm:block" aria-hidden="true" />
+        <span className="mb-1 whitespace-nowrap text-xs font-semibold uppercase tracking-[0.12em] text-orange-300 sm:text-sm sm:tracking-[0.16em]">
+          Only 7 places
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-3 sm:flex-row lg:gap-4">
+        <Link
+          href="/booking/cape-courage-vip"
+          className="btn-primary min-h-12 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-center font-semibold text-white transition-all hover:shadow-lg hover:shadow-orange-500/25 lg:px-8 lg:py-4"
         >
-          Cape Courage <span className="text-gradient-sunset">VIP Pass</span>
-        </h1>
-
-        <p className="max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg lg:text-xl">
-          Front-row boat-based viewing aboard Hey Charlie, alongside the big-wave surfers and
-          media fleet. Food and drinks are included for the event day.
-        </p>
-
-        <div className="flex flex-wrap gap-2 text-sm font-semibold text-white sm:text-base">
-          <span className="glass-panel-media rounded-full px-4 py-2">Only 7 guest places</span>
-          <span className="glass-panel-media rounded-full px-4 py-2">R3,250 per person</span>
-        </div>
-
-        <div className="flex flex-col gap-3 sm:flex-row lg:gap-4">
-          <Link
-            href="/booking/cape-courage-vip"
-            className="btn-primary min-h-12 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-center font-semibold text-white transition-all hover:shadow-lg hover:shadow-orange-500/25 lg:px-8 lg:py-4"
-          >
-            Book Your Spot Now
-          </Link>
-          <Link href="/packages/cape-courage-vip" className="btn-secondary-glass min-h-12">
-            View Event Details
-          </Link>
-        </div>
+          Book Your Spot
+        </Link>
+        <Link href="/packages/cape-courage-vip" className="btn-secondary-glass min-h-12">
+          Event Details
+        </Link>
       </div>
-
-      <div className="relative hidden h-[min(68vh,720px)] w-full justify-self-end lg:block">
-        <div className="absolute inset-y-0 right-0 aspect-[2/3] overflow-hidden rounded-3xl border border-white/20 bg-[#071827] shadow-2xl shadow-black/40">
-          <Image
-            src={CAPE_COURAGE_IMAGE}
-            alt="Cape Courage VIP Pass aboard Hey Charlie Charters"
-            fill
-            priority
-            className="object-contain"
-            sizes="(min-width: 1280px) 34vw, 40vw"
-          />
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
@@ -197,14 +188,19 @@ export function HomeHero() {
             alt=""
             fill
             priority
-            className="scale-110 object-cover object-center blur-[2px] lg:object-[65%_52%]"
+            className="object-cover object-[67%_center] sm:object-[62%_center] lg:object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-[#071827]/45 backdrop-blur-[1px]" />
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/65 lg:to-black/30" />
+      <div
+        className={`absolute inset-0 transition-colors duration-700 ${
+          activeSlide === 1
+            ? "bg-gradient-to-b from-black/65 via-[#031523]/35 to-[#031523]/85 lg:bg-gradient-to-r lg:from-[#020b12]/95 lg:via-[#020b12]/55 lg:to-transparent"
+            : "bg-gradient-to-b from-black/80 via-black/50 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/25"
+        }`}
+      />
 
       <div className="wide-shell relative flex min-h-[calc(88svh-5rem)] items-end pb-24 sm:pb-28 lg:min-h-[calc(100vh-7rem)] lg:items-center lg:pb-10">
         <div
@@ -218,50 +214,38 @@ export function HomeHero() {
       </div>
 
       <div
-        className="absolute bottom-5 right-4 z-20 flex items-center gap-2 rounded-full border border-white/15 bg-black/35 p-2 text-white shadow-lg backdrop-blur-md sm:right-6 lg:bottom-7 lg:right-10"
+        className="absolute bottom-5 right-4 z-20 flex items-center gap-1 rounded-full border border-white/15 bg-black/35 p-1.5 text-white shadow-lg backdrop-blur-md sm:right-6 lg:bottom-7 lg:right-10"
         role="group"
         aria-label="Homepage hero slides"
       >
-        <button
-          type="button"
-          onClick={() => showSlide(activeSlide - 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          aria-label="Previous hero slide"
-        >
-          <span aria-hidden="true">←</span>
-        </button>
-
         {["Charter adventures", "Cape Courage VIP Pass"].map((label, index) => (
           <button
             key={label}
             type="button"
             onClick={() => showSlide(index)}
-            className={`h-2.5 rounded-full transition-all ${
-              activeSlide === index ? "w-8 bg-orange-400" : "w-2.5 bg-white/50 hover:bg-white/80"
+            className={`flex h-9 items-center gap-2 rounded-full px-3 text-xs font-semibold transition-all ${
+              activeSlide === index
+                ? "bg-white text-slate-950"
+                : "text-white/65 hover:bg-white/10 hover:text-white"
             }`}
             aria-label={`Show ${label}`}
             aria-current={activeSlide === index ? "true" : undefined}
-          />
+          >
+            <span className="text-[10px] tabular-nums text-orange-500">0{index + 1}</span>
+            <span className="hidden sm:inline">{index === 0 ? "Charters" : "Cape Courage"}</span>
+          </button>
         ))}
 
         <button
           type="button"
           onClick={() => setPaused((current) => !current)}
-          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-white/65 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           aria-label={paused || !motionEnabled ? "Play hero carousel" : "Pause hero carousel"}
           disabled={!motionEnabled}
         >
           <span aria-hidden="true">{paused || !motionEnabled ? "▶" : "Ⅱ"}</span>
         </button>
 
-        <button
-          type="button"
-          onClick={() => showSlide(activeSlide + 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          aria-label="Next hero slide"
-        >
-          <span aria-hidden="true">→</span>
-        </button>
       </div>
 
       <div
