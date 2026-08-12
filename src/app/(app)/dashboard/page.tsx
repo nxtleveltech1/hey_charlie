@@ -16,6 +16,11 @@ import { CompletePaymentButton } from "./complete-payment-button";
 import { isOnlinePaymentsEnabled } from "@/lib/payments";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import {
+  CAPE_COURAGE_DATE_LABEL,
+  CAPE_COURAGE_TIME_LABEL,
+  isCapeCourage,
+} from "@/lib/cape-courage";
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -78,9 +83,10 @@ export default async function DashboardPage() {
         ) : (
           <div className="space-y-4">
             {upcomingBookings.map((booking) => {
-              const slotSummary = formatTimeSlotSummary(
-                resolveBookingTimeSlots(booking),
-              );
+              const eventTicket = isCapeCourage(booking.package.slug);
+              const slotSummary = eventTicket
+                ? CAPE_COURAGE_TIME_LABEL
+                : formatTimeSlotSummary(resolveBookingTimeSlots(booking));
               return (
                 <div
                   key={booking.id}
@@ -105,9 +111,13 @@ export default async function DashboardPage() {
                         {booking.package.tagline}
                       </p>
                       <div className="flex flex-wrap gap-4 text-sm">
-                        <span>📅 {formatDate(booking.date)}</span>
+                        <span>
+                          📅 {eventTicket ? CAPE_COURAGE_DATE_LABEL : formatDate(booking.date)}
+                        </span>
                         <span>⏰ {slotSummary}</span>
-                        <span>📍 {formatDepartureLocation(booking.departureLocation)}</span>
+                        <span>
+                          📍 {eventTicket ? "Event-call departure" : formatDepartureLocation(booking.departureLocation)}
+                        </span>
                         <span>👥 {booking.guestCount} guests</span>
                       </div>
                     </div>
@@ -165,7 +175,10 @@ export default async function DashboardPage() {
                   <div>
                     <h3 className="font-semibold">{booking.package.name}</h3>
                     <p className="text-sm text-[var(--theme-text-muted)]">
-                      {formatDate(booking.date)} · {booking.guestCount} guests
+                      {isCapeCourage(booking.package.slug)
+                        ? CAPE_COURAGE_DATE_LABEL
+                        : formatDate(booking.date)}{" "}
+                      · {booking.guestCount} guests
                     </p>
                   </div>
                   <span
