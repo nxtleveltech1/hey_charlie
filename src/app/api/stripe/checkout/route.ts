@@ -8,6 +8,7 @@ import type Stripe from "stripe";
 import { getSiteUrl, getStripe, toStripeAmount } from "@/lib/stripe";
 import { formatTimeSlotSummary, resolveBookingTimeSlots } from "@/lib/time-slot-pricing";
 import { formatDepartureLocation } from "@/lib/departure-locations";
+import { isCapeCourage } from "@/lib/cape-courage";
 
 const checkoutSchema = z.object({
   bookingId: z.string().uuid(),
@@ -69,6 +70,9 @@ export async function POST(request: NextRequest) {
     const slotIds = resolveBookingTimeSlots(booking);
     const slotSummary = formatTimeSlotSummary(slotIds);
     const departureLabel = formatDepartureLocation(booking.departureLocation);
+    const lineItemDescription = isCapeCourage(booking.package.slug)
+      ? `${booking.guestCount} VIP spot(s) · full event day · event date confirmed on the official call`
+      : `${booking.guestCount} guest(s) · ${slotSummary} · ${departureLabel}`;
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
@@ -76,7 +80,7 @@ export async function POST(request: NextRequest) {
           currency: "zar",
           product_data: {
             name: booking.package.name,
-            description: `${booking.guestCount} guest(s) · ${slotSummary} · ${departureLabel}`,
+            description: lineItemDescription,
           },
           unit_amount: toStripeAmount(parseFloat(booking.pricePerPerson)),
         },

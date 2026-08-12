@@ -20,11 +20,16 @@ import {
 import { departureLocationSchema } from "@/lib/departure-locations";
 import { getSiteSettings } from "@/lib/settings";
 import { sendBookingNotifications } from "@/lib/booking-notify";
+import {
+  CAPE_COURAGE_BOOKING_DATE,
+  CAPE_COURAGE_SLOT,
+  isCapeCourage,
+} from "@/lib/cape-courage";
 
 const createBookingSchema = z.object({
   packageId: z.string().uuid(),
-  date: z.string().datetime(),
-  timeSlots: z.array(z.string()).min(1).max(3),
+  date: z.string().datetime().optional(),
+  timeSlots: z.array(z.string()).max(3).default([]),
   guestCount: z.number().min(1).max(20),
   departureLocation: departureLocationSchema,
   contactName: z.string().min(2),
@@ -126,6 +131,94 @@ export async function POST(request: NextRequest) {
         {
           error: `Guest count must be between ${pkg.minGuests} and ${pkg.maxGuests}`,
         },
+        { status: 400 },
+      );
+    }
+
+    if (isCapeCourage(pkg.slug)) {
+      if (validatedData.addons.length > 0 || (validatedData.addonIds?.length ?? 0) > 0) {
+        return NextResponse.json(
+          { error: "Add-ons are already included with Cape Courage VIP spots" },
+          { status: 400 },
+        );
+      }
+
+      const heldBookings = await db.query.bookings.findMany({
+        where: and(
+          eq(bookings.packageId, pkg.id),
+          ne(bookings.status, "cancelled"),
+          ne(bookings.paymentStatus, "failed"),
+        ),
+        columns: { guestCount: true },
+      });
+      const reservedSpots = heldBookings.reduce(
+        (total, booking) => total + booking.guestCount,
+        0,
+      );
+      const remainingSpots = Math.max(0, pkg.maxGuests - reservedSpots);
+
+      if (validatedData.guestCount > remainingSpots) {
+        return NextResponse.json(
+          {
+            error:
+              remainingSpots === 0
+                ? "Cape Courage VIP spots are sold out"
+                : `Only ${remainingSpots} Cape Courage VIP spot(s) remain`,
+          },
+          { status: 409 },
+        );
+      }
+
+      const pricePerPerson = parseFloat(pkg.pricePerPerson);
+      const totalPrice = pricePerPerson * validatedData.guestCount;
+      const [newBooking] = await db
+        .insert(bookings)
+        .values({
+          bookingNumber: generateBookingNumber(),
+          userId: user.id,
+          packageId: pkg.id,
+          date: new Date(CAPE_COURAGE_BOOKING_DATE),
+          timeSlot: CAPE_COURAGE_SLOT,
+          timeSlots: [CAPE_COURAGE_SLOT],
+          guestCount: validatedData.guestCount,
+          departureLocation: validatedData.departureLocation,
+          pricePerPerson: pricePerPerson.toString(),
+          addonsTotal: "0",
+          totalPrice: totalPrice.toString(),
+          contactName: validatedData.contactName,
+          contactEmail: validatedData.contactEmail,
+          contactPhone: validatedData.contactPhone,
+          specialRequests: validatedData.specialRequests || null,
+          dietaryRequirements: validatedData.dietaryRequirements || null,
+          status: "pending",
+          paymentStatus: "unpaid",
+        })
+        .returning();
+
+      await sendBookingNotifications({
+        bookingNumber: newBooking.bookingNumber,
+        packageName: pkg.name,
+        date: newBooking.date,
+        dateLabel: "Event day confirmed on the Cape Courage call",
+        timeSlots: [CAPE_COURAGE_SLOT],
+        timeLabel: "Full event day",
+        guestCount: newBooking.guestCount,
+        totalPrice: newBooking.totalPrice,
+        contactName: newBooking.contactName,
+        contactEmail: newBooking.contactEmail,
+        contactPhone: newBooking.contactPhone,
+        specialRequests: newBooking.specialRequests,
+      });
+
+      return NextResponse.json(
+        { booking: newBooking, remainingSpots: remainingSpots - validatedData.guestCount },
+        { status: 201 },
+      );
+    }
+
+    if (!validatedData.date || validatedData.timeSlots.length === 0) {
+      return NextResponse.json(
+        { error: "Date and time slots are required" },
         { status: 400 },
       );
     }

@@ -18,7 +18,9 @@ export interface BookingEmailData {
   bookingNumber: string;
   packageName: string;
   date: Date;
+  dateLabel?: string;
   timeSlots: string[];
+  timeLabel?: string;
   guestCount: number;
   totalPrice: string;
   contactName: string;
@@ -77,8 +79,8 @@ export async function sendBookingNotifications(booking: BookingEmailData): Promi
   const site = getPublicSiteConfig();
   const ownerInbox =
     process.env.HCC_BOOKING_NOTIFY_EMAIL?.trim() || site.email;
-  const when = formatDate(booking.date);
-  const slots = booking.timeSlots.join(", ");
+  const when = booking.dateLabel ?? formatDate(booking.date);
+  const slots = booking.timeLabel ?? booking.timeSlots.join(", ");
 
   const summaryLines = [
     `Booking number: ${booking.bookingNumber}`,

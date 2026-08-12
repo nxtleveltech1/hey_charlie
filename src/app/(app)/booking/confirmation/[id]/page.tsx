@@ -27,6 +27,11 @@ import { BankingDetailsCard } from "@/components/booking/banking-details-card";
 import { resolvePackageImageUrl } from "@/lib/packages";
 import { PublicPageShell } from "@/components/public-page-shell";
 import { SectionHeader } from "@/components/home/section-header";
+import {
+  CAPE_COURAGE_DATE_LABEL,
+  CAPE_COURAGE_TIME_LABEL,
+  isCapeCourage,
+} from "@/lib/cape-courage";
 
 export default async function BookingConfirmationPage({
   params,
@@ -65,9 +70,12 @@ export default async function BookingConfirmationPage({
   }
 
   const onlinePayments = isOnlinePaymentsEnabled();
+  const eventTicket = isCapeCourage(booking.package.slug);
   const isProvisional = !onlinePayments && booking.paymentStatus === "unpaid";
   const slotIds = resolveBookingTimeSlots(booking);
-  const slotSummary = formatTimeSlotSummary(slotIds);
+  const slotSummary = eventTicket
+    ? CAPE_COURAGE_TIME_LABEL
+    : formatTimeSlotSummary(slotIds);
   const statusColor = BOOKING_STATUS_COLORS[booking.status];
   const statusLabel = isProvisional
     ? "Provisional"
@@ -212,7 +220,9 @@ export default async function BookingConfirmationPage({
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <p className="text-sm text-[var(--theme-text-muted)]">Date</p>
-                  <p className="font-medium">{formatDate(booking.date)}</p>
+                  <p className="font-medium">
+                    {eventTicket ? CAPE_COURAGE_DATE_LABEL : formatDate(booking.date)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-[var(--theme-text-muted)]">Time</p>
@@ -225,7 +235,9 @@ export default async function BookingConfirmationPage({
                 <div>
                   <p className="text-sm text-[var(--theme-text-muted)]">Departure</p>
                   <p className="font-medium">
-                    {formatDepartureLocation(booking.departureLocation)}
+                    {eventTicket
+                      ? "Confirmed on the official event call"
+                      : formatDepartureLocation(booking.departureLocation)}
                   </p>
                 </div>
                 <div>

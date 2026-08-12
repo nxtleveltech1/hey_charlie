@@ -31,14 +31,21 @@ interface HomePackagesSectionProps {
 
 function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
-  const enquiryOnly = pkg.slug === "cape-courage-vip" || Number(pkg.pricePerPerson) <= 0;
+  const enquiryOnly = Number(pkg.pricePerPerson) <= 0;
+  const detailsHref = `/packages/${pkg.slug}`;
   const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
-    <Link
-      href={productHref}
-      className="group relative col-span-full grid overflow-hidden rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] lg:grid-cols-2 light-card card-hover"
+    <article
+      data-testid="package-card"
+      className="group relative col-span-full grid cursor-pointer overflow-hidden rounded-3xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] lg:grid-cols-2 light-card card-hover"
     >
+      <Link
+        href={detailsHref}
+        data-testid="package-detail-link"
+        aria-label={`View details for ${pkg.name}`}
+        className="absolute inset-0 z-10 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset"
+      />
       <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[280px] overflow-hidden">
         <Image
           src={imageSrc}
@@ -48,8 +55,7 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
           sizes="(max-width: 1024px) 100vw, 50vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/30" />
-        <span className="absolute top-4 left-4 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-3 py-1 text-xs font-semibold text-white">
+        <span className="pointer-events-none absolute top-4 left-4 z-20 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-3 py-1 text-xs font-semibold text-white">
           Featured Experience
         </span>
       </div>
@@ -71,12 +77,15 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
             </span>
             <span className="text-[var(--theme-text-muted)] text-sm ml-1">/person</span>
           </div>
-          <span className="sm:ml-auto rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2.5 text-sm font-semibold text-white">
+          <Link
+            href={productHref}
+            className="relative z-20 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2.5 text-sm font-semibold text-white sm:ml-auto"
+          >
             {enquiryOnly ? "Enquire Now" : "Book Now"}
-          </span>
+          </Link>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }
 

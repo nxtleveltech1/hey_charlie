@@ -89,7 +89,9 @@ export const PACKAGE_IMAGES = {
   seafoodFeast: "/images/seafood-feast.jpg",
   deepSeaFishing: "/images/Yellowfin Tuna Hunt.jpg",
   coastlineExplorer: "/images/cape point drop off.png",
-  privateCharter: "/images/private-charter-guests.jpeg",
+  privateCharter: "/Gallery/JULY%2026/IMG_0742.JPEG",
+  customServices: "/Gallery/JUNE%2026/HC%201%20(22).jpeg",
+  mobileRefreshments: "/images/seafood-feast.jpg",
   sealIsland: "/images/seal-island.jpg",
   capeCourageVip: "/images/cape-courage-vip.png",
 } as const;
@@ -681,7 +683,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     shortDescription:
       "A full event day aboard Hey Charlie with premium boat-based viewing, food and drinks, alongside the Cape Courage surfers and media fleet.",
     longDescription:
-      "Watch Cape Courage, Africa's big-wave surf competition, from the water aboard Hey Charlie. Only seven guest places are available for this limited event-day charter, giving you a premium boat-based view alongside the surfers and accredited media fleet. Food and drinks are served on board while the skipper positions the vessel within the event's permitted viewing areas. Cape Courage runs on a July-August 2026 waiting period: the final event day is called by the organisers when the swell, wind and safety conditions align. Enquire now to register your interest and receive the call-day arrangements.",
+      "Watch Cape Courage, Africa's big-wave surf competition, from the water aboard Hey Charlie. Only seven guest places are available for this limited event-day charter, giving you a premium boat-based view alongside the surfers and accredited media fleet. Food and drinks are served on board while the skipper positions the vessel within the event's permitted viewing areas. Cape Courage runs on a July-August 2026 waiting period: the final event day is called by the organisers when the swell, wind and safety conditions align. Book and pay for your spot online now; the crew will send the call-day arrangements when the event is confirmed.",
     price: 3250,
     priceUnit: "per person",
     durationHours: 8,
@@ -695,7 +697,7 @@ const packageData: z.input<typeof packageSchema>[] = [
       "There is no fixed event date. Cape Courage is called when organisers confirm a suitable big-wave window; guests must be available at short notice during the waiting period.",
     category: "event-support",
     offSeason: true,
-    byRequest: true,
+    byRequest: false,
     bestFor: [
       "Big-wave surf fans",
       "Photographers",
@@ -746,8 +748,8 @@ const packageData: z.input<typeof packageSchema>[] = [
         a: "Only seven guest places are available aboard Hey Charlie for the event day.",
       },
       {
-        q: "How do I reserve a place?",
-        a: "Send an enquiry by WhatsApp. Places are R3,250 per person; we will confirm availability and the call-day requirements before any booking is finalised.",
+        q: "How do I book a place?",
+        a: "Choose the number of spots, enter your contact details and pay securely online. Places are R3,250 per person, and your payment confirms your place for the Cape Courage event call.",
       },
     ],
     relatedSlugs: ["private-charter", "custom-services", "coastline-explorer"],
@@ -802,7 +804,7 @@ const packageData: z.input<typeof packageSchema>[] = [
       "Setup location is confirmed with you in advance; access to some public beaches may require local authority permission (see permit note).",
     ],
     gallery: [],
-    heroImage: "REQUIRED-ASSET: mobile-refreshment-station image",
+    heroImage: PACKAGE_IMAGES.mobileRefreshments,
     featured: false,
     popular: false,
     bestValue: false,
@@ -876,7 +878,7 @@ const packageData: z.input<typeof packageSchema>[] = [
       "Some bespoke requests may require specialist permits or permissions; these are identified and arranged (or flagged) during scoping rather than assumed.",
     ],
     gallery: [],
-    heroImage: "/images/private-charter-guests.jpeg",
+    heroImage: PACKAGE_IMAGES.customServices,
     featured: false,
     popular: false,
     bestValue: false,
@@ -975,11 +977,20 @@ export const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
   "deep-sea-fishing": PACKAGE_IMAGES.deepSeaFishing,
   "coastline-explorer": PACKAGE_IMAGES.coastlineExplorer,
   "private-charter": PACKAGE_IMAGES.privateCharter,
+  "private-celebration": PACKAGE_IMAGES.privateCharter,
   "seal-island": PACKAGE_IMAGES.sealIsland,
   "cape-courage-vip": PACKAGE_IMAGES.capeCourageVip,
   "shipwreck-tour": "/images/cape point drop off.png",
-  "mobile-refreshment-station": "/images/private-charter-guests.jpeg",
-  "custom-services": "/images/private-charter-guests.jpeg",
+  "mobile-refreshment-station": PACKAGE_IMAGES.mobileRefreshments,
+  "custom-services": PACKAGE_IMAGES.customServices,
+};
+
+/** Curated replacements for legacy DB rows that all reused one generic image. */
+const PACKAGE_TILE_IMAGE_OVERRIDES: Record<string, string> = {
+  "private-charter": PACKAGE_IMAGES.privateCharter,
+  "private-celebration": PACKAGE_IMAGES.privateCharter,
+  "mobile-refreshment-station": PACKAGE_IMAGES.mobileRefreshments,
+  "custom-services": PACKAGE_IMAGES.customServices,
 };
 
 const DEFAULT_PACKAGE_IMAGE = PACKAGE_IMAGES.sundowner;
@@ -996,6 +1007,8 @@ export function resolvePackageImageUrl(
   imageUrl: string | null | undefined,
   slug: string,
 ): string {
+  const tileOverride = PACKAGE_TILE_IMAGE_OVERRIDES[slug];
+  if (tileOverride) return tileOverride;
   if (isValidPackageImage(imageUrl)) return imageUrl;
   return getFallbackPackageImage(slug);
 }

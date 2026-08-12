@@ -21,14 +21,24 @@ interface PackageCardProps {
 
 export function PackageCard({ pkg }: PackageCardProps) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
-  const enquiryOnly = pkg.slug === "cape-courage-vip" || Number(pkg.pricePerPerson) <= 0;
+  const enquiryOnly = Number(pkg.pricePerPerson) <= 0;
+  const detailsHref = `/packages/${pkg.slug}`;
   const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
-    <div className="group relative h-full rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] overflow-hidden card-hover light-card">
+    <article
+      data-testid="package-card"
+      className="group relative h-full cursor-pointer overflow-hidden rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] card-hover light-card"
+    >
+      <Link
+        href={detailsHref}
+        data-testid="package-detail-link"
+        aria-label={`View details for ${pkg.name}`}
+        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset"
+      />
       {/* Badge */}
       {pkg.isFeatured && (
-        <div className="absolute top-3 lg:top-4 right-3 lg:right-4 z-10 px-2 lg:px-3 py-1 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] lg:text-xs font-medium">
+        <div className="pointer-events-none absolute top-3 right-3 z-20 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-2 py-1 text-[10px] font-medium text-white lg:top-4 lg:right-4 lg:px-3 lg:text-xs">
           Featured
         </div>
       )}
@@ -41,7 +51,6 @@ export function PackageCard({ pkg }: PackageCardProps) {
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg)] to-transparent" />
       </div>
 
       <div className="flex flex-col gap-3 p-4 lg:p-5">
@@ -78,7 +87,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
           </ul>
         )}
 
-        <div className="mt-auto pt-3 lg:pt-4 border-t border-[var(--theme-border)] flex items-center justify-between gap-3">
+        <div className="relative z-20 mt-auto flex items-center justify-between gap-3 border-t border-[var(--theme-border)] pt-3 lg:pt-4">
           {enquiryOnly ? (
             <div>
               <span className="text-lg font-bold lg:text-2xl">{formatPrice(pkg.pricePerPerson)}</span>
@@ -101,6 +110,6 @@ export function PackageCard({ pkg }: PackageCardProps) {
           </Link>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

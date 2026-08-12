@@ -5,9 +5,11 @@ import { db } from "@/db";
 import { packages } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { BookingForm } from "@/components/booking-form";
+import { CapeCourageBookingForm } from "@/components/booking/cape-courage-booking-form";
 import { BookingHero } from "@/components/booking/booking-hero";
 import { BookingPackageSummary } from "@/components/booking/booking-package-summary";
 import { SectionHeader } from "@/components/home/section-header";
+import { isCapeCourage } from "@/lib/cape-courage";
 
 export async function generateMetadata({
   params,
@@ -48,6 +50,8 @@ export default async function BookingPage({
   if (!pkg || !pkg.isActive) {
     redirect("/");
   }
+
+  const eventTicket = isCapeCourage(pkg.slug);
 
   return (
     <>
@@ -91,7 +95,11 @@ export default async function BookingPage({
             />
 
             <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] p-5 light-card lg:p-8">
-              <BookingForm packageData={pkg} />
+              {eventTicket ? (
+                <CapeCourageBookingForm packageData={pkg} />
+              ) : (
+                <BookingForm packageData={pkg} />
+              )}
             </div>
           </div>
         </div>
