@@ -74,8 +74,8 @@ export default function SignUpPage() {
       </div>
 
       {/* Right side - sign up form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+      <div className="min-w-0 flex-1 flex items-center justify-center px-4 py-8 sm:p-8">
+        <div className="min-w-0 w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
             <Link href="/" className="inline-flex items-center gap-3">
               <Image
@@ -102,13 +102,16 @@ export default function SignUpPage() {
           <SignUp 
             appearance={{
               elements: {
-                rootBox: "w-full",
-                card: "bg-[var(--theme-card-bg)] border border-[var(--theme-border)] shadow-xl",
+                rootBox: "min-w-0 w-full",
+                cardBox: "min-w-0 w-full",
+                card: "min-w-0 w-full bg-[var(--theme-card-bg)] border border-[var(--theme-border)] shadow-xl",
                 headerTitle: "text-[var(--theme-text)]",
                 headerSubtitle: "text-[var(--theme-text-muted)]",
                 socialButtonsBlockButton: "border-[var(--theme-border)] bg-[var(--theme-surface)] text-[var(--theme-text)] hover:bg-[var(--theme-surface-hover)]",
                 formFieldLabel: "text-[var(--theme-text-secondary)]",
                 formFieldInput: "bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)]",
+                otpCodeFieldInputs: "grid w-full grid-cols-6 gap-2",
+                otpCodeFieldInput: "min-w-0 w-full",
                 footerActionLink: "text-cyan-500 hover:text-cyan-600",
                 formButtonPrimary: "bg-gradient-to-r from-cyan-500 to-blue-500 hover:opacity-90",
               },
