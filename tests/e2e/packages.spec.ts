@@ -34,5 +34,11 @@ test.describe("Package discovery", () => {
     await expect(hero).toBeVisible();
     await expect(hero).toHaveAttribute("data-theme-surface", "true");
     await expect(hero).not.toHaveClass(/bg-navy-deep/);
+
+    const bookingLinks = page.getByRole("link", { name: "Book Your Spot Now" });
+    await expect(bookingLinks.first()).toHaveAttribute(
+      "href",
+      "/booking/cape-courage-vip",
+    );
   });
 });
