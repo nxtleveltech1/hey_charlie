@@ -6,6 +6,10 @@ export interface ArticleImage {
   src: string;
 }
 
+export type ArticleContentBlock =
+  | { type: "markdown"; content: string }
+  | { type: "video"; src: string; poster?: string; title: string };
+
 // Pull standalone image lines out of the content so the page can lay them out
 // alongside the text (side rails on desktop, grid on mobile). Images embedded
 // mid-paragraph are left in place.
@@ -50,9 +54,47 @@ function enhancePlainText(content: string): string {
     .join("\n");
 }
 
+// A deliberately small, local-only media syntax keeps editors out of raw HTML
+// while allowing long-form articles to include hosted campaign videos.
+// [[video:/videos/example.mp4|/images/example-poster.jpg|Accessible title]]
+const VIDEO_MARKER_RE = /^\[\[video:([^|\]]+)\|([^|\]]*)\|([^\]]+)\]\]\s*$/;
+
+export function parseArticleContentBlocks(content: string): ArticleContentBlock[] {
+  const lines = enhancePlainText(content).split("\n");
+  const blocks: ArticleContentBlock[] = [];
+  let markdownLines: string[] = [];
+
+  const flushMarkdown = () => {
+    const markdown = markdownLines.join("\n").trim();
+    if (markdown) blocks.push({ type: "markdown", content: markdown });
+    markdownLines = [];
+  };
+
+  for (const line of lines) {
+    const match = line.trim().match(VIDEO_MARKER_RE);
+    const src = match?.[1].trim();
+    const poster = match?.[2].trim();
+    const title = match?.[3].trim();
+    const isSafeLocalVideo = src?.startsWith("/videos/") && src.endsWith(".mp4");
+    const isSafeLocalPoster = !poster || poster.startsWith("/images/");
+
+    if (match && src && title && isSafeLocalVideo && isSafeLocalPoster) {
+      flushMarkdown();
+      blocks.push({ type: "video", src, poster: poster || undefined, title });
+    } else {
+      markdownLines.push(line);
+    }
+  }
+
+  flushMarkdown();
+  return blocks;
+}
+
 // Full markdown rendering for article bodies (headings, bold/italic, lists,
 // links, quotes, tables via GFM), themed to match the site palette.
 export function ArticleContent({ content }: { content: string }) {
+  const blocks = parseArticleContentBlocks(content);
+
   return (
     <div
       className="prose prose-lg max-w-none
@@ -69,21 +111,44 @@ export function ArticleContent({ content }: { content: string }) {
         prose-th:text-[var(--theme-text)] prose-td:text-[var(--theme-text-secondary)]
         prose-img:rounded-xl"
     >
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          img: ({ src, alt }) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={typeof src === "string" ? src : undefined}
-              alt={alt ?? ""}
-              className="w-full rounded-xl border border-[var(--theme-border)] my-4"
-            />
-          ),
-        }}
-      >
-        {enhancePlainText(content)}
-      </ReactMarkdown>
+      {blocks.map((block, index) =>
+        block.type === "video" ? (
+          <figure key={`${block.src}-${index}`} className="not-prose my-8">
+            <video
+              className="aspect-video w-full rounded-xl border border-[var(--theme-border)] bg-black shadow-lg"
+              controls
+              playsInline
+              preload="metadata"
+              poster={block.poster}
+              aria-label={block.title}
+            >
+              <source src={block.src} type="video/mp4" />
+              Your browser does not support embedded video. You can{" "}
+              <a href={block.src}>open the video directly</a>.
+            </video>
+            <figcaption className="mt-3 text-center text-sm text-[var(--theme-text-muted)]">
+              {block.title}
+            </figcaption>
+          </figure>
+        ) : (
+          <ReactMarkdown
+            key={`markdown-${index}`}
+            remarkPlugins={[remarkGfm]}
+            components={{
+              img: ({ src, alt }) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={typeof src === "string" ? src : undefined}
+                  alt={alt ?? ""}
+                  className="w-full rounded-xl border border-[var(--theme-border)] my-4"
+                />
+              ),
+            }}
+          >
+            {block.content}
+          </ReactMarkdown>
+        ),
+      )}
     </div>
   );
 }
