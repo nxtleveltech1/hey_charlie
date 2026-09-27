@@ -23,7 +23,7 @@ export const experiences: ExperienceCategory[] = [
     icon: "sunset",
     count: "Daily departures",
     href: "/packages",
-    image: "/images/sundown-cruise-hero.png",
+    image: "/images/atlantic-sundowner-cruise.png",
   },
   {
     name: "Beach Hopping",

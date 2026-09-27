@@ -84,7 +84,7 @@ export type Package = z.infer<typeof packageSchema>;
 
 /** Local image assets keyed by slug. Keep these in sync with /public. */
 export const PACKAGE_IMAGES = {
-  sundowner: "/images/sundown-cruise-hero.png",
+  sundowner: "/images/atlantic-sundowner-cruise.png",
   crayfish: "/images/catch-cook-crayfish.jpg",
   whale: "/images/whale-watching.jpg",
   beachHopper: "/images/clifton-beaches.jpg",
