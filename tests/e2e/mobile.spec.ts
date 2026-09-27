@@ -13,6 +13,9 @@ test.describe("Mobile smoke tests", () => {
     const hero = page.getByTestId("home-hero");
     await expect(hero.getByRole("heading", { level: 1 })).toContainText("Cape Coast");
     await expect(hero).not.toContainText("Cape Courage");
+    await expect(page.locator("#offers-heading")).toHaveCount(0);
+    await expect(page.locator("#experiences").getByRole("link")).toHaveCount(3);
+    await expect(page.locator("#experiences")).not.toContainText(/Whale Watching|Fishing Charters|Seafood Feasts/);
     await expect(hero.getByRole("group", { name: "Homepage hero slides" })).toHaveCount(0);
   });
 

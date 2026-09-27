@@ -8,7 +8,6 @@ import { withPromotedPackages } from "@/lib/promoted-packages";
 import { HomePageShell } from "@/components/home/home-page-shell";
 import { HomeHero } from "@/components/home/home-hero";
 import { ExperienceGrid } from "@/components/home/experience-grid";
-import { OffersCarousel } from "@/components/home/offers-carousel";
 import { HomePackagesSection } from "@/components/home/home-packages-section";
 import { DestinationsPreview } from "@/components/home/destinations-preview";
 import { NewsPreview } from "@/components/home/news-preview";
@@ -85,7 +84,6 @@ export default async function Home() {
     <HomePageShell footer={<SiteFooter />}>
       <HomeHero />
       <ExperienceGrid />
-      <OffersCarousel />
       <HomePackagesSection packages={displayPackages} totalCount={displayPackages.length} />
       <DestinationsPreview />
       <NewsPreview articles={latestArticles} />

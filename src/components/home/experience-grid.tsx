@@ -24,11 +24,11 @@ export function ExperienceGrid() {
                   Unforgettable <span className="text-gradient-sunset">Experiences</span>
                 </>
               }
-              subtitle="From peaceful sunset cruises to adrenaline-pumping fishing adventures — there's something for everyone on the waters of Cape Town."
+              subtitle="From sunset cruises and sheltered coves to private celebrations — explore the Cape your way."
             />
 
             <div className="relative">
-              <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-3 2xl:grid-cols-6 lg:gap-5 2xl:gap-4">
+              <div className="mobile-scroll-strip w-full lg:grid lg:grid-cols-3 lg:gap-5 2xl:gap-4">
                 {experiences.map((exp) => (
                   <Link
                     key={exp.name}

@@ -26,32 +26,11 @@ export const experiences: ExperienceCategory[] = [
     image: "/images/sundown-cruise-hero.png",
   },
   {
-    name: "Whale Watching",
-    icon: "whale",
-    count: "Jun–Nov season",
-    href: "/booking/whale-watching",
-    image: "/images/whale-watching.jpg",
-  },
-  {
-    name: "Fishing Charters",
-    icon: "fishing",
-    count: "Year-round",
-    href: "/booking/deep-sea-fishing",
-    image: "/images/Yellowfin Tuna Hunt.jpg",
-  },
-  {
     name: "Beach Hopping",
     icon: "beach",
     count: "Atlantic coves",
     href: "/booking/beach-hopper",
     image: "/images/clifton-beaches.jpg",
-  },
-  {
-    name: "Seafood Feasts",
-    icon: "crayfish",
-    count: "Beach braai & feasts",
-    href: "/booking/seafood-beach-feast",
-    image: "/images/seafood-feast.jpg",
   },
   {
     name: "Private Events",

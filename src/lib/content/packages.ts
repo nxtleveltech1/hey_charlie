@@ -1017,7 +1017,7 @@ export const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
   "deep-sea-fishing": PACKAGE_IMAGES.deepSeaFishing,
   "coastline-explorer": PACKAGE_IMAGES.coastlineExplorer,
   "private-charter": PACKAGE_IMAGES.privateCharter,
-  "private-celebration": PACKAGE_IMAGES.privateCharter,
+  "private-celebration": "/Gallery/JUNE%2026/HC%201%20(28).jpeg",
   "seal-island": PACKAGE_IMAGES.sealIsland,
   "cape-courage-vip": PACKAGE_IMAGES.capeCourageVip,
   "shipwreck-tour": "/images/cape point drop off.png",
@@ -1028,7 +1028,6 @@ export const PACKAGE_IMAGE_BY_SLUG: Record<string, string> = {
 /** Curated replacements for legacy DB rows that all reused one generic image. */
 const PACKAGE_TILE_IMAGE_OVERRIDES: Record<string, string> = {
   "private-charter": PACKAGE_IMAGES.privateCharter,
-  "private-celebration": PACKAGE_IMAGES.privateCharter,
   "mobile-refreshment-station": PACKAGE_IMAGES.mobileRefreshments,
   "custom-services": PACKAGE_IMAGES.customServices,
 };

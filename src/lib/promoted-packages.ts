@@ -14,7 +14,7 @@ export interface MarketingPackageRow {
   imageUrl?: string | null;
 }
 
-const promotedSlugs = ["cape-courage-vip"] as const;
+const promotedSlugs: string[] = [];
 
 /**
  * Keep limited campaign products visible immediately after deployment, even
