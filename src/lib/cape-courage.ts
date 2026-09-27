@@ -13,3 +13,6 @@ export const CAPE_COURAGE_TIME_LABEL = "Full event day";
 export function isCapeCourage(slug: string): boolean {
   return slug === CAPE_COURAGE_SLUG;
 }
+
+export const CAPE_COURAGE_CANCELLATION_MESSAGE =
+  "Unfortunately, this event has been cancelled as water conditions did not deliver the waves required. We’ll definitely be teed up and ready for the next one.";

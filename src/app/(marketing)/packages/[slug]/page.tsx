@@ -1,9 +1,12 @@
+import { isArchivedPackage } from "@/lib/archived-packages";
+import { isArchivedWildlifePackage, WILDLIFE_EXPLORER_SLUG } from "@/lib/wildlife-packages";
+import { CAPE_COURAGE_CANCELLATION_MESSAGE } from "@/lib/cape-courage";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { cache } from "react";
 import { eq } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { db } from "@/db";
 import { packages as packageTable } from "@/db/schema";
 import { Button } from "@/components/ui/button";
@@ -24,6 +27,8 @@ const CAPE_COURAGE_SLUG = "cape-courage-vip";
 export const dynamic = "force-dynamic";
 
 const loadPackage = cache(async (slug: string) => {
+  if (isArchivedWildlifePackage(slug)) permanentRedirect(`/packages/${WILDLIFE_EXPLORER_SLUG}`);
+  if (isArchivedPackage(slug)) return null;
   const content = getPackageBySlug(slug);
   const row = await db.query.packages.findFirst({
     where: eq(packageTable.slug, slug),
@@ -38,7 +43,7 @@ const loadPackage = cache(async (slug: string) => {
     slug,
     name: row?.name ?? content!.name,
     tagline: row?.tagline ?? content?.tagline ?? null,
-    description: row?.description ?? content!.shortDescription,
+    description: slug === CAPE_COURAGE_SLUG ? CAPE_COURAGE_CANCELLATION_MESSAGE : row?.description ?? content!.shortDescription,
     longDescription: content?.longDescription ?? row!.description,
     duration: row?.duration ?? content!.durationLabel,
     price,
@@ -53,7 +58,7 @@ const loadPackage = cache(async (slug: string) => {
     image,
     content,
     isBookable:
-      slug === CAPE_COURAGE_SLUG ||
+      slug !== CAPE_COURAGE_SLUG &&
       (Boolean(row?.isActive) && !content?.byRequest && price > 0),
   };
 });
@@ -124,6 +129,22 @@ export default async function PackageDetailPage({
   const pkg = await loadPackage(slug);
 
   if (!pkg) notFound();
+
+  if (slug === CAPE_COURAGE_SLUG) {
+    return (
+      <section data-testid="package-detail-hero" data-theme-surface="true" className="section-pad pt-28 lg:pt-36">
+        <div className="wide-shell grid items-center gap-8 lg:grid-cols-2">
+          <Image src="/images/cape-courage-hero-landscape.png" alt={pkg.name} width={1200} height={675} className="w-full rounded-3xl" priority />
+          <div className="space-y-5">
+            <p className="text-orange-500 font-semibold">Cancelled</p>
+            <h1 className="text-3xl font-bold sm:text-4xl" style={{ fontFamily: "var(--font-display)" }}>{pkg.name}</h1>
+            <p className="text-lg leading-relaxed text-[var(--theme-text-secondary)]">{CAPE_COURAGE_CANCELLATION_MESSAGE}</p>
+            <Link href="/packages" className="btn-primary inline-flex">Explore other charters</Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const enquiryMessage = encodeURIComponent(
     `Hi Hey Charlie, I'd like to enquire about the ${pkg.name}. Please send me availability and pricing details.`,

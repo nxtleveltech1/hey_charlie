@@ -1,3 +1,4 @@
+import { isArchivedWildlifePackage, WILDLIFE_EXPLORER_SLUG } from "@/lib/wildlife-packages";
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -38,6 +39,14 @@ export default async function BookingPage({
 }) {
   const { userId } = await auth();
   const { packageSlug } = await params;
+
+  if (isArchivedWildlifePackage(packageSlug)) {
+    redirect(`/packages/${WILDLIFE_EXPLORER_SLUG}`);
+  }
+
+  if (isCapeCourage(packageSlug)) {
+    redirect(`/packages/${packageSlug}`);
+  }
 
   if (!userId) {
     redirect(`/sign-in?redirect_url=/booking/${packageSlug}`);

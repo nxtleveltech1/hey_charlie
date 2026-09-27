@@ -1,3 +1,4 @@
+import { isCapeCourage, CAPE_COURAGE_CANCELLATION_MESSAGE } from "@/lib/cape-courage";
 import Link from "next/link";
 import Image from "next/image";
 import { PackageCard } from "@/components/package-card";
@@ -31,9 +32,10 @@ interface HomePackagesSectionProps {
 
 function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
+  const cancelled = isCapeCourage(pkg.slug);
   const enquiryOnly = Number(pkg.pricePerPerson) <= 0;
   const detailsHref = `/packages/${pkg.slug}`;
-  const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
+  const productHref = cancelled || enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
     <article
@@ -56,7 +58,7 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
           priority
         />
         <span className="pointer-events-none absolute top-4 left-4 z-20 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-3 py-1 text-xs font-semibold text-white">
-          Featured Experience
+          {cancelled ? "Cancelled" : "Featured Experience"}
         </span>
       </div>
       <div className="flex flex-col justify-center p-5 lg:p-8">
@@ -69,19 +71,19 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
         >
           {pkg.name}
         </h3>
-        <p className="text-[var(--theme-text-secondary)] mb-3 line-clamp-3">{pkg.description}</p>
+        <p className={`text-[var(--theme-text-secondary)] mb-3 ${cancelled ? "" : "line-clamp-3"}`}>{cancelled ? CAPE_COURAGE_CANCELLATION_MESSAGE : pkg.description}</p>
         <div className="flex items-center gap-4 mt-auto pt-1 flex-wrap">
-          <div>
+          {!cancelled && <div>
             <span className="text-2xl font-bold">
               {formatPrice(pkg.pricePerPerson)}
             </span>
             <span className="text-[var(--theme-text-muted)] text-sm ml-1">/person</span>
-          </div>
+          </div>}
           <Link
             href={productHref}
             className="relative z-20 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2.5 text-sm font-semibold text-white sm:ml-auto"
           >
-            {enquiryOnly ? "Enquire Now" : "Book Now"}
+            {cancelled ? "Event Update" : enquiryOnly ? "Enquire Now" : "Book Now"}
           </Link>
         </div>
       </div>

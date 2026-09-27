@@ -1,3 +1,4 @@
+import { isCapeCourage, CAPE_COURAGE_CANCELLATION_MESSAGE } from "@/lib/cape-courage";
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice } from "@/lib/booking-utils";
@@ -21,9 +22,10 @@ interface PackageCardProps {
 
 export function PackageCard({ pkg }: PackageCardProps) {
   const imageSrc = resolvePackageImageUrl(pkg.imageUrl, pkg.slug);
+  const cancelled = isCapeCourage(pkg.slug);
   const enquiryOnly = Number(pkg.pricePerPerson) <= 0;
   const detailsHref = `/packages/${pkg.slug}`;
-  const productHref = enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
+  const productHref = cancelled || enquiryOnly ? `/packages/${pkg.slug}` : `/booking/${pkg.slug}`;
 
   return (
     <article
@@ -37,9 +39,9 @@ export function PackageCard({ pkg }: PackageCardProps) {
         className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset"
       />
       {/* Badge */}
-      {pkg.isFeatured && (
+      {(cancelled || pkg.isFeatured) && (
         <div className="pointer-events-none absolute top-3 right-3 z-20 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-2 py-1 text-[10px] font-medium text-white lg:top-4 lg:right-4 lg:px-3 lg:text-xs">
-          Featured
+          {cancelled ? "Cancelled" : "Featured"}
         </div>
       )}
 
@@ -61,8 +63,8 @@ export function PackageCard({ pkg }: PackageCardProps) {
           <h3 className="text-xl lg:text-xl font-semibold">{pkg.name}</h3>
         </div>
 
-        <p className="text-[var(--theme-text-muted)] text-sm leading-relaxed line-clamp-3 sm:line-clamp-2">
-          {pkg.description}
+        <p className={`text-[var(--theme-text-muted)] text-sm leading-relaxed ${cancelled ? "" : "line-clamp-3 sm:line-clamp-2"}`}>
+          {cancelled ? CAPE_COURAGE_CANCELLATION_MESSAGE : pkg.description}
         </p>
 
         <div className="flex items-center gap-4 text-sm text-[var(--theme-text-muted)]">
@@ -74,7 +76,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
           </span>
         </div>
 
-        {pkg.highlights && pkg.highlights.length > 0 && (
+        {!cancelled && pkg.highlights && pkg.highlights.length > 0 && (
           <ul className="space-y-1 lg:space-y-2">
             {pkg.highlights.slice(0, 3).map((h) => (
               <li key={h} className="flex items-center gap-2 text-xs lg:text-sm text-[var(--theme-text-secondary)]">
@@ -88,7 +90,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
         )}
 
         <div className="relative z-20 mt-auto flex items-center justify-between gap-3 border-t border-[var(--theme-border)] pt-3 lg:pt-4">
-          {enquiryOnly ? (
+          {cancelled ? <span className="font-semibold">Cancelled</span> : enquiryOnly ? (
             <div>
               <span className="text-lg font-bold lg:text-2xl">{formatPrice(pkg.pricePerPerson)}</span>
               <span className="ml-1 text-[10px] text-[var(--theme-text-muted)] lg:text-sm">/person</span>
@@ -106,7 +108,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
             href={productHref}
             className="shrink-0 px-4 lg:px-5 py-3 lg:py-2.5 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           >
-            {enquiryOnly ? "Enquire Now" : "Book Now"}
+            {cancelled ? "Event Update" : enquiryOnly ? "Enquire Now" : "Book Now"}
           </Link>
         </div>
       </div>

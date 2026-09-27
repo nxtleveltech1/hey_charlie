@@ -1,3 +1,5 @@
+import { isArchivedPackage } from "../archived-packages";
+import { isArchivedWildlifePackage, WILDLIFE_EXPLORER_SLUG } from "../wildlife-packages";
 import { z } from "zod";
 import { faqPairSchema } from "./faqs";
 
@@ -103,6 +105,43 @@ const DEPARTURE = "V&A Waterfront, Cape Town";
 // the catalogue below is then parsed once so defaults are applied and the
 // full Package shape is guaranteed at runtime.
 const packageData: z.input<typeof packageSchema>[] = [
+  {
+    id: WILDLIFE_EXPLORER_SLUG,
+    slug: WILDLIFE_EXPLORER_SLUG,
+    name: "Cape Wildlife Explorer",
+    tagline: "Discover the wild side of the Cape from the water",
+    shortDescription: "Leave the bustle behind and explore the Cape’s wild coastal world, where every ripple, rocky outcrop and sweep of open water holds the possibility of something extraordinary.",
+    longDescription: "There is a different rhythm to the Cape when you see it from the water. The shoreline slips past, the sea air fills your lungs, and suddenly the smallest movement on the surface has everyone looking. A playful rush through the water, a fleeting shape beneath the swell, wings skimming the waves — these are the moments that make this coast so special. Aboard Hey Charlie, we take time to enjoy the scenery and watch for the remarkable marine life that makes its home here or passes through with the seasons. Our crew shares the stories of the coast as the route unfolds around the day’s conditions, leaving room for those unexpected moments that no itinerary can promise. Bring your curiosity, keep your camera close, and settle into a fresh perspective on the Cape’s wild beauty. We observe wildlife respectfully from a distance; sightings are natural, seasonal and never guaranteed.",
+    price: 1950,
+    priceUnit: "per person",
+    durationHours: 4,
+    durationLabel: "4 hours",
+    minGuests: 2,
+    maxGuests: 12,
+    departurePoint: "Confirmed with your booking",
+    bestSeason: "Wildlife activity varies with the seasons and conditions.",
+    seasonNote: "The route depends on sea conditions and wildlife activity on the day. Sightings are never guaranteed.",
+    category: "wildlife",
+    bestFor: ["Nature lovers", "Families", "Photographers"],
+    inclusions: ["Professional skipper and crew", "Onboard safety equipment", "Crew commentary on the coast and marine life"],
+    exclusions: ["Transfers", "Optional food and drink add-ons"],
+    highlights: ["Discover the Cape’s remarkable marine life", "Coastal scenery from a fresh perspective", "Respectful wildlife viewing", "Time to watch, photograph and explore"],
+    safetyNotes: ["The skipper chooses the route according to conditions and safe access. Wildlife is observed from a respectful distance."],
+    gallery: [PACKAGE_IMAGES.sealIsland, PACKAGE_IMAGES.whale],
+    heroImage: PACKAGE_IMAGES.sealIsland,
+    featured: true,
+    popular: false,
+    bestValue: false,
+    offSeason: true,
+    requiresPermit: false,
+    cancellationPolicyRef: "standard",
+    faqs: [
+      { q: "What might we see?", a: "Every outing is different. Marine life moves freely, and what we encounter depends on the season, conditions and activity on the day. We do not promise particular sightings." },
+      { q: "Is there a fixed route?", a: "The skipper plans the route around sea conditions and safe access, so each trip offers its own perspective on the coast." },
+      { q: "What should I bring?", a: "Bring a warm layer, sun protection and your camera. Wear comfortable shoes suitable for a boat." },
+    ],
+    relatedSlugs: ["sundowner-cruise", "coastline-explorer"],
+  },
   {
     id: "sundowner-cruise",
     slug: "sundowner-cruise",
@@ -907,32 +946,33 @@ const packages: Package[] = packageData.map((p) => packageSchema.parse(p));
 
 /** All packages, in catalogue order. */
 export function getPackages(): Package[] {
-  return packages;
+  return packages.filter((p) => !isArchivedPackage(p.slug));
 }
 
 export function getPackageBySlug(slug: string): Package | undefined {
-  return packages.find((p) => p.slug === slug);
+  return getPackages().find((p) => p.slug === slug);
 }
 
 export function getPackageById(id: string): Package | undefined {
-  return packages.find((p) => p.id === id);
+  return getPackages().find((p) => p.id === id);
 }
 
 /** Packages flagged for the featured / spotlight section. */
 export function getFeaturedPackages(): Package[] {
-  return packages.filter((p) => p.featured);
+  return getPackages().filter((p) => p.featured);
 }
 
 export function getRelatedPackages(slug: string): Package[] {
   const pkg = getPackageBySlug(slug);
   if (!pkg) return [];
   return pkg.relatedSlugs
-    .map((s) => getPackageBySlug(s))
+    .map((s) => getPackageBySlug(isArchivedWildlifePackage(s) ? WILDLIFE_EXPLORER_SLUG : s))
+    .filter((p, index, all) => all.findIndex((other) => other?.slug === p?.slug) === index)
     .filter((p): p is Package => Boolean(p));
 }
 
 export function getPackagesByCategory(category: PackageCategory): Package[] {
-  return packages.filter((p) => p.category === category);
+  return getPackages().filter((p) => p.category === category);
 }
 
 /**
@@ -942,11 +982,11 @@ export function getPackagesByCategory(category: PackageCategory): Package[] {
  */
 export function getOffSeasonServices(): Package[] {
   const priority = (slug: string): number => {
-    if (slug === "whale-watching") return 0;
+    if (slug === WILDLIFE_EXPLORER_SLUG) return 0;
     if (slug === "shipwreck-tour") return 1;
     return 2;
   };
-  return packages
+  return getPackages()
     .filter((p) => p.offSeason)
     .sort((a, b) => priority(a.slug) - priority(b.slug));
 }

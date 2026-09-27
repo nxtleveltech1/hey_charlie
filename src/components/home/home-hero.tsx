@@ -1,15 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
 import { siteConfig, trustStats } from "@/lib/site";
 import { HeroLogoShowcase } from "./hero-logo-showcase";
 import { HeroMediaCarousel } from "./hero-media-carousel";
-
-const HERO_SLIDE_COUNT = 2;
-const HERO_ROTATION_MS = 10_000;
-const CAPE_COURAGE_IMAGE = "/images/cape-courage-hero-landscape.png";
 
 function CharterHeroContent() {
   return (
@@ -86,172 +80,27 @@ function CharterHeroContent() {
   );
 }
 
-function CapeCourageHeroContent() {
-  return (
-    <div className="max-w-2xl space-y-5 text-left sm:space-y-6">
-      <div className="section-eyebrow-hero">
-        <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
-        VIP Pass · July–August 2026
-      </div>
-
-      <h1
-        id="hero-heading"
-        className="max-w-xl text-[clamp(2.65rem,7.5vw,4.75rem)] font-bold leading-[0.98] text-white"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        <span className="block">Cape Courage,</span>
-        <span className="block text-gradient-sunset">from the water.</span>
-      </h1>
-
-      <p className="max-w-xl text-base leading-relaxed text-white/85 sm:text-lg lg:text-xl">
-        A full event day aboard Hey Charlie with premium big-wave viewing, food and drinks.
-      </p>
-
-      <div className="flex flex-wrap items-end gap-x-4 gap-y-2 text-white sm:gap-x-5">
-        <div className="whitespace-nowrap">
-          <span className="text-3xl font-bold tracking-tight sm:text-4xl">R3,250</span>
-          <span className="ml-2 text-xs text-white/65 sm:text-sm">per person</span>
-        </div>
-        <span className="mb-1 hidden h-8 w-px bg-white/25 sm:block" aria-hidden="true" />
-        <span className="mb-1 whitespace-nowrap text-xs font-semibold uppercase tracking-[0.12em] text-orange-300 sm:text-sm sm:tracking-[0.16em]">
-          Only 7 places
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row lg:gap-4">
-        <Link
-          href="/booking/cape-courage-vip"
-          className="btn-primary min-h-12 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-center font-semibold text-white transition-all hover:shadow-lg hover:shadow-orange-500/25 lg:px-8 lg:py-4"
-        >
-          Book Your Spot
-        </Link>
-        <Link href="/packages/cape-courage-vip" className="btn-secondary-glass min-h-12">
-          Event Details
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 export function HomeHero() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [motionEnabled, setMotionEnabled] = useState(true);
-  const [paused, setPaused] = useState(false);
-
-  const showSlide = useCallback((index: number) => {
-    setActiveSlide((index + HERO_SLIDE_COUNT) % HERO_SLIDE_COUNT);
-  }, []);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateMotion = () => setMotionEnabled(!mediaQuery.matches);
-
-    updateMotion();
-    mediaQuery.addEventListener("change", updateMotion);
-    return () => mediaQuery.removeEventListener("change", updateMotion);
-  }, []);
-
-  useEffect(() => {
-    if (!motionEnabled || paused) return;
-
-    const interval = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % HERO_SLIDE_COUNT);
-    }, HERO_ROTATION_MS);
-
-    return () => window.clearInterval(interval);
-  }, [motionEnabled, paused]);
-
   return (
     <section
       className="relative min-h-[88svh] overflow-hidden pt-20 sm:pt-24 lg:min-h-screen lg:pt-28"
       aria-labelledby="hero-heading"
-      data-testid="home-hero-carousel"
+      data-testid="home-hero"
     >
       <div className="absolute inset-0" aria-hidden="true">
         <div
-          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: activeSlide === 0 ? 1 : 0 }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${siteConfig.heroPoster})` }}
-          />
-          <HeroMediaCarousel poster={siteConfig.heroPoster} />
-        </div>
-
-        <div
-          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: activeSlide === 1 ? 1 : 0 }}
-        >
-          <Image
-            src={CAPE_COURAGE_IMAGE}
-            alt=""
-            fill
-            priority
-            className="object-cover object-[67%_center] sm:object-[62%_center] lg:object-center"
-            sizes="100vw"
-          />
-        </div>
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${siteConfig.heroPoster})` }}
+        />
+        <HeroMediaCarousel poster={siteConfig.heroPoster} />
       </div>
-
-      <div
-        className={`absolute inset-0 transition-colors duration-700 ${
-          activeSlide === 1
-            ? "bg-gradient-to-b from-black/65 via-[#031523]/35 to-[#031523]/85 lg:bg-gradient-to-r lg:from-[#020b12]/95 lg:via-[#020b12]/55 lg:to-transparent"
-            : "bg-gradient-to-b from-black/80 via-black/50 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/25"
-        }`}
-      />
-
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[var(--theme-bg)]/95 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/25" />
       <div className="wide-shell relative flex min-h-[calc(88svh-5rem)] items-end pb-24 sm:pb-28 lg:min-h-[calc(100vh-7rem)] lg:items-center lg:pb-10">
-        <div
-          key={activeSlide}
-          className="grid w-full items-end lg:grid-cols-2 lg:items-center lg:gap-16"
-          aria-live="polite"
-          data-testid={activeSlide === 0 ? "charter-hero-slide" : "cape-courage-hero-slide"}
-        >
-          {activeSlide === 0 ? <CharterHeroContent /> : <CapeCourageHeroContent />}
+        <div className="grid w-full items-end lg:grid-cols-2 lg:items-center lg:gap-16">
+          <CharterHeroContent />
         </div>
       </div>
-
-      <div
-        className="absolute bottom-5 right-4 z-20 flex items-center gap-1 rounded-full border border-white/15 bg-black/35 p-1.5 text-white shadow-lg backdrop-blur-md sm:right-6 lg:bottom-7 lg:right-10"
-        role="group"
-        aria-label="Homepage hero slides"
-      >
-        {["Charter adventures", "The Dungeons Seven Big Wave Invitational"].map((label, index) => (
-          <button
-            key={label}
-            type="button"
-            onClick={() => showSlide(index)}
-            className={`flex h-9 items-center gap-2 rounded-full px-3 text-xs font-semibold transition-all ${
-              activeSlide === index
-                ? "bg-white text-slate-950"
-                : "text-white/65 hover:bg-white/10 hover:text-white"
-            }`}
-            aria-label={`Show ${label}`}
-            aria-current={activeSlide === index ? "true" : undefined}
-          >
-            <span className="text-[10px] tabular-nums text-orange-500">0{index + 1}</span>
-            <span className="hidden sm:inline">{index === 0 ? "Charters" : "Cape Courage"}</span>
-          </button>
-        ))}
-
-        <button
-          type="button"
-          onClick={() => setPaused((current) => !current)}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-white/65 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          aria-label={paused || !motionEnabled ? "Play hero carousel" : "Pause hero carousel"}
-          disabled={!motionEnabled}
-        >
-          <span aria-hidden="true">{paused || !motionEnabled ? "▶" : "Ⅱ"}</span>
-        </button>
-
-      </div>
-
-      <div
-        className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-white/50 lg:flex"
-        aria-hidden="true"
-      >
+      <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-white/50 lg:flex" aria-hidden="true">
         <span className="text-xs uppercase tracking-widest">Scroll</span>
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

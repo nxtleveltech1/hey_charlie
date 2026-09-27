@@ -1,3 +1,5 @@
+import { inArray } from "drizzle-orm";
+import { ARCHIVED_PACKAGE_SLUGS } from "@/lib/archived-packages";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
@@ -165,6 +167,8 @@ async function seed() {
 
   try {
     // Insert packages — upsert on slug so content price/name changes sync to DB.
+    await db.update(schema.packages).set({ isActive: false, isFeatured: false }).where(inArray(schema.packages.slug, ARCHIVED_PACKAGE_SLUGS));
+
     for (const pkg of packagesToSeed) {
       await db
         .insert(schema.packages)

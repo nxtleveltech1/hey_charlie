@@ -8,22 +8,12 @@ test.describe("Mobile smoke tests", () => {
     ).toBeVisible();
   });
 
-  test("homepage hero carousel promotes Cape Courage booking", async ({ page }) => {
+  test("homepage hero shows charters without Cape Courage", async ({ page }) => {
     await page.goto("/");
-
-    const hero = page.getByTestId("home-hero-carousel");
-    await expect(hero).toBeVisible();
-    await hero
-      .getByRole("button", { name: "Show The Dungeons Seven Big Wave Invitational" })
-      .click();
-
-    const eventSlide = page.getByTestId("cape-courage-hero-slide");
-    await expect(eventSlide).toBeVisible();
-    await expect(eventSlide.getByRole("heading", { name: /Cape Courage, from the water/ })).toBeVisible();
-    await expect(hero.getByRole("link", { name: "Book Your Spot" })).toHaveAttribute(
-      "href",
-      "/booking/cape-courage-vip",
-    );
+    const hero = page.getByTestId("home-hero");
+    await expect(hero.getByRole("heading", { level: 1 })).toContainText("Cape Coast");
+    await expect(hero).not.toContainText("Cape Courage");
+    await expect(hero.getByRole("group", { name: "Homepage hero slides" })).toHaveCount(0);
   });
 
   test("packages page loads without horizontal scroll", async ({ page }) => {

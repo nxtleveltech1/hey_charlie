@@ -21,6 +21,7 @@ import { departureLocationSchema } from "@/lib/departure-locations";
 import { getSiteSettings } from "@/lib/settings";
 import { sendBookingNotifications } from "@/lib/booking-notify";
 import {
+  CAPE_COURAGE_CANCELLATION_MESSAGE,
   CAPE_COURAGE_BOOKING_DATE,
   CAPE_COURAGE_SLOT,
   isCapeCourage,
@@ -114,6 +115,13 @@ export async function POST(request: NextRequest) {
 
     if (!pkg) {
       return NextResponse.json({ error: "Package not found" }, { status: 404 });
+    }
+
+    if (isCapeCourage(pkg.slug)) {
+      return NextResponse.json(
+        { error: CAPE_COURAGE_CANCELLATION_MESSAGE },
+        { status: 409 },
+      );
     }
 
     if (!pkg.isActive) {

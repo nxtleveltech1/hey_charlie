@@ -38,10 +38,22 @@ test.describe("Package discovery", () => {
     await expect(hero).toHaveAttribute("data-theme-surface", "true");
     await expect(hero).not.toHaveClass(/bg-navy-deep/);
 
-    const bookingLinks = page.getByRole("link", { name: "Book Your Spot Now" });
-    await expect(bookingLinks.first()).toHaveAttribute(
-      "href",
-      "/booking/cape-courage-vip",
-    );
+    await expect(hero.getByText("Cancelled", { exact: true })).toBeVisible();
+    await expect(hero).toContainText("water conditions did not deliver the waves required");
+    await expect(page.locator('a[href="/booking/cape-courage-vip"]')).toHaveCount(0);
   });
 });
+
+for (const width of [390, 768, 1440]) {
+  test(`cancelled event card at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/packages");
+    const card = page.getByTestId("package-card").filter({ hasText: "The Dungeons Seven Big Wave Invitational" });
+    await expect(card.getByText("Cancelled", { exact: true }).first()).toBeVisible();
+    await expect(card).toContainText("ready for the next one");
+    await expect(card.getByRole("link", { name: "Event Update" })).toHaveAttribute("href", "/packages/cape-courage-vip");
+    await expect(card.getByRole("link", { name: "Book Now" })).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBeTruthy();
+    await card.screenshot({ path: `test-results/cancelled-event-${width}.png` });
+  });
+}
