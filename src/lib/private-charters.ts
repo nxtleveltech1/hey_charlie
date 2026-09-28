@@ -29,6 +29,6 @@ export function privateCharterPricing(duration: unknown, slots: string[]): TimeS
 
 export function addonsForPackage<T extends { slug: string }>(items: T[], slug: string): T[] {
   return items.filter((item) => slug === PRIVATE_CHARTER_SLUG
-    ? PRIVATE_ADDON_SLUGS.includes(item.slug)
+    ? !["catering", "refreshments", "catering-refreshments"].includes(item.slug)
     : !PRIVATE_ADDON_SLUGS.includes(item.slug));
 }

@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import {privateCharterPricing,PRIVATE_OPTIONS,addonsForPackage} from '../src/lib/private-charters';
 import {calculateBookingTotal} from '../src/lib/addon-pricing';
 import {db} from '../src/db';import {addons} from '../src/db/schema';import {TIME_SLOTS} from '../src/lib/booking-utils';
-const catalogue=addonsForPackage(await db.select().from(addons),'private-celebration');
+const available=addonsForPackage((await db.select().from(addons)).filter(a=>a.isActive),'private-celebration');
+for (const slug of ['jetski-2-hours','jetski-full-day','shuttle-pickup','shuttle-dropoff']) assert.ok(available.some(a=>a.slug===slug), `${slug} must remain available`);
+assert.ok(!available.some(a=>['catering','refreshments','catering-refreshments'].includes(a.slug)));
+const catalogue=available.filter(a=>['private-lunch','private-drinks'].includes(a.slug));
 assert.equal(addonsForPackage(catalogue,"sundowner-cruise").length,0);
 assert.equal(catalogue.length,2);for(const a of catalogue){assert.equal(Number(a.price),500);assert.equal(a.priceUnit,'per_person');}
 let combinations=0;
