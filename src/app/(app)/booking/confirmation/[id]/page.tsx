@@ -1,3 +1,4 @@
+import { PRIVATE_OPTIONS } from "@/lib/private-charters";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -75,7 +76,7 @@ export default async function BookingConfirmationPage({
   const slotIds = resolveBookingTimeSlots(booking);
   const slotSummary = eventTicket
     ? CAPE_COURAGE_TIME_LABEL
-    : formatTimeSlotSummary(slotIds);
+    : [PRIVATE_OPTIONS.find((option) => option.id === booking.charterDuration)?.label, formatTimeSlotSummary(slotIds)].filter(Boolean).join(" · ");
   const statusColor = BOOKING_STATUS_COLORS[booking.status];
   const statusLabel = isProvisional
     ? "Provisional"

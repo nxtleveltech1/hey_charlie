@@ -30,7 +30,7 @@ export const generalFaqs: FaqItem[] = [
     id: "meeting-point",
     question: "Where do we meet for our charter?",
     answer:
-      "All charters depart from the V&A Waterfront, Cape Town. We share the exact berth and a pin on Google Maps in your booking confirmation, and the crew meets you at the slip 15 minutes before departure.",
+      "All charters depart from the Houtbay Harbor, Cape Town. We share the exact berth and a pin on Google Maps in your booking confirmation, and the crew meets you at the slip 15 minutes before departure.",
     tags: ["general", "logistics", "sundowner", "private", "coastal", "wildlife"],
   },
   {

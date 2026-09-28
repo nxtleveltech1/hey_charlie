@@ -1,3 +1,4 @@
+import { PRIVATE_CHARTER_SLUG, privateDurationSchema, privateCharterPricing, addonsForPackage } from "@/lib/private-charters";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
@@ -29,6 +30,7 @@ import {
 
 const createBookingSchema = z.object({
   packageId: z.string().uuid(),
+  charterDuration: privateDurationSchema.optional(),
   date: z.string().datetime().optional(),
   timeSlots: z.array(z.string()).max(3).default([]),
   guestCount: z.number().min(1).max(20),
@@ -321,7 +323,9 @@ export async function POST(request: NextRequest) {
     const basePricePerPerson = parseFloat(pkg.pricePerPerson);
     let slotPricing;
     try {
-      slotPricing = calculateTimeSlotPricePerPerson(
+      slotPricing = pkg.slug === PRIVATE_CHARTER_SLUG
+        ? privateCharterPricing(validatedData.charterDuration, slotValidation.slots)
+        : calculateTimeSlotPricePerPerson(
         basePricePerPerson,
         slotValidation.slots,
       );
@@ -353,7 +357,7 @@ export async function POST(request: NextRequest) {
         slotPricing.pricePerPerson,
         validatedData.guestCount,
         selectedAddons,
-        allAddons,
+        addonsForPackage(allAddons, pkg.slug),
       );
     } catch (err) {
       return NextResponse.json(
@@ -374,6 +378,7 @@ export async function POST(request: NextRequest) {
         date: new Date(validatedData.date),
         timeSlot: slotValidation.slots.join(","),
         timeSlots: slotValidation.slots,
+        charterDuration: pkg.slug === PRIVATE_CHARTER_SLUG ? validatedData.charterDuration : null,
         guestCount: validatedData.guestCount,
         departureLocation: validatedData.departureLocation,
         pricePerPerson: slotPricing.pricePerPerson.toString(),
@@ -411,6 +416,7 @@ export async function POST(request: NextRequest) {
       packageName: pkg.name,
       date: newBooking.date,
       timeSlots: slotValidation.slots,
+      timeLabel: pkg.slug === PRIVATE_CHARTER_SLUG ? `${slotPricing.label} (${slotValidation.slots.join(", ")})` : undefined,
       guestCount: newBooking.guestCount,
       totalPrice: newBooking.totalPrice,
       contactName: newBooking.contactName,

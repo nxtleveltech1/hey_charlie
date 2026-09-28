@@ -84,7 +84,7 @@ export type Package = z.infer<typeof packageSchema>;
 
 /** Local image assets keyed by slug. Keep these in sync with /public. */
 export const PACKAGE_IMAGES = {
-  sundowner: "/images/atlantic-sundowner-cruise.png",
+  sundowner: "/api/media/48faf801-c8c6-474f-ac05-39e37d9e77a1",
   crayfish: "/images/catch-cook-crayfish.jpg",
   whale: "/images/whale-watching.jpg",
   beachHopper: "/images/clifton-beaches.jpg",
@@ -98,7 +98,7 @@ export const PACKAGE_IMAGES = {
   capeCourageVip: "/images/cape-courage-vip.png",
 } as const;
 
-const DEPARTURE = "V&A Waterfront, Cape Town";
+const DEPARTURE = "Houtbay Harbor, Cape Town";
 
 // Typed as the schema INPUT so the optional/defaulted fields (offSeason,
 // byRequest, seasonMonths, permitType) can be omitted on individual entries;
@@ -106,19 +106,37 @@ const DEPARTURE = "V&A Waterfront, Cape Town";
 // full Package shape is guaranteed at runtime.
 const packageData: z.input<typeof packageSchema>[] = [
   {
+    id: "private-celebration", slug: "private-celebration", name: "Private Charters",
+    tagline: "Your boat, your people, your time on the water",
+    shortDescription: "Make the coast your own with a private charter from Houtbay Harbor. Choose a quick escape, a relaxed three-hour cruise or a full day on the water.",
+    longDescription: "Step aboard at Houtbay Harbor and spend time on the water with the people you choose. Whether it is an easy escape, a celebration or a day together, your private charter gives your group its own space to enjoy the bay and nearby coastline. Choose 1 hour, 3 hours or a full day. The skipper plans the route around your time aboard and the conditions, with room to slow down and enjoy the views. Add lunch, drinks or both to complete your day. All prices are per person; lunch and drinks are optional extras.",
+    price: 950, priceUnit: "per person", durationHours: 1, durationLabel: "1 hour, 3 hours or full day",
+    minGuests: 6, maxGuests: 20, departurePoint: DEPARTURE,
+    bestSeason: "Year-round, weather permitting", seasonNote: "Route and departure time are confirmed with the crew according to sea conditions.",
+    category: "private", bestFor: ["Friends and families", "Celebrations", "Private groups"],
+    inclusions: ["Private use of the boat", "Professional skipper and crew", "Safety equipment"],
+    exclusions: ["Lunch: optional R500 per person", "Drinks: optional R500 per person", "Transfers"],
+    highlights: ["Private boat charter from Houtbay Harbor", "1 hour, 3 hours or full day", "Optional lunch and drinks"],
+    safetyNotes: ["The skipper selects the route according to wind and sea conditions."],
+    gallery: ["/Gallery/JUNE%2026/HC%201%20(28).jpeg"], heroImage: "/Gallery/JUNE%2026/HC%201%20(28).jpeg",
+    featured: true, popular: true, bestValue: false, requiresPermit: false, cancellationPolicyRef: "standard",
+    faqs: [{q: "How much does a private charter cost?", a: "1 hour is R950 per person, 3 hours is R1,350 per person, and a full day is R2,000 per person. Add lunch for R500 per person and drinks for R500 per person."}, {q: "Where do we depart?", a: "From Houtbay Harbor. Your exact meeting point and start time are confirmed with the crew."}],
+    relatedSlugs: ["sundowner-cruise", "cape-wildlife-explorer"],
+  },
+  {
     id: WILDLIFE_EXPLORER_SLUG,
     slug: WILDLIFE_EXPLORER_SLUG,
     name: "Cape Wildlife Explorer",
     tagline: "Discover the wild side of the Cape from the water",
     shortDescription: "Leave the bustle behind and explore the Cape’s wild coastal world, where every ripple, rocky outcrop and sweep of open water holds the possibility of something extraordinary.",
     longDescription: "There is a different rhythm to the Cape when you see it from the water. The shoreline slips past, the sea air fills your lungs, and suddenly the smallest movement on the surface has everyone looking. A playful rush through the water, a fleeting shape beneath the swell, wings skimming the waves — these are the moments that make this coast so special. Aboard Hey Charlie, we take time to enjoy the scenery and watch for the remarkable marine life that makes its home here or passes through with the seasons. Our crew shares the stories of the coast as the route unfolds around the day’s conditions, leaving room for those unexpected moments that no itinerary can promise. Bring your curiosity, keep your camera close, and settle into a fresh perspective on the Cape’s wild beauty. We observe wildlife respectfully from a distance; sightings are natural, seasonal and never guaranteed.",
-    price: 1950,
+    price: 1750,
     priceUnit: "per person",
-    durationHours: 4,
-    durationLabel: "4 hours",
+    durationHours: 5,
+    durationLabel: "5 hours",
     minGuests: 2,
     maxGuests: 12,
-    departurePoint: "Confirmed with your booking",
+    departurePoint: DEPARTURE,
     bestSeason: "Wildlife activity varies with the seasons and conditions.",
     seasonNote: "The route depends on sea conditions and wildlife activity on the day. Sightings are never guaranteed.",
     category: "wildlife",
@@ -145,16 +163,16 @@ const packageData: z.input<typeof packageSchema>[] = [
   {
     id: "sundowner-cruise",
     slug: "sundowner-cruise",
-    name: "Atlantic Sundowner Cruise",
-    tagline: "Golden hour on the Atlantic Seaboard",
+    name: "Hout Bay Sundowner Cruise",
+    tagline: "Golden hour from Houtbay Harbor",
     shortDescription:
-      "A relaxed evening cruise past Clifton and Camps Bay as the sun sets over the Atlantic.",
+      "A five-hour cruise from Houtbay Harbor, with mountain-framed coastal views and time to enjoy the sunset from the water.",
     longDescription:
-      "Cast off from the V&A Waterfront in the late afternoon and glide along the Atlantic Seaboard toward Clifton and Camps Bay. With the Twelve Apostles behind you and the sun dropping into the ocean ahead, this is the Cape Town skyline at its warmest. Sparkling wine and light canapés are served on board while the crew handles the sailing — you simply take in the view.",
-    price: 850,
+      "Cast off from Houtbay Harbor for five relaxed hours around the bay and along the nearby coastline, as conditions allow. With the surrounding mountains catching the changing light and the open water ahead, there is time to slow down and enjoy the Cape from the water. Sparkling wine and light canapés are served on board while the skipper chooses a comfortable route for the day’s wind and sea conditions. We return to Houtbay Harbor after soaking up the sunset.",
+    price: 1750,
     priceUnit: "per person",
-    durationHours: 2.5,
-    durationLabel: "2.5 hours",
+    durationHours: 5,
+    durationLabel: "5 hours",
     minGuests: 2,
     maxGuests: 12,
     departurePoint: DEPARTURE,
@@ -174,8 +192,8 @@ const packageData: z.input<typeof packageSchema>[] = [
     ],
     exclusions: ["Hotel transfers", "Additional catering on request"],
     highlights: [
-      "Clifton & Camps Bay from the water",
-      "Twelve Apostles mountain backdrop",
+      "Hout Bay and nearby coastline from the water",
+      "Mountain-framed sunset views",
       "Sparkling wine & canapés",
       "Golden-hour photography",
     ],
@@ -220,7 +238,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     bestSeason: "Crayfish season opens mid-November and runs to April — see season note.",
     seasonMonths: [11, 12, 1, 2, 3, 4],
     seasonNote:
-      "Strictly within the DAFF recreational crayfish season and daily bag limits. Outside the open season this trip is unavailable.",
+      "Strictly within the DFFE recreational crayfish season and daily bag limits. Outside the open season this trip is unavailable.",
     category: "crayfish",
     bestFor: ["Adventurous eaters", "Small groups", "Experienced snorkellers"],
     inclusions: [
@@ -246,7 +264,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     popular: false,
     bestValue: true,
     requiresPermit: true,
-    permitType: "DAFF recreational crayfish (rock lobster) permit",
+    permitType: "DFFE recreational crayfish (rock lobster) permit",
     cancellationPolicyRef: "standard",
     faqs: [
       {
@@ -322,12 +340,12 @@ const packageData: z.input<typeof packageSchema>[] = [
     id: "beach-hopper",
     slug: "beach-hopper",
     name: "Beach Hopper",
-    tagline: "Atlantic coves and sheltered swim stops",
+    tagline: "Hout Bay coastline and sheltered swim stops",
     shortDescription:
-      "A half-day hopping between sheltered Atlantic beaches and swim stops reachable only by boat.",
+      "Five hours from Houtbay Harbor exploring the nearby coastline, with sheltered beach and swim stops chosen for the day’s conditions.",
     longDescription:
-      "Spend a half-day exploring the Atlantic Seaboard's quieter corners — beaches and coves that are far easier to reach by water than by road. We anchor in sheltered bays for swimming and snorkelling in the clear, cold Atlantic water, with a picnic lunch and refreshments on board. Routes flex with the wind to keep you in the calmest water.",
-    price: 1500,
+      "Depart from Houtbay Harbor for five hours exploring the bay and nearby coastline. Discover quiet coves and sheltered spots from the water, with time to swim and snorkel where conditions allow. Enjoy a picnic lunch and refreshments on board as the skipper chooses a comfortable route for the day’s wind and sea conditions. We return to Houtbay Harbor after an unhurried escape along the coast.",
+    price: 1750,
     priceUnit: "per person",
     durationHours: 5,
     durationLabel: "5 hours",
@@ -367,7 +385,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     faqs: [
       {
         q: "Is the water cold?",
-        a: "The Atlantic is brisk — roughly 13–17°C. A wetsuit helps for longer swims; we can arrange hire.",
+        a: "The water can be cold. A wetsuit helps for longer swims; we can arrange hire.",
       },
     ],
     relatedSlugs: ["sundowner-cruise", "coastline-explorer", "private-charter"],
@@ -470,12 +488,12 @@ const packageData: z.input<typeof packageSchema>[] = [
     popular: false,
     bestValue: false,
     requiresPermit: true,
-    permitType: "DAFF recreational fishing permit",
+    permitType: "DFFE recreational fishing permit",
     cancellationPolicyRef: "standard",
     faqs: [
       {
         q: "Do I need a fishing permit?",
-        a: "Yes — a valid DAFF recreational fishing permit is required for each angler. We can advise on where to obtain one; please arrange it before the trip.",
+        a: "Yes — a valid DFFE recreational fishing permit is required for each angler. We can advise on where to obtain one; please arrange it before the trip.",
       },
       {
         q: "Can beginners join?",
@@ -488,11 +506,11 @@ const packageData: z.input<typeof packageSchema>[] = [
     id: "coastline-explorer",
     slug: "coastline-explorer",
     name: "Coastline Explorer",
-    tagline: "V&A to Cape Point — the full peninsula",
+    tagline: "Houtbay Harbor to Cape Point — the full peninsula",
     shortDescription:
       "A full day along the peninsula: seals, penguins, dramatic cliffs and (in season) whales.",
     longDescription:
-      "The big one. From the V&A Waterfront we run the length of the peninsula — past Clifton and Camps Bay, around to Hout Bay and the seal colony at Duiker Island, then down toward Simon's Town, Boulders and the cliffs of Cape Point. It is a full, varied day of scenery and wildlife with a gourmet lunch on board and commentary on the history and marine life of the coast. In whale season (June–November) we route around the latest sightings.",
+      "The big one. From Houtbay Harbor we explore the peninsula coast, heading toward Cape Point and, when conditions permit, around into False Bay. The skipper selects the route for the day rather than promising every stop. It is a full, varied day of scenery and wildlife with a gourmet lunch on board and commentary on the history and marine life of the coast. In whale season (June–November) we route around the latest sightings.",
     price: 2200,
     priceUnit: "per person",
     durationHours: 7,
@@ -515,7 +533,7 @@ const packageData: z.input<typeof packageSchema>[] = [
     ],
     exclusions: ["Transfers", "Additional catering"],
     highlights: [
-      "Full peninsula from V&A to Cape Point",
+      "Full peninsula from Houtbay Harbor to Cape Point",
       "Seal colony at Duiker Island",
       "Boulders penguin vantage",
       "Gourmet lunch on board",

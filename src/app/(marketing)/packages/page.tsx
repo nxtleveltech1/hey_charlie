@@ -1,3 +1,6 @@
+// Read admin-managed catalogue changes on every request.
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import { db } from "@/db";
 import { packages as pkgTable } from "@/db/schema";

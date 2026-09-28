@@ -9,12 +9,12 @@ const PAGE_TITLE = "Terms of Service";
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    "The terms that govern bookings with Hey Charlie Charters from the V&A Waterfront, Cape Town. Draft — under review.",
+    "The terms that govern bookings with Hey Charlie Charters from the Houtbay Harbor, Cape Town. Draft — under review.",
   alternates: { canonical: "/terms" },
   openGraph: {
     title: `${PAGE_TITLE} | ${siteConfig.name}`,
     description:
-      "The terms that govern bookings with Hey Charlie Charters from the V&A Waterfront, Cape Town. Draft — under review.",
+      "The terms that govern bookings with Hey Charlie Charters from the Houtbay Harbor, Cape Town. Draft — under review.",
   },
 };
 

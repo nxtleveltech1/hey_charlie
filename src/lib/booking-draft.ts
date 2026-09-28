@@ -1,6 +1,7 @@
 import type { SelectedAddonsMap } from "@/lib/addon-pricing";
 import {
   DEFAULT_DEPARTURE_LOCATION,
+  departureLocationSchema,
   type DepartureLocationId,
 } from "@/lib/departure-locations";
 
@@ -8,6 +9,7 @@ const DRAFT_PREFIX = "hcc-booking-draft:";
 
 export interface BookingDraft {
   formData: {
+    charterDuration?: import("./private-charters").PrivateDuration;
     date: string;
     timeSlots: string[];
     guestCount: number;
@@ -65,7 +67,7 @@ export function loadBookingDraft(packageId: string): BookingDraft | null {
         ...parsed.formData,
         timeSlots,
         departureLocation:
-          parsed.formData?.departureLocation ?? DEFAULT_DEPARTURE_LOCATION,
+          departureLocationSchema.safeParse(parsed.formData?.departureLocation).data ?? DEFAULT_DEPARTURE_LOCATION,
       } as BookingDraft["formData"],
       selectedAddons,
     };

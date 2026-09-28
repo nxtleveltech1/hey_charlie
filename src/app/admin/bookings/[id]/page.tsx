@@ -1,3 +1,4 @@
+import { PRIVATE_OPTIONS } from "@/lib/private-charters";
 import { db } from "@/db";
 import { bookings } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -59,7 +60,7 @@ export default async function AdminBookingDetailPage({
           <div className="p-6 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)]">
             <h2 className="text-lg font-semibold mb-4">Package Details</h2>
             <div className="p-4 rounded-xl bg-[var(--theme-surface)] mb-4">
-              <h3 className="font-semibold">{booking.package.name}</h3>
+              <h3 className="font-semibold">{booking.package.name}{booking.charterDuration && ` · ${PRIVATE_OPTIONS.find((option) => option.id === booking.charterDuration)?.label ?? booking.charterDuration}`}</h3>
               <p className="text-sm text-[var(--theme-text-muted)]">{booking.package.tagline}</p>
             </div>
             <div className="grid grid-cols-2 gap-4">

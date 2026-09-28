@@ -105,8 +105,9 @@ export const bookings = pgTable("bookings", {
   date: timestamp("date").notNull(),
   timeSlot: text("time_slot").notNull(),
   timeSlots: text("time_slots").array().notNull().default([]),
+  charterDuration: text("charter_duration"),
   guestCount: integer("guest_count").notNull(),
-  departureLocation: text("departure_location").notNull().default("va-waterfront"),
+  departureLocation: text("departure_location").notNull().default("hout-bay"),
   
   // Pricing
   pricePerPerson: decimal("price_per_person", { precision: 10, scale: 2 }).notNull(),
@@ -244,7 +245,7 @@ export const siteSettings = pgTable("site_settings", {
   businessName: text("business_name").notNull().default("Hey Charlie Charters"),
   contactEmail: text("contact_email").notNull().default("ahoy@heycharliecharters.co.za"),
   contactPhone: text("contact_phone").notNull().default("060 314 4873"),
-  location: text("location").notNull().default("Hout Bay & V&A Waterfront, Cape Town"),
+  location: text("location").notNull().default("Houtbay Harbor, Cape Town"),
   minAdvanceBookingDays: integer("min_advance_booking_days").notNull().default(1),
   maxAdvanceBookingDays: integer("max_advance_booking_days").notNull().default(90),
   autoConfirmBookings: boolean("auto_confirm_bookings").notNull().default(false),

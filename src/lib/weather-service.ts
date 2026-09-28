@@ -7,10 +7,10 @@
 // public-facing getters return a clearly-marked "unavailable" state instead
 // of presenting fabricated data as live.
 
-// Cape Town — V&A Waterfront (departure point for every charter).
+// Cape Town — Houtbay Harbor (departure point for every charter).
 export const CHARTER_COORDS = {
-  lat: -33.9077,
-  lng: 18.4235,
+  lat: -34.0476,
+  lng: 18.3535,
 };
 
 /** Whether at least one weather API key is configured. */

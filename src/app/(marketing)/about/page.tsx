@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About Us | Hey Charlie Charters",
   description:
-    "The story behind Hey Charlie Charters — a Cape Town crew built on a lifelong love of the Atlantic. Meet the people, the boat and the philosophy behind every charter from the V&A Waterfront.",
+    "The story behind Hey Charlie Charters — a Cape Town crew built on a lifelong love of the Atlantic. Meet the people, the boat and the philosophy behind every charter from the Houtbay Harbor.",
   openGraph: {
     title: "About Us | Hey Charlie Charters",
     description:
@@ -359,7 +359,7 @@ export default function AboutPage() {
               Six ways to fall for the <span className="text-gradient-sunset">Cape coast</span>
             </h2>
             <p className="text-base text-[var(--theme-text-muted)] lg:text-lg">
-              Every charter departs from the V&amp;A Waterfront and heads out along the Atlantic
+              Every charter departs from the Houtbay Harbor and heads out along the Atlantic
               Seaboard and around the Peninsula. Pick your adventure — or let us design one.
             </p>
           </div>

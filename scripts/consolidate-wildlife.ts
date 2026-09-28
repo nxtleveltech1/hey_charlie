@@ -25,7 +25,7 @@ try {
     ON CONFLICT (slug) DO NOTHING`, [pkg.slug, pkg.name, pkg.tagline, pkg.longDescription, pkg.durationLabel, pkg.price, pkg.minGuests, pkg.maxGuests, pkg.category, pkg.highlights, pkg.heroImage]);
   const after = await client.query("SELECT slug, name, price_per_person, is_active, is_featured FROM packages WHERE slug = ANY($1::text[]) ORDER BY slug", [[...ARCHIVED_PACKAGE_SLUGS, pkg.slug]]);
   const active = after.rows.filter((row) => row.is_active);
-  if (active.length !== 1 || active[0].slug !== pkg.slug || Number(active[0].price_per_person) !== 1950) throw new Error("Unexpected consolidated package state; rolling back");
+  if (active.length !== 1 || active[0].slug !== pkg.slug || Number(active[0].price_per_person) !== pkg.price) throw new Error("Unexpected consolidated package state; rolling back");
   const apply = process.argv.includes("--apply");
   await client.query(apply ? "COMMIT" : "ROLLBACK");
   console.log(JSON.stringify({ applied: apply, packages: after.rows, preservedBookings: history.rows[0].count, backup }, null, 2));

@@ -184,7 +184,7 @@ export type SiteConfig = z.infer<typeof siteConfigSchema>;
 /** Non-public, server-only permit/licence configuration. */
 export interface PermitConfig {
   required: true;
-  authority: "SAMSA" | "DAFF";
+  authority: "SAMSA" | "DFFE";
   number: string;
 }
 
@@ -199,11 +199,11 @@ export interface ServerSiteConfig extends SiteConfig {
 // --- resolved values --------------------------------------------------------
 
 const addressStructured: AddressConfig = {
-  street: "V&A Waterfront (berth confirmed at booking)",
-  suburb: "Victoria & Alfred Waterfront",
+  street: "Houtbay Harbor (berth confirmed at booking)",
+  suburb: "Houtbay Harbor",
   city: "Cape Town",
   region: "Western Cape",
-  postalCode: "8002",
+  postalCode: "7806",
   country: "South Africa",
 };
 
@@ -250,9 +250,9 @@ export const siteConfig: SiteConfig = siteConfigSchema.parse({
   alternateDomain: ALTERNATE_DOMAIN,
   name: "Hey Charlie Charters",
   legalName: "Hey Charlie Charters",
-  tagline: "Cape Town charters from the V&A Waterfront",
+  tagline: "Cape Town charters from the Houtbay Harbor",
   description:
-    "Hey Charlie Charters runs sundowner cruises, whale watching, deep-sea fishing, crayfish diving and private charters from the V&A Waterfront, Cape Town — along the Atlantic Seaboard and around the Cape Peninsula.",
+    "Hey Charlie Charters runs sundowner cruises, whale watching, deep-sea fishing, crayfish diving and private charters from the Houtbay Harbor, Cape Town — along the Atlantic Seaboard and around the Cape Peninsula.",
   phone,
   phoneDisplay,
   whatsapp,
@@ -260,14 +260,14 @@ export const siteConfig: SiteConfig = siteConfigSchema.parse({
   addressStructured,
   address,
   businessHours,
-  geo: { lat: -33.9077, lng: 18.4235 },
+  geo: { lat: -34.0476, lng: 18.3535 },
   social: {
     facebook,
     instagram,
     twitter,
     ...(youtube ? { youtube } : {}),
   },
-  departurePoint: "V&A Waterfront, Cape Town",
+  departurePoint: "Houtbay Harbor, Cape Town",
   credentials,
   reviews: { enabled: false },
   reviewsComingSoon: {
@@ -283,8 +283,8 @@ export const siteConfig: SiteConfig = siteConfigSchema.parse({
     },
     {
       step: 2,
-      title: "Meet at the V&A",
-      description: "Board at the V&A Waterfront. The crew briefs you 15 minutes before we cast off.",
+      title: "Meet at Houtbay Harbor",
+      description: "Board at Houtbay Harbor. The crew briefs you 15 minutes before we cast off.",
       icon: "anchor",
     },
     {
@@ -320,8 +320,8 @@ export function getSiteConfig(): ServerSiteConfig {
     ...siteConfig,
     permits: {
       samsaVessel: { required: true, authority: "SAMSA", number: samsaVesselNumber },
-      recreationalFishing: { required: true, authority: "DAFF", number: recFishNumber },
-      crayfish: { required: true, authority: "DAFF", number: crayfishNumber },
+      recreationalFishing: { required: true, authority: "DFFE", number: recFishNumber },
+      crayfish: { required: true, authority: "DFFE", number: crayfishNumber },
     },
   };
 }

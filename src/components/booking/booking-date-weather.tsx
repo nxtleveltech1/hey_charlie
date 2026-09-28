@@ -170,7 +170,7 @@ export function BookingDateWeather({ selectedDate }: BookingDateWeatherProps) {
         <div>
           <p className="text-sm font-medium">Marine forecast</p>
           <p className="text-xs text-[var(--theme-text-muted)]">
-            V&amp;A Waterfront departure
+            Houtbay Harbor departure
           </p>
         </div>
         {fishingRating && (

@@ -51,7 +51,7 @@ export const legalSections: LegalSection[] = [
     intro: DRAFT_NOTE,
     body: [
       "These terms govern bookings made with Hey Charlie Charters. By booking a charter you accept these terms on behalf of yourself and your group.",
-      "A booking is confirmed once the deposit is received and you have a written confirmation. The charter is operated by Hey Charlie Charters from the V&A Waterfront, Cape Town.",
+      "A booking is confirmed once the deposit is received and you have a written confirmation. The charter is operated by Hey Charlie Charters from the Houtbay Harbor, Cape Town.",
       "You agree to provide accurate information, follow the skipper's safety instructions at all times, and behave in a way that does not endanger the vessel, crew or other guests.",
       "The skipper's decisions regarding safety, route and whether a trip can safely proceed are final.",
       "Prices are in South African Rand (ZAR) and are subject to change; the price confirmed at booking is binding for that booking.",
@@ -116,15 +116,15 @@ export const legalSections: LegalSection[] = [
     intro: DRAFT_NOTE,
     body: [
       "Hey Charlie Charters operates under South African maritime regulations administered by SAMSA (South African Maritime Safety Authority). The vessel and skipper hold the licences required to operate commercial charters.",
-      "Recreational fishing and crayfish (West Coast rock lobster) diving are regulated by the Department of Agriculture, Forestry and Fisheries (DAFF) / Department of Environment, Forestry and Fisheries. Recreational anglers require a valid recreational fishing permit, and crayfish diving is only permitted within the open season and daily bag and size limits.",
+      "Recreational fishing and crayfish (West Coast rock lobster) diving are regulated by the Department of Forestry, Fisheries and the Environment (DFFE). Recreational anglers require a valid recreational fishing permit, available through the official online portal at https://www.fishing.dffe.gov.za, and crayfish diving is only permitted within the open season and daily bag and size limits.",
       "Wildlife viewing is conducted with respect for the animals and in line with responsible viewing guidelines.",
       "REQUIRED: the following reference numbers must be supplied and verified before publication:",
     ],
     bullets: [
       "REQUIRED: SAMSA vessel registration / survey number.",
       "REQUIRED: Skipper's SAMSA licence category and number (verified).",
-      "REQUIRED: DAFF recreational fishing permit arrangement (for fishing charters).",
-      "REQUIRED: DAFF recreational crayfish permit arrangement (for crayfish charters, in season).",
+      "REQUIRED: DFFE recreational fishing permit arrangement (for fishing charters).",
+      "REQUIRED: DFFE recreational crayfish permit arrangement (for crayfish charters, in season).",
       "REQUIRED: Marine liability insurer name and policy number.",
     ],
   },

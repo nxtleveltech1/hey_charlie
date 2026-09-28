@@ -1,3 +1,5 @@
+import { PRIVATE_CHARTER_SLUG } from "@/lib/private-charters";
+import { PrivateCharterOptions } from "@/components/private-charter-options";
 import { isArchivedPackage } from "@/lib/archived-packages";
 import { isArchivedWildlifePackage, WILDLIFE_EXPLORER_SLUG } from "@/lib/wildlife-packages";
 import { CAPE_COURAGE_CANCELLATION_MESSAGE } from "@/lib/cape-courage";
@@ -198,6 +200,7 @@ export default async function PackageDetailPage({
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--theme-text-secondary)] sm:text-lg lg:text-xl">
               {pkg.description}
             </p>
+            {pkg.slug === PRIVATE_CHARTER_SLUG && <PrivateCharterOptions />}
 
             <div className="mt-6 flex flex-wrap gap-2">
               <span className="rounded-full bg-cyan-500/12 px-4 py-2 text-sm font-semibold text-cyan-700 dark:text-cyan-300">

@@ -10,6 +10,7 @@ export const ARCHIVED_PACKAGE_SLUGS = [
   "coastline-crawler",
   "shipwreck-tour",
   "mobile-refreshment-station",
+  "custom-services",
 ];
 
 export function isArchivedPackage(slug: string): boolean {

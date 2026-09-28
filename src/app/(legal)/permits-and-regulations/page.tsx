@@ -10,12 +10,12 @@ const PAGE_TITLE = "Permits & Regulations";
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    "The SAMSA and DAFF regulations Hey Charlie Charters operates under. Permit numbers pending verification. Draft — under review.",
+    "The SAMSA and DFFE regulations Hey Charlie Charters operates under. Permit numbers pending verification. Draft — under review.",
   alternates: { canonical: "/permits-and-regulations" },
   openGraph: {
     title: `${PAGE_TITLE} | ${siteConfig.name}`,
     description:
-      "The SAMSA and DAFF regulations Hey Charlie Charters operates under. Permit numbers pending verification. Draft — under review.",
+      "The SAMSA and DFFE regulations Hey Charlie Charters operates under. Permit numbers pending verification. Draft — under review.",
   },
 };
 

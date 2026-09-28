@@ -1,3 +1,4 @@
+import { addonsForPackage } from "@/lib/private-charters";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       orderBy: [asc(addons.displayOrder), asc(addons.name)],
     });
 
-    return NextResponse.json({ addons: allAddons });
+    return NextResponse.json({ addons: isAdmin && includeInactive ? allAddons : addonsForPackage(allAddons, searchParams.get("packageSlug") ?? "") });
   } catch (error) {
     console.error("Error fetching addons:", error);
     return NextResponse.json(

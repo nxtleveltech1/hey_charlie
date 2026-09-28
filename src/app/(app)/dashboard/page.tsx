@@ -1,3 +1,4 @@
+import { PRIVATE_OPTIONS } from "@/lib/private-charters";
 import { requireUser } from "@/lib/auth";
 import { db } from "@/db";
 import { bookings } from "@/db/schema";
@@ -104,7 +105,7 @@ export default async function DashboardPage() {
                         </span>
                       </div>
                       <h3 className="mb-1 text-lg font-semibold">
-                        {booking.package.name}
+                        {booking.package.name}{booking.charterDuration && ` · ${PRIVATE_OPTIONS.find((option) => option.id === booking.charterDuration)?.label ?? booking.charterDuration}`}
                       </h3>
                       <p className="mb-3 text-sm text-[var(--theme-text-muted)]">
                         {booking.package.tagline}
@@ -172,7 +173,7 @@ export default async function DashboardPage() {
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <h3 className="font-semibold">{booking.package.name}</h3>
+                    <h3 className="font-semibold">{booking.package.name}{booking.charterDuration && ` · ${PRIVATE_OPTIONS.find((option) => option.id === booking.charterDuration)?.label ?? booking.charterDuration}`}</h3>
                     <p className="text-sm text-[var(--theme-text-muted)]">
                       {isCapeCourage(booking.package.slug)
                         ? CAPE_COURAGE_DATE_LABEL

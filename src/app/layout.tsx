@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     template: "%s | Hey Charlie Charters",
   },
   description:
-    "Private boat charters from the V&A Waterfront, Cape Town. Sundowner cruises, whale watching, deep-sea fishing, crayfish diving and coastal day trips along the Atlantic Seaboard and Cape Peninsula.",
+    "Private boat charters from the Houtbay Harbor, Cape Town. Sundowner cruises, whale watching, deep-sea fishing, crayfish diving and coastal day trips along the Atlantic Seaboard and Cape Peninsula.",
   keywords: [
     "Cape Town boat charter",
     "whale watching Cape Town",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
         url: siteConfig.socialImage,
         width: 1024,
         height: 1024,
-        alt: "Hey Charlie Charters — private boat charters from the V&A Waterfront, Cape Town",
+        alt: "Hey Charlie Charters — private boat charters from the Houtbay Harbor, Cape Town",
       },
     ],
   },

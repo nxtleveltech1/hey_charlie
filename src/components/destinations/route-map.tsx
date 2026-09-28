@@ -60,13 +60,10 @@ const COASTLINE = `
   Z
 `;
 
-// Sailing route: V&A Waterfront → Clifton → Camps Bay → Hout Bay →
+// Sailing route: Houtbay Harbor south along the peninsula →
 // around Cape Point → Boulders Beach → Simon's Town (drawn offshore)
 const ROUTE = `
-  M 483 66
-  C 420 58, 360 70, 314 90
-  C 308 98, 306 106, 308 114
-  C 280 142, 236 172, 208 216
+  M 214 222
   C 150 250, 60 300, 60 370
   C 60 450, 200 520, 400 560
   C 520 585, 700 615, 810 592
@@ -75,8 +72,8 @@ const ROUTE = `
   C 620 398, 566 388, 536 386
 `;
 
-// Departure point — V&A Waterfront
-const VA = project({ lat: -33.9036, lng: 18.4207 });
+// Departure point — Houtbay Harbor
+const DEPARTURE = project({ lat: -34.0476, lng: 18.3535 });
 
 export function RouteMap() {
   const [active, setActive] = useState<string | null>(null);
@@ -196,11 +193,11 @@ export function RouteMap() {
           </text>
         </g>
 
-        {/* Departure point — V&A Waterfront */}
-        <g transform={`translate(${VA.x}, ${VA.y})`}>
+        {/* Departure point — Houtbay Harbor */}
+        <g transform={`translate(${DEPARTURE.x}, ${DEPARTURE.y})`}>
           <circle r="7" fill="#fbbf24" stroke="#fff" strokeWidth="2" />
           <text x="14" y="-6" fill="rgba(255,255,255,0.85)" fontSize="17" fontWeight="600">
-            V&amp;A Waterfront
+            Houtbay Harbor
           </text>
           <text x="14" y="12" fill="rgba(255,255,255,0.5)" fontSize="13">
             Departure point

@@ -101,7 +101,7 @@ The water is refreshingly cold (around 14-17°C) thanks to the Benguela Current,
     ],
     bestTimeToVisit: "December to March for warmest weather, but Clifton is spectacular year-round",
     weatherNote: "Water temperature: 14-17°C. Air: 18-28°C in summer. The boulders provide wind shelter even on gusty days.",
-    accessInfo: "Arrive by boat from V&A Waterfront (15 minutes) or Hout Bay. We anchor in the sheltered bay with easy swim access.",
+    accessInfo: "Depart from Houtbay Harbor; travel time depends on the route and sea conditions. We anchor in the sheltered bay with easy swim access.",
     tips: [
       "Book sunset cruises 2+ weeks ahead in peak season",
       "The water is cold but refreshing — perfect after sunbathing",
@@ -147,7 +147,7 @@ From the water, you'll appreciate the full grandeur of the mountains rising 800 
     ],
     bestTimeToVisit: "October to April for beach weather, but the views are stunning year-round",
     weatherNote: "More exposed to wind than Clifton. Best on calm days or early mornings.",
-    accessInfo: "15 minutes by boat from V&A Waterfront. We anchor offshore for swimming and photos.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions. We anchor offshore for swimming and photos.",
     tips: [
       "Book a table at a beachfront restaurant before your cruise",
       "The beach faces west — perfect for sunset photos",
@@ -190,7 +190,7 @@ Parking on land is notoriously scarce in summer, which makes arriving by boat th
     ],
     bestTimeToVisit: "December to March for beach weather; autumn mornings are glassy and quiet",
     weatherNote: "Atlantic water at 13-17°C. The cove offers some shelter, but a big swell brings dramatic surf.",
-    accessInfo: "About 20 minutes by boat from the V&A Waterfront, between Camps Bay and Hout Bay. We anchor off the beach — no stairs, no parking wars.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions, between Camps Bay and Hout Bay. We anchor off the beach — no stairs, no parking wars.",
     tips: [
       "Bring your own everything — there are no shops or kiosks",
       "Surf's up? Watch the local riders from the best seat in the house",
@@ -233,7 +233,7 @@ Because it faces away from the city with zero light or noise around it, Sandy Ba
     ],
     bestTimeToVisit: "December to March for the calmest, warmest days; windless winter days are magic",
     weatherNote: "Exposed to the open Atlantic — best on calm days. Water 13-17°C.",
-    accessInfo: "About 25 minutes by boat from the V&A Waterfront, just south of Llandudno. On land it's a 20-minute footpath — by boat it's effortless.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions, just south of Llandudno. On land it's a 20-minute footpath — by boat it's effortless.",
     tips: [
       "It's Cape Town's unofficial naturist beach — clothing optional, respect expected",
       "There are zero facilities — we bring everything you need on board",
@@ -276,7 +276,7 @@ From the water, the view is even better: the full face of Chapman's Peak rising 
     ],
     bestTimeToVisit: "October to April; early mornings before the southeaster for the calmest water",
     weatherNote: "Open and exposed — the beach catches wind and swell. We cruise it on calm days and mornings.",
-    accessInfo: "About 40 minutes by boat from the V&A Waterfront, just south of Hout Bay past Chapman's Peak. Viewed from the water — surf landing is not practical here.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions, just south of Hout Bay past Chapman's Peak. Viewed from the water — surf landing is not practical here.",
     tips: [
       "Bring a long lens — horse riders on the beach make iconic photos",
       "Look for the Kakapo wreck in the dunes at the northern end",
@@ -322,7 +322,7 @@ The harbour is also the traditional starting point for the famous crayfish divin
     ],
     bestTimeToVisit: "Year-round for seals. November to April for crayfish season.",
     weatherNote: "The bay is sheltered but can get windy in the afternoon. Mornings are best.",
-    accessInfo: "20 minutes by boat from V&A Waterfront, or depart directly from Hout Bay harbor.",
+    accessInfo: "Meet the crew at Houtbay Harbor. The exact berth is confirmed with your booking.",
     tips: [
       "Book crayfish dives early — permits are limited",
       "Bring a camera with good zoom for the seals",
@@ -362,13 +362,13 @@ The False Bay waters here are warmer than the Atlantic side, fed by the Agulhas 
       { title: "Scenic Route", description: "Part of the famous Cape Point drive", icon: "🚗" },
     ],
     experiences: [
-      { name: "Coastline Explorer", icon: "🧭", description: "Full day from V&A to Simon's Town and Cape Point", duration: "7 hours", price: 2200, packageId: "coastline-explorer" },
+      { name: "Coastline Explorer", icon: "🧭", description: "Full day from Houtbay Harbor to Simon's Town and Cape Point", duration: "7 hours", price: 2200, packageId: "coastline-explorer" },
       { name: "Whale Watching Safari", icon: "🐋", description: "False Bay's incredible whale activity", duration: "3 hours", price: 1200, packageId: "whale-watching" },
       { name: "Private Charter", icon: "🥂", description: "Exclusive False Bay exploration", duration: "Custom", price: 12000, packageId: "private-charter" },
     ],
     bestTimeToVisit: "June to November for whale watching. Year-round for penguins.",
     weatherNote: "Generally calmer than the Atlantic side. Water: 16-21°C in summer.",
-    accessInfo: "45 minutes by boat from V&A Waterfront, or 30 minutes from Hout Bay via False Bay.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions, via Cape Point when conditions allow.",
     tips: [
       "Visit penguins early morning or late afternoon for active behaviour",
       "The historic main street has excellent restaurants",
@@ -414,7 +414,7 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
     ],
     bestTimeToVisit: "October to December for calm seas. June to November for whale season.",
     weatherNote: "Can be rough — conditions determine if we can approach the Point. Always dramatic.",
-    accessInfo: "1 hour by boat from Simon's Town. Full-day trip from V&A Waterfront.",
+    accessInfo: "1 hour by boat from Simon's Town. Full-day trip from Houtbay Harbor.",
     tips: [
       "This is an advanced trip — sea conditions must be favorable",
       "Bring motion sickness medication if you're prone",
@@ -460,7 +460,7 @@ Arriving by boat allows you to observe the colony from the water before the crow
     ],
     bestTimeToVisit: "February to March for penguin breeding season. Year-round for sightings.",
     weatherNote: "False Bay is warmer. Water: 17-20°C in summer. Sheltered from wind by boulders.",
-    accessInfo: "45 minutes by boat from V&A Waterfront. Perfect as part of a False Bay day trip.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions. Perfect as part of a False Bay day trip.",
     tips: [
       "Don't touch or feed the penguins",
       "Snorkeling gear recommended for underwater views",

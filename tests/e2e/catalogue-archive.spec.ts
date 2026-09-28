@@ -8,7 +8,7 @@ for (const width of [390, 768, 1440]) {
     await page.goto("/packages");
     const card = page.getByTestId("package-card").filter({ hasText: "Cape Wildlife Explorer" });
     await expect(card).toHaveCount(1);
-    await expect(card).toContainText(/R\s*1\s*950/);
+    await expect(card).toContainText(/R\s*1\s*750/);
     await expect(card.getByRole("link", { name: "Book Now" })).toHaveAttribute("href", "/booking/cape-wildlife-explorer");
     for (const slug of ARCHIVED_PACKAGE_SLUGS) {
       await expect(page.locator(`a[href="/packages/${slug}"]`)).toHaveCount(0);
@@ -20,7 +20,7 @@ for (const width of [390, 768, 1440]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
     await page.goto("/packages/cape-wildlife-explorer");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cape Wildlife Explorer");
-    await expect(page.getByRole("main").getByTestId("package-detail-hero")).toContainText(/R\s*1\s*950/);
+    await expect(page.getByRole("main").getByTestId("package-detail-hero")).toContainText(/R\s*1\s*750/);
     await expect(page.locator("main")).toContainText("sightings are natural, seasonal and never guaranteed");
   });
 }
@@ -40,3 +40,4 @@ test("other archived product pages are unavailable", async ({ page }) => {
     await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
   }
 });
+

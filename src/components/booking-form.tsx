@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { PRIVATE_CHARTER_SLUG, PRIVATE_OPTIONS, privateCharterPricing, privateDurationSchema, addonsForPackage } from "@/lib/private-charters";
 import { TIME_SLOTS, formatPrice } from "@/lib/booking-utils";
 import {
   calculateTimeSlotPricePerPerson,
@@ -51,6 +52,7 @@ const inputClass =
 
 export function BookingForm({ packageData }: BookingFormProps) {
   const { user } = useUser();
+  const isPrivate = packageData.slug === PRIVATE_CHARTER_SLUG;
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +60,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
   const [addonsCatalog, setAddonsCatalog] = useState<Addon[]>([]);
 
   const [formData, setFormData] = useState({
+    charterDuration: privateDurationSchema.parse("one-hour"),
     date: "",
     timeSlots: [] as string[],
     guestCount: packageData.minGuests,
@@ -72,7 +75,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
   useEffect(() => {
     const draft = loadBookingDraft(packageData.id);
     if (draft) {
-      setFormData((prev) => ({ ...prev, ...draft.formData }));
+      setFormData((prev) => ({ ...prev, ...draft.formData, charterDuration: privateDurationSchema.safeParse(draft.formData.charterDuration).data ?? "one-hour" }));
       setSelectedAddons(draft.selectedAddons ?? {});
       if (draft.step) {
         // Map legacy 4-step drafts to 3-step flow
@@ -92,17 +95,18 @@ export function BookingForm({ packageData }: BookingFormProps) {
   }, [packageData.id]);
 
   useEffect(() => {
-    fetch("/api/package-addons")
+    fetch(`/api/package-addons?packageSlug=${encodeURIComponent(packageData.slug)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.addons) setAddonsCatalog(data.addons);
+        if (data?.addons) setAddonsCatalog(addonsForPackage(data.addons, packageData.slug));
       })
       .catch(() => {});
-  }, []);
+  }, [packageData.slug]);
 
   const slotPricing = useMemo(() => {
     if (formData.timeSlots.length === 0) return null;
     try {
+      if (isPrivate) return privateCharterPricing(formData.charterDuration, formData.timeSlots);
       return calculateTimeSlotPricePerPerson(
         packageData.pricePerPerson,
         formData.timeSlots,
@@ -110,7 +114,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
     } catch {
       return null;
     }
-  }, [packageData.pricePerPerson, formData.timeSlots]);
+  }, [packageData.pricePerPerson, formData.timeSlots, formData.charterDuration, isPrivate]);
 
   const pricing = useMemo(() => {
     const effectivePricePerPerson =
@@ -185,6 +189,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
 
   const toggleTimeSlot = (slotId: string) => {
     setFormData((prev) => {
+      if (isPrivate) return { ...prev, timeSlots: prev.charterDuration === "full-day" ? TIME_SLOTS.map((slot) => slot.id) : [slotId] };
       const isSelected = prev.timeSlots.includes(slotId);
       const nextSlots = isSelected
         ? prev.timeSlots.filter((id) => id !== slotId)
@@ -206,6 +211,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           packageId: packageData.id,
+          charterDuration: isPrivate ? formData.charterDuration : undefined,
           date: new Date(formData.date).toISOString(),
           timeSlots: formData.timeSlots,
           guestCount: formData.guestCount,
@@ -405,12 +411,24 @@ export function BookingForm({ packageData }: BookingFormProps) {
           </div>
           <div>
             <p className="mb-2 text-sm font-medium">
-              Time Slots <span className="text-red-500">*</span>
+              {isPrivate ? "Departure window" : "Time Slots"} <span className="text-red-500">*</span>
             </p>
             <p className="mb-3 text-xs text-[var(--theme-text-muted)]">
-              Select one or more slots. Two slots = double rate per person. All
-              three = full day + sunset bundle with a discount.
+              {isPrivate ? "Your price is based on charter duration, not the number of departure windows." : "Select one or more slots. Two slots = double rate per person. All three = full day + sunset bundle with a discount."}
             </p>
+            {isPrivate && (
+              <fieldset className="mb-4 space-y-2">
+                <legend className="font-medium">Choose your charter duration</legend>
+                {PRIVATE_OPTIONS.map((option) => (
+                  <label key={option.id} className="flex items-center gap-3 rounded-xl border border-[var(--theme-border)] p-3">
+                    <input type="radio" name="charter-duration" checked={formData.charterDuration === option.id}
+                      onChange={() => setFormData((prev) => ({ ...prev, charterDuration: option.id, timeSlots: option.id === "full-day" ? TIME_SLOTS.map((slot) => slot.id) : [] }))} />
+                    <span>{option.label} — {formatPrice(option.price)} per person</span>
+                  </label>
+                ))}
+                <p className="text-sm text-[var(--theme-text-muted)]">Choose a departure window below. The crew confirms the exact start time. Full day reserves the whole day.</p>
+              </fieldset>
+            )}
             <div className="grid gap-3 sm:grid-cols-3">
               {TIME_SLOTS.map((slot) => {
                 const isSelected = formData.timeSlots.includes(slot.id);
@@ -432,7 +450,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
                       {slot.startTime} - {slot.endTime}
                     </div>
                     <div className="mt-1 text-xs font-medium">
-                      {formatPrice(basePrice)}/person
+                      {formatPrice(isPrivate ? PRIVATE_OPTIONS.find((option) => option.id === formData.charterDuration)?.price ?? 950 : basePrice)}/person
                     </div>
                   </button>
                 );

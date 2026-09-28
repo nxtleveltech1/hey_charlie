@@ -1,0 +1,3 @@
+import {db} from '../src/db'; import {packages} from '../src/db/schema'; import {eq} from 'drizzle-orm';import {getPackageBySlug} from '../src/lib/content/packages';
+const pkg=getPackageBySlug('private-celebration');if(!pkg)throw Error('Missing private charter');
+console.log(await db.update(packages).set({name:pkg.name,tagline:pkg.tagline,description:pkg.longDescription,duration:pkg.durationLabel,pricePerPerson:String(pkg.price),highlights:pkg.highlights,isFeatured:true,isActive:true,updatedAt:new Date()}).where(eq(packages.slug,pkg.slug)).returning({name:packages.name,price:packages.pricePerPerson,min:packages.minGuests,max:packages.maxGuests}));

@@ -69,29 +69,29 @@ const IMAGES = {
   simonsTown: "REQUIRED-ASSET: /images/destinations/simons-town.jpg (pending)",
   boulders: "REQUIRED-ASSET: /images/destinations/boulders-beach.jpg (pending)",
   sealIsland: "/images/seal-island.jpg",
-  vaWaterfront: "/images/sundown-cruise-hero.png",
+  houtbayHarbor: "/images/sundown-cruise-hero.png",
 };
 
 const destinations: Destination[] = [
   {
-    id: "va-waterfront",
-    slug: "va-waterfront",
-    name: "V&A Waterfront",
+    id: "houtbay-harbor",
+    slug: "houtbay-harbor",
+    name: "Houtbay Harbor",
     tagline: "Our departure hub — where every charter begins",
     story:
-      "The V&A Waterfront is the working heart of Cape Town's harbour and our base of operations. All Hey Charlie charters depart from here, which means the iconic Table Bay skyline, Table Mountain and the stadium are your first views of the day. The Waterfront is easy to reach, well signposted, and has parking, restaurants and coffee close to the berth.",
+      "Houtbay Harbor is our departure base on the Cape’s Atlantic coast. Meet the crew at the berth confirmed with your booking, with the working harbour and surrounding mountains setting the scene for your time on the water.",
     routeContext:
-      "The departure point for every trip. From here we run west along the Atlantic Seaboard toward Clifton and Camps Bay, or south around the peninsula toward Hout Bay, Simon's Town and Cape Point.",
+      "The departure point for every trip. Routes explore the bay and nearby Atlantic coastline, or head toward Cape Point when conditions and the selected charter allow.",
     category: "departure-hub",
-    coordinates: { lat: -33.9077, lng: 18.4235 },
-    heroImage: IMAGES.vaWaterfront,
-    gallery: [{ src: IMAGES.vaWaterfront, alt: "V&A Waterfront and Table Bay" }],
+    coordinates: { lat: -34.0476, lng: 18.3535 },
+    heroImage: IMAGES.houtbayHarbor,
+    gallery: [{ src: IMAGES.houtbayHarbor, alt: "Houtbay Harbor and the surrounding mountains" }],
     bestFor: ["Meeting point", "First-time visitors", "Easy access"],
-    wildlife: ["Dolphins occasionally in Table Bay"],
-    scenery: ["Table Mountain", "Table Bay harbour", "Stadium and city skyline"],
+    wildlife: ["Marine life varies with the season"],
+    scenery: ["Surrounding mountains", "Working harbour", "Atlantic coastline"],
     bestSeason: "Year-round departure point.",
     weatherNote:
-      "Table Bay is sheltered relative to the open coast but can be breezy; the skipper picks the best direction on the day.",
+      "The bay is sheltered relative to the open coast but can be breezy; the skipper picks the best direction on the day.",
     accessInfo:
       "Departure details and the exact berth are shared in your booking confirmation, with a map pin. Arrive 15 minutes early.",
     linkedPackageSlugs: [
@@ -103,10 +103,10 @@ const destinations: Destination[] = [
     faqs: [
       {
         q: "Where exactly do we meet?",
-        a: "At the V&A Waterfront. The specific berth and a map pin are sent in your confirmation.",
+        a: "At Houtbay Harbor. The specific berth and a map pin are sent in your confirmation.",
       },
     ],
-    nearbyAttractions: ["V&A Shopping and restaurants", "Two Oceans Aquarium", "Table Mountain Aerial Cableway"],
+    nearbyAttractions: ["Harbour restaurants", "Hout Bay beach", "Coastal viewpoints"],
   },
   {
     id: "clifton-beaches",
@@ -116,7 +116,7 @@ const destinations: Destination[] = [
     story:
       "Clifton's four beaches — 1st through 4th — sit between granite boulders that shelter them from the south-easter (the Cape Doctor). The result is calm, clear water on days when exposed beaches are windswept. The water is cold — fed by the Benguela Current — but the turquoise clarity makes it worth the plunge. Arriving by boat skips the steep stair descents and gives you the best view of the Atlantic Seaboard above.",
     routeContext:
-      "About 15 minutes by boat from the V&A Waterfront, heading west along the Atlantic Seaboard toward Camps Bay.",
+      "By boat from Houtbay Harbor, with timing dependent on conditions, heading north along the Atlantic coastline past Camps Bay.",
     category: "beach",
     coordinates: { lat: -33.934, lng: 18.3776 },
     heroImage: IMAGES.clifton,
@@ -130,7 +130,7 @@ const destinations: Destination[] = [
     bestSeason: "December–March for the warmest days; sheltered and scenic year-round.",
     seasonMonths: [12, 1, 2, 3],
     weatherNote: "Water around 13–17°C. The boulders provide shelter even on windy days.",
-    accessInfo: "Roughly 15 minutes by boat from the V&A Waterfront. We anchor in the sheltered bay for swimming.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions. We anchor in the sheltered bay for swimming.",
     linkedPackageSlugs: ["sundowner-cruise", "beach-hopper", "private-charter"],
     faqs: [
       {
@@ -148,7 +148,7 @@ const destinations: Destination[] = [
     story:
       "Camps Bay is the long arc of white sand backed by the Twelve Apostles mountain range — one of the most photographed stretches of the Cape coast. The beachfront strip of restaurants and bars makes it a natural anchor for a sundowner cruise. From the water you take in the full scale of the mountains rising behind the beach, a perspective the road never gives you.",
     routeContext:
-      "Just beyond Clifton along the Atlantic Seaboard, roughly 15 minutes by boat from the V&A Waterfront.",
+      "Reached from Houtbay Harbor along the Atlantic coastline, with timing dependent on conditions.",
     category: "beach",
     coordinates: { lat: -33.9505, lng: 18.3782 },
     heroImage: IMAGES.campsBay,
@@ -161,7 +161,7 @@ const destinations: Destination[] = [
     bestSeason: "October–April for beach weather; the views hold year-round.",
     seasonMonths: [10, 11, 12, 1, 2, 3, 4],
     weatherNote: "More exposed to wind than Clifton — best on calm days or in the morning.",
-    accessInfo: "About 15 minutes by boat from the V&A Waterfront; we anchor offshore for swimming and photos.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions; we anchor offshore for swimming and photos.",
     linkedPackageSlugs: ["sundowner-cruise", "coastline-explorer", "private-charter"],
     faqs: [
       {
@@ -179,7 +179,7 @@ const destinations: Destination[] = [
     story:
       "Hout Bay is a working fishing harbour tucked between the Twelve Apostles and the Sentinel. It is the gateway to Duiker Island's Cape fur seal colony and a traditional launch point for crayfish diving in season. Watch the fishing boats unload, then run out to the seals — or continue south toward Cape Point. The harbour market's fish and chips are a Cape Town staple.",
     routeContext:
-      "Around the corner from Camps Bay along the Atlantic coast, roughly 30 minutes by boat from the V&A Waterfront.",
+      "Our departure bay on the Atlantic coast, framed by mountains and a working harbour.",
     category: "harbor",
     coordinates: { lat: -34.0476, lng: 18.3535 },
     heroImage: IMAGES.houtBay,
@@ -194,7 +194,7 @@ const destinations: Destination[] = [
     bestSeason: "Year-round for seals; November–April for crayfish season.",
     seasonMonths: [11, 12, 1, 2, 3, 4],
     weatherNote: "The bay is sheltered but can freshen in the afternoon; mornings are usually calmest.",
-    accessInfo: "About 30 minutes by boat from the V&A Waterfront, or we can depart directly from Hout Bay harbour by arrangement.",
+    accessInfo: "Meet at Houtbay Harbor; the exact berth is confirmed with your booking.",
     linkedPackageSlugs: ["seal-island", "crayfish-experience", "deep-sea-fishing", "seafood-feast"],
     faqs: [
       {
@@ -212,7 +212,7 @@ const destinations: Destination[] = [
     story:
       "Duiker Island — known locally as Seal Island — lies just off Hout Bay and is home to a large resident colony of Cape fur seals. They haul out on the rocks and porpoise around the boats. We keep a respectful distance, which still brings you close enough for clear viewing and photography with the Sentinel rising behind. Short, sheltered and family-friendly.",
     routeContext:
-      "A short run from Hout Bay harbour, usually combined with a coastal cruise from the V&A Waterfront.",
+      "A short run from Hout Bay harbour, usually combined with a coastal cruise from Houtbay Harbor.",
     category: "marine-reserve",
     coordinates: { lat: -34.0495, lng: 18.3347 },
     heroImage: IMAGES.sealIsland,
@@ -224,7 +224,7 @@ const destinations: Destination[] = [
     scenery: ["The Sentinel", "Chapman's Peak backdrop"],
     bestSeason: "Year-round; seals are resident.",
     weatherNote: "Sheltered run; a good option when longer offshore trips are not advisable.",
-    accessInfo: "A short run from Hout Bay; reachable as part of the Seal Island Tour or Coastline Explorer from the V&A.",
+    accessInfo: "A short run from Hout Bay; reachable as part of the Seal Island Tour or Coastline Explorer from Houtbay Harbor.",
     linkedPackageSlugs: ["seal-island", "coastline-explorer", "private-charter"],
     faqs: [
       {
@@ -242,7 +242,7 @@ const destinations: Destination[] = [
     story:
       "Simon's Town has been a naval base for more than two centuries, and its Victorian main street and harbour still carry that heritage. It is the gateway to Boulders Beach's African penguin colony and a staging point for False Bay trips toward Cape Point. The False Bay water here is warmer than the Atlantic side, which makes for more comfortable swimming.",
     routeContext:
-      "On the False Bay side of the peninsula, usually reached as part of a full-day Coastline Explorer from the V&A Waterfront.",
+      "On the False Bay side of the peninsula, usually reached as part of a full-day Coastline Explorer from Houtbay Harbor.",
     category: "harbor",
     coordinates: { lat: -34.1908, lng: 18.4325 },
     heroImage: IMAGES.simonsTown,
@@ -257,7 +257,7 @@ const destinations: Destination[] = [
     bestSeason: "Year-round for penguins; June–November adds whale activity.",
     seasonMonths: [6, 7, 8, 9, 10, 11],
     weatherNote: "Generally calmer than the Atlantic side; False Bay water runs warmer.",
-    accessInfo: "Reached on full-day peninsula trips from the V&A Waterfront; roughly 45 minutes by boat.",
+    accessInfo: "Reached on full-day peninsula trips from Houtbay Harbor via Cape Point, subject to sea conditions.",
     linkedPackageSlugs: ["coastline-explorer", "whale-watching", "private-charter"],
     faqs: [
       {
@@ -289,7 +289,7 @@ const destinations: Destination[] = [
     bestSeason: "October–December for calmer seas; June–November adds whales.",
     seasonMonths: [10, 11, 12, 6, 7, 8, 9],
     weatherNote: "Can be rough — conditions determine whether we can approach and round the Point.",
-    accessInfo: "A long-range, full-day trip from the V&A Waterfront via False Bay.",
+    accessInfo: "A long-range, full-day trip from Houtbay Harbor via False Bay.",
     linkedPackageSlugs: ["coastline-explorer", "whale-watching", "private-charter"],
     faqs: [
       {
@@ -320,7 +320,7 @@ const destinations: Destination[] = [
     bestSeason: "February–March for breeding activity; year-round for sightings.",
     seasonMonths: [2, 3],
     weatherNote: "False Bay is warmer and sheltered by the boulders.",
-    accessInfo: "About 45 minutes by boat from the V&A Waterfront, on the False Bay side.",
+    accessInfo: "By boat from Houtbay Harbor, with timing dependent on conditions, on the False Bay side.",
     linkedPackageSlugs: ["coastline-explorer", "beach-hopper", "private-charter"],
     faqs: [
       {

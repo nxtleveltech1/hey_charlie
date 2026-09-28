@@ -316,7 +316,7 @@ export default function DestinationsPage() {
               Our <span className="text-gradient-sunset">Sailing Routes</span>
             </h2>
             <p className="text-[var(--theme-text-muted)] max-w-2xl mx-auto">
-              From the V&A Waterfront to Cape Point, we cover the entire Cape Peninsula coastline. 
+              From Houtbay Harbor, explore the peninsula coastline on a route suited to your charter and the conditions.
               Each destination offers unique experiences and unforgettable views.
             </p>
           </div>

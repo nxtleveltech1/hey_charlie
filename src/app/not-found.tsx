@@ -5,7 +5,7 @@ import { MinimalShell } from "@/components/public/minimal-shell";
 export const metadata: Metadata = {
   title: "Page not found",
   description:
-    "The page you were looking for could not be found. Explore private boat charters from the V&A Waterfront, Cape Town.",
+    "The page you were looking for could not be found. Explore private boat charters from the Houtbay Harbor, Cape Town.",
   robots: { index: false, follow: true },
 };
 

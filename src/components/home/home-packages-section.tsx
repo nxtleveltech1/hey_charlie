@@ -1,3 +1,5 @@
+import { PRIVATE_CHARTER_SLUG } from "@/lib/private-charters";
+import { PrivateCharterOptions } from "@/components/private-charter-options";
 import { isCapeCourage, CAPE_COURAGE_CANCELLATION_MESSAGE } from "@/lib/cape-courage";
 import Link from "next/link";
 import Image from "next/image";
@@ -72,10 +74,11 @@ function FeaturedSpotlight({ pkg }: { pkg: HomePackage }) {
           {pkg.name}
         </h3>
         <p className={`text-[var(--theme-text-secondary)] mb-3 ${cancelled ? "" : "line-clamp-3"}`}>{cancelled ? CAPE_COURAGE_CANCELLATION_MESSAGE : pkg.description}</p>
+        {pkg.slug === PRIVATE_CHARTER_SLUG && <PrivateCharterOptions />}
         <div className="flex items-center gap-4 mt-auto pt-1 flex-wrap">
           {!cancelled && <div>
             <span className="text-2xl font-bold">
-              {formatPrice(pkg.pricePerPerson)}
+              {pkg.slug === PRIVATE_CHARTER_SLUG ? "From " : ""}{formatPrice(pkg.pricePerPerson)}
             </span>
             <span className="text-[var(--theme-text-muted)] text-sm ml-1">/person</span>
           </div>}
@@ -97,7 +100,7 @@ export function HomePackagesSection({
   hideHeader = false,
   showViewAllLink = true,
 }: HomePackagesSectionProps) {
-  const featured = packages.find((p) => p.isFeatured);
+  const featured = packages.find((p) => p.slug === PRIVATE_CHARTER_SLUG) ?? packages.find((p) => p.isFeatured);
   const gridPackages = featured ? packages.filter((p) => p.id !== featured.id) : packages;
 
   return (

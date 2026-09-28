@@ -36,6 +36,20 @@
       "when": 1775163000000,
       "tag": "0006_departure_location",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790543494911,
+      "tag": "0009_houtbay_departure",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790596945765,
+      "tag": "0010_private_charter_duration",
+      "breakpoints": true
     }
   ]
 }
