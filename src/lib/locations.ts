@@ -414,7 +414,7 @@ Approaching Cape Point from the sea gives you a perspective that most visitors n
     ],
     bestTimeToVisit: "October to December for calm seas. June to November for whale season.",
     weatherNote: "Can be rough — conditions determine if we can approach the Point. Always dramatic.",
-    accessInfo: "1 hour by boat from Simon's Town. Full-day trip from Houtbay Harbor.",
+    accessInfo: "Depart from Houtbay Harbor. Route and travel time depend on the charter and sea conditions.",
     tips: [
       "This is an advanced trip — sea conditions must be favorable",
       "Bring motion sickness medication if you're prone",

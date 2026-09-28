@@ -199,7 +199,7 @@ const destinations: Destination[] = [
     faqs: [
       {
         q: "Can we start from Hout Bay instead?",
-        a: "Yes — departures from Hout Bay harbour can be arranged. Mention it at booking.",
+        a: "Yes — every charter departs from and returns to Houtbay Harbor. Your exact meeting point is confirmed with your booking.",
       },
     ],
     nearbyAttractions: ["Chapman's Peak Drive", "Mariners Wharf", "World of Birds"],
@@ -240,7 +240,7 @@ const destinations: Destination[] = [
     name: "Simon's Town",
     tagline: "Naval heritage on the way to the penguins",
     story:
-      "Simon's Town has been a naval base for more than two centuries, and its Victorian main street and harbour still carry that heritage. It is the gateway to Boulders Beach's African penguin colony and a staging point for False Bay trips toward Cape Point. The False Bay water here is warmer than the Atlantic side, which makes for more comfortable swimming.",
+      "Simon's Town has been a naval base for more than two centuries, and its Victorian main street and harbour still carry that heritage. It is the gateway to Boulders Beach's African penguin colony and a coastal destination on longer peninsula routes. Our charters depart from and return to Houtbay Harbor. The False Bay water here is warmer than the Atlantic side, which makes for more comfortable swimming.",
     routeContext:
       "On the False Bay side of the peninsula, usually reached as part of a full-day Coastline Explorer from Houtbay Harbor.",
     category: "harbor",

@@ -11,12 +11,14 @@ import { formatPrice } from "@/lib/booking-utils";
 import { cn } from "@/lib/utils";
 
 interface BookingAddonPickerProps {
+  packageSlug: string;
   guestCount: number;
   selectedAddons: SelectedAddonsMap;
   onSelectionChange: (selected: SelectedAddonsMap) => void;
 }
 
 export function BookingAddonPicker({
+  packageSlug,
   guestCount,
   selectedAddons,
   onSelectionChange,
@@ -28,7 +30,7 @@ export function BookingAddonPicker({
   useEffect(() => {
     const fetchAddons = async () => {
       try {
-        const res = await fetch("/api/package-addons");
+        const res = await fetch(`/api/package-addons?packageSlug=${encodeURIComponent(packageSlug)}`);
         if (!res.ok) throw new Error("Failed to load add-ons");
         const data = await res.json();
         setAddons(data.addons);
@@ -39,7 +41,7 @@ export function BookingAddonPicker({
       }
     };
     fetchAddons();
-  }, []);
+  }, [packageSlug]);
 
   const groupedAddons = useMemo(() => {
     const ungrouped: Addon[] = [];

@@ -215,7 +215,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
           date: new Date(formData.date).toISOString(),
           timeSlots: formData.timeSlots,
           guestCount: formData.guestCount,
-          departureLocation: formData.departureLocation,
+          departureLocation: DEFAULT_DEPARTURE_LOCATION,
           contactName: formData.contactName,
           contactEmail: formData.contactEmail,
           contactPhone: formData.contactPhone,
@@ -376,37 +376,12 @@ export function BookingForm({ packageData }: BookingFormProps) {
             </p>
           </div>
           <div>
-            <p className="mb-2 text-sm font-medium">
-              Departure Location <span className="text-red-500">*</span>
-            </p>
-            <p className="mb-3 text-xs text-[var(--theme-text-muted)]">
-              Where would you like to board the charter?
-            </p>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {DEPARTURE_LOCATIONS.map((location) => {
-                const isSelected = formData.departureLocation === location.id;
-                return (
-                  <button
-                    key={location.id}
-                    type="button"
-                    onClick={() =>
-                      setFormData({
-                        ...formData,
-                        departureLocation: location.id,
-                      })
-                    }
-                    className={cn(
-                      "min-h-16 rounded-xl border p-3 text-center transition-all",
-                      isSelected
-                        ? "border-amber bg-amber/10 text-amber"
-                        : "border-[var(--theme-border)] hover:border-amber/50",
-                    )}
-                    aria-pressed={isSelected}
-                  >
-                    <div className="text-sm font-medium">{location.label}</div>
-                  </button>
-                );
-              })}
+            <p className="mb-2 text-sm font-medium">Departure location</p>
+            <div className="rounded-xl border border-amber bg-amber/10 p-4" data-testid="departure-location">
+              <p className="font-medium">{DEPARTURE_LOCATIONS[0].label}</p>
+              <p className="mt-1 text-sm text-[var(--theme-text-muted)]">
+                All charters depart from and return to Houtbay Harbor. Your exact meeting point is confirmed with your booking.
+              </p>
             </div>
           </div>
           <div>
@@ -489,6 +464,7 @@ export function BookingForm({ packageData }: BookingFormProps) {
       {step === 2 && (
         <div className="space-y-6">
           <BookingAddonPicker
+            packageSlug={packageData.slug}
             guestCount={formData.guestCount}
             selectedAddons={selectedAddons}
             onSelectionChange={setSelectedAddons}
